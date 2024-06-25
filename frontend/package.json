@@ -14,10 +14,10 @@
     "js-cookie": "^3.0.5",
     "sweetalert2": "^11.10.8",
     "vue": "^3.2.13",
-    "vue-js-modal": "^2.0.1",
     "vue-loader": "^17.4.2",
     "vue-router": "^4.0.3",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "vue-modal-dialogs": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -26,3 +26,4 @@
     "@vue/cli-service": "~5.0.0"
   }
 }
+

@@ -38,8 +38,8 @@ export default {
   border: none;
   border-bottom: 2px solid #9b9b9b;
   outline: 0;
-  font-size: 20px;
-  color: rgb(238, 165, 165);
+  font-size: 30px;
+  color: rgb(158, 11, 23);
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.3s;
@@ -53,21 +53,21 @@ export default {
 .form__field:placeholder-shown ~ .form__label {
   font-size: 30px;
   cursor: text;
-  top: 20px;
+  top: -20px;
 }
 
 .form__label {
   position: absolute;
-  top: 0;
+  top: 50%;
   display: block;
   transition: 0.2s;
-  font-size: 24px;
+  font-size: 26px;
   color: #9b9b9b;
 }
 
 .form__field:focus ~ .form__label,
 .form__field:valid ~ .form__label {
-  top: -20px;
+  top: 10%;
   font-size: 20px;
   color: #666;
 }

@@ -18,7 +18,6 @@
         <img class="see" :src="uploadedFile"  />
     </div>
     
-    
     <DropImg v-if = "AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
     </template>
     <script>
@@ -100,13 +99,13 @@
     
     .uploaded-image{
         position: absolute;
-        bottom: 46rem;
-        left: 40rem;
-    }
+        bottom: 40rem;
+        left: 50rem;
+    }   
     
     .see{
         position: absolute;
-        width: 20rem;
-        height: 20rem;
+        width: 25rem;
+        height: 25rem;
     }
-    </style>
+</style>
