@@ -2,27 +2,27 @@
   <div class="container1">
     <center>
       <img class="logo" src="../../assets/illumis.png" alt="MyLogo">
-      <h1>Université de la région de Kalos</h1>
-      <div class="input-container">
-        <label>{{ items[0].name }}</label>
-        <input type="text" v-model="email" />
-      </div>
-      <div class="input-container">
-        <label>{{ items[1].name }}</label>
-        <input type="password" v-model="password" />
-      </div>
+      <h1>{{cLang.FirstPage.region}}</h1>
+        <ItemInput type="text" :name="cLang.FirstPage.id" v-model="email"/>
+        <ItemInput type="password" :name="cLang.FirstPage.pw" v-model="password"/>
     </center>
     <div class="forb">
-      <ItemButton name="Connexion" @click="submitform" />
+      <ItemButton :name="cLang.FirstPage.login" @click="login" />
       <router-link to="/guest">
-        <ItemButton name="Invité" />
+        <ItemButton :name="cLang.FirstPage.guest"/>
       </router-link>
     </div>
+    <img class="la" alt="Change the language" src="../../assets/lang.png" @click="switchLang"/>
   </div>
 </template>
 
 <script>
 import ItemButton from '../../elements/ItemButton.vue';
+import ItemInput from '../../elements/ItemInput.vue';
+import { useStore } from 'vuex';
+import { computed, watch, ref } from 'vue';
+import fr from '../../views/fr.js'
+import en from '../../views/en.js'
 import Cookies from 'js-cookie';
 
 function determineUserRole(email) {
@@ -40,16 +40,28 @@ function determineUserRole(email) {
   }
 }
 export default {
-  components: { ItemButton },
+  components: { ItemButton, ItemInput },
   data() {
+    const store = useStore();
+    const idLa = computed(() => store.state.lang.curLang);
+    const cLang = ref(idLa.value === 'fr' ? fr : en);
+    const switchLang = () => {
+        if (idLa.value === 'fr') {
+            store.commit('setLang', 'en');
+        }
+        else if (idLa.value === 'en') {
+            store.commit('setLang', 'fr');
+        } 
+    };
+    watch(idLa, (newLang) => {
+      cLang.value = newLang === 'fr' ? fr : en;
+    });
     return {
-      items: [
-        { name: 'Identifiant' },
-        { name: 'Mot de passe' }
-      ],
+      switchLang,
+      cLang,
       email: '',
       password: '',
-      role: 'inconnu', // Initialisez le rôle à "inconnu",
+      role: 'inconnu'
     };
   },
   methods: {
@@ -144,6 +156,7 @@ export default {
           });
     }
   }
+  
 };
 </script>
 
@@ -168,10 +181,18 @@ export default {
   margin-top: 20px;
   align-items: center;
 }
+
+.la{
+  position: relative;
+  width: 5rem;
+  height: auto;
+  bottom: -30px;
+  left: 47%;
+  }
 </style>
 
 <style>
 body {
-  background-color: rgb(131, 10, 20);
+  background-color: rgb(240, 26, 43);
 }
 </style>
