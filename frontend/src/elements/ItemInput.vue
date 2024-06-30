@@ -1,23 +1,30 @@
 <template>
   <center>
-  <div class="form__group field">
-  <input :type='type' class="form__field" placeholder='name' required="" v-model="val">
-  <label for='name' class="form__label">{{name}}</label>
-  </div>
+    <div class="form__group field">
+      <input :type="type" class="form__field" :placeholder="name" required @input="onInput" :value="val">
+      <label class="form__label">{{ name }}</label>
+    </div>
   </center>
 </template>
 
 <script>
-export default{
-  props: ['name','type'],
-  setup(){
-    return{
-      val: ''
+export default {
+  props: ['name', 'type', 'val'],
+  emits: ['update:val'],
+  methods: {
+    onInput(event) {
+      console.log('Input event:', event.target.value);
+      this.$emit('update:val', event.target.value);
+    }
+  },
+  watch: {
+    val(newValue) {
+      console.log('val changed:', newValue);
     }
   }
-  
 }
 </script>
+
 
 <style scoped>
 

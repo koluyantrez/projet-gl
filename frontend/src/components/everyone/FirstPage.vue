@@ -7,7 +7,7 @@
         <ItemInput type="password" :name="cLang.FirstPage.pw" v-model="password"/>
     </center>
     <div class="forb">
-      <ItemButton :name="cLang.FirstPage.login" @click="login" />
+      <ItemButton :name="cLang.FirstPage.login" @click="submitform" />
       <router-link to="/guest">
         <ItemButton :name="cLang.FirstPage.guest"/>
       </router-link>
