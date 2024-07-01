@@ -3,8 +3,8 @@
     <center>
       <img class="logo" src="../../assets/illumis.png" alt="MyLogo">
       <h1>{{cLang.FirstPage.region}}</h1>
-        <ItemInput type="text" :name="cLang.FirstPage.id" v-model="email"/>
-        <ItemInput type="password" :name="cLang.FirstPage.pw" v-model="password"/>
+      <ItemInput type="text" :name="cLang.FirstPage.id" v-model:val="email"/>
+      <ItemInput type="password" :name="cLang.FirstPage.pw" v-model:val="password"/>
     </center>
     <div class="forb">
       <ItemButton :name="cLang.FirstPage.login" @click="submitform" />
@@ -26,6 +26,7 @@ import en from '../../views/en.js'
 import Cookies from 'js-cookie';
 
 function determineUserRole(email) {
+  console.log(email);
   if (email.endsWith("@Illumis.assistant.ac.be")) {
     return "assistant";
   } else if (email.endsWith("@Illumis.professeur.ac.be")) {
@@ -75,11 +76,13 @@ export default {
       }
     },
     submitform() {
+
       const authentification = {
         email: this.email,
         password: this.password,
       };
-
+      console.log("Email:", this.email);
+      console.log("Password:", this.password);
       fetch('http://localhost:1937/login', {
         method: 'POST',
         headers: {
@@ -167,7 +170,7 @@ export default {
   font-size: 3rem;
   font-stretch: 100%;
   font-weight: 600;
-  color: rgb(236, 181, 181);
+  color: rgb(236, 210, 210);
 }
 
 .logo {

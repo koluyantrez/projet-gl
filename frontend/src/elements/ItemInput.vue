@@ -1,7 +1,7 @@
 <template>
   <center>
     <div class="form__group field">
-      <input :type="type" class="form__field" :placeholder="name" required @input="onInput" :value="val">
+      <input :type="type" class="form__field" :placeholder="name" required="" @input="onInput" :value="val">
       <label class="form__label">{{ name }}</label>
     </div>
   </center>
@@ -16,13 +16,8 @@ export default {
       console.log('Input event:', event.target.value);
       this.$emit('update:val', event.target.value);
     }
-  },
-  watch: {
-    val(newValue) {
-      console.log('val changed:', newValue);
-    }
   }
-}
+ }
 </script>
 
 
