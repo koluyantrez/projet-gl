@@ -1,12 +1,10 @@
 <template>
   <div>
     <TopStudent/>
-    <div class="container">
-      <div class="place">
-        <ItemCours v-for="(item, index) in itemc" :word="item" :key="index"/>
-      </div>
+    <div class="place">
+    <ItemSearch/>
+      <ItemCours v-for="(item, index) in itemc" :word="item" :key="index"/>
     </div>
-    <router-link :to="{ name: 'sprofil', params: { matricule: matricule } }">Profil</router-link>
   </div>
 </template>
 
@@ -14,10 +12,11 @@
 import axios from 'axios';
 import TopStudent from '../../elements/TopStudent.vue';
 import ItemCours from '../../elements/ItemCours.vue';
+import ItemSearch from '../../elements/ItemSearch.vue';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { ItemCours, TopStudent },
+  components: { ItemCours, TopStudent, ItemSearch },
   data() {
     return {
       itemc: [],
@@ -81,20 +80,9 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  position: absolute;
-  width: 100%;
-  height: 54rem;
-  bottom: 0.1rem;
-  left: -0.42rem;
-  overflow: auto;
-  z-index: 1;
-  transform: translateY(50px);
-}
-
 .place {
-  position: absolute;
-  top: 1rem;
-  left: 10%;
+    position: absolute;
+    top: 20%;
+    left: 8%;
 }
 </style>

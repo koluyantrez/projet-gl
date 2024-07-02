@@ -47,7 +47,7 @@ export default {
 
 <style scoped>
 .redtop {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -57,18 +57,28 @@ export default {
 }
 
 .la{
-  position: fixed;
+  position: absolute;
   top: 1rem;
   left: 13rem;
   width: 4rem; 
   height: auto;
   z-index: 91;
 }
+
+.bg {
+  position: absolute;
+  top: 10;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: require('../assets/bgHome.png');
+  z-index: 99;
+}
 </style>
 
 <style>
 body{
-  background-image: url('../assets/bgHome.png');
+    background-image: url('../assets/bgHome.png');
 }
 </style>
 

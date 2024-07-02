@@ -9,11 +9,11 @@
 
     <div class="te">
       <router-link to="/student">
-        <div class="cours"><TextTravel :word="cLang.Top.course"/></div>
+        <div class="cours">{{cLang.Top.course}}</div>
       </router-link>
-      <div class="loc"><TextTravel :word="cLang.Top.loc"/></div>
-      <div class="bu"><TextTravel word="Bulletin"/></div>
-      <div class="dospii"><TextTravel word="DOSPII"/></div>
+      <div class="loc">{{cLang.Top.loc}}</div>
+      <div class="bu">Bulletin</div>
+      <div class="dospii">DOSPII</div>
     </div>
   
 </template>
@@ -56,7 +56,7 @@
 <style scoped>
 
 .la{
-  position: fixed;
+  position: absolute;
   top: 1rem;
   left: 13rem;
   width: 4rem; 
@@ -73,47 +73,48 @@
   z-index: 91;
 }
 
+.te{
+  position: relative;
+  top: 1.5rem;
+  font-family: Roboto, sans-serif;
+  color:azure;
+  z-index: 92;
+
+}
+
+.cours,
+.loc,
+.bu,
+.dospii {
+  position: absolute;
+}
+
 .cours{
-  position: fixed; 
-  top: -2rem; 
   right: 18rem; 
   width: 5rem; 
   height: auto;
-  z-index: 91;
   color:azure;
 }
 
 .loc{
-  position: absolute; 
-  top: -2rem;
   right: 28rem; 
   width: 6rem; 
   height: auto;
-  z-index: 91;
 }
 
 .bu{
-  position: absolute; 
-  top: -2rem;
   right:41rem; 
   width: 5rem; 
   height: auto;
-  z-index: 91;
 }
 
 .dospii{
-  position: absolute; 
-  top: -2rem; 
   right: 54rem; 
   width: 5rem; 
   height: auto;
-  z-index: 91;
 }
 
-.te{
-  font-family: Roboto, sans-serif;
-  color:azure;
-}
+
 
 
 </style> 

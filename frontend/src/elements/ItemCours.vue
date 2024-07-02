@@ -86,60 +86,59 @@ export default {
 
 <style scoped>
 .button {
-  --color: rgb(158, 11, 23);
-  width: 1600px;
-  height: 90px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: .3em;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: .5s;
-  font-weight: 400;
-  font-size: 20px;
-  border: 2px solid;
-  font-family: Roboto, sans-serif;
-  text-transform: uppercase;
-  color: var(--color);
-  z-index: 1;
+ --color: rgb(158, 11, 23);
+ width: 100rem;
+ height: 6rem;
+ background-color: rgba(0, 0, 0, 0.2);
+ border-radius: .3em;
+ position: relative;
+ overflow: hidden;
+ cursor: pointer;
+ transition: .5s;
+ font-weight: 400;
+ font-size: 20px;
+ border: 2px solid;
+ font-family: Roboto,sans-serif;
+ text-transform: uppercase;
+ color: var(--color);
+ z-index: 1;
+ margin-top: 3rem;
 }
 
-.button::before,
-.button::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 60px;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  border-radius: 50%;
-  z-index: -1;
-  background-color: var(--color);
-  transition: 0.8s ease;
+.button::before, .button::after {
+ content: '';
+ display: block;
+ width: 3rem;
+ height: 1rem;
+ transform: translate(-50%, -50%);
+ position: absolute;
+ border-radius: 50%;
+ z-index: -1;
+ background-color: var(--color);
+ transition: 0.8s ease;
 }
 
 .button::before {
-  top: -1em;
-  left: -1em;
+ top: -1em;
+ left: -1em;
 }
 
 .button::after {
-  left: calc(100% + 1em);
-  top: calc(100% + 1em);
+ left: calc(100% + 1em);
+ top: calc(100% + 1em);
 }
 
-.button:hover::before,
-.button:hover::after {
-  height: 1700px;
-  width: 1700px;
+.button:hover::before, .button:hover::after {
+ height: 1700px;
+ width: 1700px;
 }
 
 .button:hover {
-  color: rgb(236, 181, 181);
+ color: rgb(236, 181, 181);
 }
 
 .button:active {
-  filter: brightness(.8);
+ filter: brightness(.8);
 }
 
 .delete-button {

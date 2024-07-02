@@ -5,7 +5,9 @@
       <ItemButton :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
       <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
       <ItemButton :name="cLang.Profile.edit" @click="() => ToModPopup('buTriMod')" />
-      <ItemButton :name="cLang.Profile.logout" />
+      <router-link to="/">
+        <ItemButton :name="cLang.Profile.logout" />
+      </router-link>
       <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
       <ItemButton name="PAE" />
     </div>

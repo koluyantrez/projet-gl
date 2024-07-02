@@ -81,8 +81,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-      console.log("Email:", this.email);
-      console.log("Password:", this.password);
       fetch('http://localhost:1937/login', {
         method: 'POST',
         headers: {
@@ -93,7 +91,6 @@ export default {
           .then(response => {
             this.role = determineUserRole(this.email);
             if (response.ok) {
-              alert("Authentification réussie");
               if (this.role === 'student') {
                 // Stockage du mail et du mot de passe dans les cookies
                 Cookies.set('emailStudent', this.email);
