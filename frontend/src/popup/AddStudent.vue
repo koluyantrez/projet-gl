@@ -10,6 +10,13 @@
         <input v-model="student.numero" :placeholder="cLang.AddStudent.nu" />
         <input v-model="student.adresse" :placeholder="cLang.AddStudent.ad" />
 
+        <!-- <ItemInput type="text" :name="cLang.AddStudent.fn" v-model:val="student.firstName"/>
+        <ItemInput type="text" :name="cLang.AddStudent.ln" v-model:val="student.lastName"/>
+        <ItemInput type="text" :name="cLang.AddStudent.dp" v-model:val="student.departement"/>
+        <ItemInput type="text" :name="cLang.AddStudent.fl" v-model:val="student.filiere"/>
+        <ItemInput type="text" :name="cLang.AddStudent.nu" v-model:val="student.numero"/>
+        <ItemInput type="text" :name="cLang.AddStudent.ad" v-model:val="student.adresse"/>  -->     
+
         <ItemAdd :word="cLang.AddCours.ok" @click="createStudent" />
         <ItemAdd class="close" :word="cLang.AddCours.back" @click="ToCreatePopup()" />
       </center>
@@ -19,6 +26,7 @@
 
 <script>
 import ItemAdd from '../elements/ItemAdd.vue';
+import ItemInput from '../elements/ItemInput.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref } from 'vue';
 import fr from '../views/fr.js';
@@ -26,7 +34,7 @@ import en from '../views/en.js';
 import axios from 'axios';
 
 export default {
-  components: { ItemAdd },
+  components: { ItemAdd, ItemInput },
   props: ['ToCreatePopup', 'getStudents'],
 
   setup() {

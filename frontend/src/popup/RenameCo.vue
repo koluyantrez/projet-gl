@@ -3,7 +3,7 @@
     <div class="inner">
       <slots/>
       <center>
-        <ItemInput :name="cLang.RenameCo.t" />
+        <ItemInput :name="cLang.RenameCo.t" v-model:val="name" />
         <ItemAdd :word="cLang.RenameCo.ok"/>
         <ItemAdd class="close" :word="cLang.RenameCo.back" @click="ToRenamePopup()"/>
       </center>

@@ -4,11 +4,11 @@
       <slots/>
       <center>
 
-        <ItemInput :name="cLang.EditPro.ln"/>
-        <ItemInput :name="cLang.EditPro.fn"/>
-        <ItemInput :name="cLang.EditPro.num"/>
-        <ItemInput :name="cLang.EditPro.ad"/>
-        <ItemInput :name="cLang.EditPro.city"/>
+        <ItemInput :name="cLang.EditPro.ln" v-model:val="last"/>
+        <ItemInput :name="cLang.EditPro.fn" v-model:val="first"/>
+        <ItemInput :name="cLang.EditPro.num" v-model:val="num"/>
+        <ItemInput :name="cLang.EditPro.ad" v-model:val="adress"/>
+        <ItemInput :name="cLang.EditPro.city" v-model:val="city"/>
 
         <ItemAdd :word="cLang.AddCours.ok"/>
         <ItemAdd class="close" :word="cLang.AddCours.back" @click="ToModPopup()"/>

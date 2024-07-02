@@ -3,9 +3,9 @@
     <div class="inner">
       <slots/>
       <center>
-        <ItemInput :name="cLang.AddCours.name"/>
-        <ItemInput :name="cLang.AddCours.titu"/>
-        <ItemInput :name="cLang.AddCours.assi"/>
+        <ItemInput :name="cLang.AddCours.name" v-model:val="name"/>
+        <ItemInput :name="cLang.AddCours.titu" v-model:val="prof"/>
+        <ItemInput :name="cLang.AddCours.assi" v-model:val="assi"/>
         <ItemAdd :word="cLang.AddCours.ok"/>
         <ItemAdd class="close" :word="cLang.AddCours.back" @click="ToCreatePopup()"/>
       </center>

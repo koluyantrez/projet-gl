@@ -5,6 +5,11 @@
         <input type="password" placeholder="Ancien mot de passe" v-model="currentPassword" />
         <input type="password" placeholder="Nouveau mot de passe" v-model="newPassword" />
         <input type="password" placeholder="Confirmer le nouveau mot de passe" v-model="confirmPassword" />
+
+        <!-- <ItemInput type="password" :name="cLang.pw.old" v-model:val="currentPassword"/>
+        <ItemInput type="password" :name="cLang.pw.new" v-model:val="newPassword"/>
+        <ItemInput type="password" :name="cLang.pw.check" v-model:val="confirmPassword"/> -->
+
         <ItemAdd :word="cLang.pw.ok" @click="changePassword()" />
         <ItemAdd class="close" :word="cLang.pw.back" @click="ToPassPopup()" />
       </center>
@@ -14,6 +19,7 @@
 
 <script>
 import ItemAdd from '../elements/ItemAdd.vue';
+import ItemInput from '../elements/ItemInput.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref } from 'vue';
 import fr from '../views/fr.js'
@@ -22,7 +28,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { ItemAdd },
+  components: { ItemAdd, ItemInput },
   props: ['ToPassPopup'],
 
   data() {
