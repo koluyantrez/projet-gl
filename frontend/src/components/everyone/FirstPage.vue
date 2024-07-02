@@ -173,6 +173,16 @@ export default {
   color: rgb(236, 210, 210);
 }
 
+.container1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #9F0924;
+  z-index: 90;
+}
+
 .logo {
   width: 500px;
   height: 220px;
@@ -194,8 +204,3 @@ export default {
   }
 </style>
 
-<style>
-body {
-  background-color: rgb(240, 26, 43);
-}
-</style>
