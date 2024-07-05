@@ -1,74 +1,124 @@
 <template>
-    <TopStudent/>
-    <div class="w">
-        <h1>{{name}}</h1> <!--co.code+co.name-->
+  <TopStudent/>
+    <div class="nc"><h1>{{courseName }}</h1></div>
+    <div class="rec">
+        <Cours word="Cours"/>
+        <Cours word="Exercices"/>
+        <Cours word="Anciens examens"/>
+        <Cours word="Liens utiles"/>
+        <Cours word="Forum"/>
     </div>
-    <div class="info">
-        <h2>Titulaire : {{ prof }}</h2> <!--cours.prof-->
-        <h3>Assistant<li v-for="(item, index) in assi" :key="index">{{ item.a }}</li></h3>
-                     <!--<li v-for="co in cours" v-bind:key="co.assistant">{{ co.assistant }}</li>-->
+    <div class="who">
+        <h4>Titulaire</h4>
+        <p>Jan Vertonghen</p>
+        20@Illumis.professor.ac.be
+        <h4>Assistant(s)</h4>
+        <p>Wout Faes</p>
+        205@Illumis.member.ac.be
+        <p>Maxime De Cuyper</p>
+        206@Illumis.member.ac.be
     </div>
 </template>
+
+
 <script>
 import TopStudent from '../../elements/TopStudent.vue';
-//import Cours from '../../model/Cours.java';
-export default{
-    components: {TopStudent},
-    data: () => {
-        return{
-            name: 'S-INFO-810 Quantum Computing',
-            prof: 'Seweryn Dynerowicz',
-            assi: [
-                {a: 'Julien Ladeuze'},
-                {a: 'Maxime Bazin'},
-                {a: 'Kacem Barkani'}
-        ],
-        }
+import Cours from '../../elements/Cours.vue';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+
+export default {
+  components: {TopStudent, Cours},
+  name: 'courseSection',
+    computed: {
+      courseName() {
+        return this.$route.params.cours;
+      }
+    },
+    mounted() {
+      console.log('Course Name:', this.$route.params.cours);
+      // Effectuez toute action nécessaire, comme récupérer les détails du cours depuis une API
+    },
+  data() {
+    return {
+      courseName: this.$route.params.cours,
+      studentName: '', // Nom de l'étudiant
+      titu: ''
+    };
+  },
+  mounted() {
+    this.getStudentName();
+  },
+  methods: {
+    getStudentName() {
+      const role = Cookies.get('role');
+      let matricule = '';
+
+      if (role === 'professeur') {
+        matricule = Cookies.get('matriculeProfesseur');
+        axios.get(`http://localhost:1937/teachers/findById?matricule=${matricule}`)
+            .then(response => {
+              const teacher = response.data;
+              this.studentName = teacher.name; // Mettre à jour le nom du professeur
+              console.log(teacher.name);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+      } else if (role === 'student') {
+        matricule = Cookies.get('matriculeStudent');
+        axios.get(`http://localhost:1937/students/findById?matricule=${matricule}`)
+            .then(response => {
+              const student = response.data;
+              this.studentName = student.name; // Mettre à jour le nom de l'étudiant
+              console.log(response.data);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+      }
+    },
+    getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+      }
+      return null;
     }
-    /* methods:{
-        getAllData(){
-            Cours.getAllData().then((response)=>{this.cours=response.data})
-        }
-        },
-        created(){
-            this.getAllData()
-        } */
+  }
 }
 </script>
 <style scoped>
-.w{
+
+.nc{
     position: absolute;
-    left: 110px;
-    top: 70px;
+    top: 5%;
+    left: 2%;
+    font-size: 50px;
+    font-family: Roboto,sans-serif;
+    color: #9F0924;
+
 }
 
-.info{
-    position: absolute;
-    left: 120px;
-    top: 225px;
-    color: rgb(158, 11, 23);
-    font-family: Roboto,sans-serif;
-    font-size: 43px;
+.rec {
+  position: absolute;
+  top: 35%;
+  left: 2%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Trois colonnes de largeur égale */
+  column-gap: 100%; /* Espacement uniforme entre les éléments */
+  row-gap: 30%;
 }
 
-</style>
-<style>
-h1{
-    color: rgb(158, 11, 23);
-    font-family: Roboto,sans-serif;
-    font-weight: 450;
-    font-size: 90px;
+.who{
+  position: absolute;
+  top: 10%;
+  right: 2%;
+  color: black;
+  font-size: 25px;
+  font-family: Roboto,sans-serif;
 }
-h2{
-    color: rgb(158, 11, 23);
-    font-family: Roboto,sans-serif;
-    font-weight: 450;
-    font-size: 30px;
-}
-h3{
-    color: rgb(158, 11, 23);
-    font-family: Roboto,sans-serif;
-    font-weight: 300;
-    font-size: 30px;
-}
+
 </style>

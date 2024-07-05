@@ -2,7 +2,7 @@
   <center>
     <div>
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
-        <button class="button">{{ word }}</button>
+        <button class="button" @click="redirectToSection()">{{ word }}</button>
       </router-link>
       <!-- Ajouter une condition pour afficher le bouton de suppression uniquement si le rôle est "professeur" -->
       <button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
