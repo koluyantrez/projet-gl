@@ -2,7 +2,7 @@
   <center>
     <div>
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
-        <button class="button" @click="redirectToSection()">{{ word }}</button>
+        <button class="button" @click="redirectToSection">{{ word }}</button>
       </router-link>
       <!-- Ajouter une condition pour afficher le bouton de suppression uniquement si le rôle est "professeur" -->
       <button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
@@ -18,14 +18,14 @@ import Swal from 'sweetalert2'; // Importation de SweetAlert2
 import axios from 'axios';
 
 export default {
-  props: ['word', 'getCourses'],
+  props: ['word'],
   methods: {
 
     redirectToSection() {
       // Enregistrer le nom du cours dans les cookies
       Cookies.set('selectedCourse', this.word);
       // Rediriger vers la page de section
-      this.$router.push({ name: 'courseSection' });
+      this.$router.push({ name: 'courseSection', params: {cours: this.word} });
     },
 
     isProfessorRole() {
@@ -78,7 +78,7 @@ export default {
       // Enregistrer le nom du cours dans les cookies
       Cookies.set('selectedCourse', this.word);
       // Rediriger vers la page "DetailsCourse"
-      this.$router.push({ name: 'DetailsCourse' });
+      this.$router.push({ name: 'DetailsCourse', params: { courseName: this.word }});
     }
   }
 }
