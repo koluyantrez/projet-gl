@@ -9,27 +9,21 @@ export default{
 }
 </script>
 <style scoped>
-
-
-
 .course-section {
   background-color: whitesmoke;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 5%;
+  border-radius: 0.2rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  padding: 1rem; /* Adjust padding to your needs */
   transition: transform 0.3s;
-  width: 350%;
-  height: 125%;
-  margin-left: 5%;
-  margin-right: 2%;
-
+  width: 35rem; /* Set fixed width */
+  height: 7rem; /* Set fixed height */
+  margin: 0.1rem ; /* Center the section horizontally */
 }
 
 .course-section h2 {
   margin-top: 0;
-  margin-left: 2%;
-  font-size: 40px;
-  font-family: Roboto,sans-seriff;
+  font-size: 35px; /* Adjust font size as needed */
+  font-family: Roboto, sans-serif;
   color: black;
 }
 

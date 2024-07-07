@@ -2,10 +2,10 @@
   <TopStudent/>
     <div class="nc"><h1>{{courseName }}</h1></div>
     <div class="rec">
-        <Cours word="Cours"/>
-        <Cours word="Exercices"/>
-        <Cours word="Anciens examens"/>
-        <Cours word="Liens utiles"/>
+        <Cours :word="cLang.Course.th"/>
+        <Cours :word="cLang.Course.tp"/>
+        <Cours :word="cLang.Course.exam"/>
+        <Cours :word="cLang.Course.link"/>
         <Cours word="Forum"/>
     </div>
     <div class="who">
@@ -26,10 +26,31 @@ import TopStudent from '../../elements/TopStudent.vue';
 import Cours from '../../elements/Cours.vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useStore } from 'vuex';
+import { computed, watch, ref } from 'vue';
+import fr from '../../views/fr.js';
+import en from '../../views/en.js';
 
 
 export default {
   components: {TopStudent, Cours},
+
+    data() {
+      const store = useStore();
+      const idLa = computed(() => store.state.lang.curLang);
+      const cLang = ref(idLa.value === 'fr' ? fr : en);
+      watch(idLa, (newLang) => {
+          cLang.value = newLang === 'fr' ? fr : en;
+      });
+
+      return {
+        cLang,
+        courseName: this.$route.params.cours,
+        studentName: '', // Nom de l'étudiant
+        titu: ''
+      };
+    },
+
   name: 'courseSection',
     computed: {
       courseName() {
@@ -40,13 +61,7 @@ export default {
       console.log('Course Name:', this.$route.params.cours);
       // Effectuez toute action nécessaire, comme récupérer les détails du cours depuis une API
     },
-  data() {
-    return {
-      courseName: this.$route.params.cours,
-      studentName: '', // Nom de l'étudiant
-      titu: ''
-    };
-  },
+
   mounted() {
     this.getStudentName();
   },
@@ -104,12 +119,12 @@ export default {
 
 .rec {
   position: absolute;
-  top: 35%;
+  top: 28%;
   left: 2%;
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Trois colonnes de largeur égale */
-  column-gap: 100%; /* Espacement uniforme entre les éléments */
-  row-gap: 30%;
+  column-gap: 15%; /* Espacement uniforme entre les éléments */
+  row-gap: 20%;
 }
 
 .who{

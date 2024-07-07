@@ -73,7 +73,7 @@ export default {
     handleShowDetails(word) {
         console.log('Show details for:', word);
         // Ici, vous pouvez gérer la logique pour afficher les détails du cours
-        this.$router.push({ name: 'courseSection', params: { courseName: item } });
+        this.$router.push({ name: 'courseSection', params: { courseName: word } });
     },
 
   },
