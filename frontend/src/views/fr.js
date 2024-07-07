@@ -96,7 +96,11 @@ export default{
     Course: {
         mp: "Titulaire",
         cr:"Corequis",
-        pr: "Prérequis"
+        pr: "Prérequis",
+        th: "Théories",
+        tp: "Travaux pratiques",
+        exam: "Anciens examens",
+        link: "Liens utiles"
     }
 
 }

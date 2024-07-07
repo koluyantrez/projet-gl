@@ -98,6 +98,10 @@ export default {
     Course:{
         mp: " Main Professor",
         cr: "Corequisite(s)",
-        pr: "Prerequisite(s)"
+        pr: "Prerequisite(s)",
+        th: "Theories",
+        tp: "Practical work",
+        exam: "Old exams",
+        link: "Usefuls links"
     },
 }
