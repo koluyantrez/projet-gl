@@ -1,6 +1,6 @@
 <template>
   <TopStudent/>
-    <div class="nc"><h1>{{courseName }}</h1></div>
+    <div class="nc"><h1>{{code}} {{course}}</h1></div>
     <div class="rec">
         <Cours :word="cLang.Course.th"/>
         <Cours :word="cLang.Course.tp"/>
@@ -9,14 +9,14 @@
         <Cours word="Forum"/>
     </div>
     <div class="who">
-        <h4>Titulaire</h4>
-        <p>Jan Vertonghen</p>
+        <h4>{{cLang.Course.mp}}</h4>
+        <p>{{prof}}</p>
         20@Illumis.professor.ac.be
         <h4>Assistant(s)</h4>
         <p>Wout Faes</p>
-        205@Illumis.member.ac.be
+        205@Illumis.assistant.ac.be
         <p>Maxime De Cuyper</p>
-        206@Illumis.member.ac.be
+        206@Illumis.assistant.ac.be
     </div>
 </template>
 
@@ -45,15 +45,16 @@ export default {
 
       return {
         cLang,
-        courseName: this.$route.params.cours,
-        studentName: '', // Nom de l'étudiant
-        titu: ''
+        course: '',
+        studentName: '',
+        prof: '',
+        code: '',
       };
     },
 
   name: 'courseSection',
     computed: {
-      courseName() {
+      course() {
         return this.$route.params.cours;
       }
     },
@@ -64,8 +65,32 @@ export default {
 
   mounted() {
     this.getStudentName();
+    this.getSensei();
   },
   methods: {
+    getSensei(){
+        axios.get(`http://localhost:1937/GetCoursByName?coursName=${this.$route.params.cours}`)
+            .then(response => {
+                const info = response.data;
+                this.code = info.code;
+                this.prof = info.teacherName;
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        /*
+        axios.get(`http://localhost:1937/teachers/findById?matricule=${matricule}`)
+            .then(response => {
+                const teacher = response.data;
+                this.studentName = teacher.name; // Mettre à jour le nom du professeur
+                console.log(teacher.name);
+            })
+            .catch(error => {
+                console.error(error);
+            });*/
+    },
+
     getStudentName() {
       const role = Cookies.get('role');
       let matricule = '';
@@ -111,7 +136,7 @@ export default {
     position: absolute;
     top: 5%;
     left: 2%;
-    font-size: 50px;
+    font-size: 42px;
     font-family: Roboto,sans-serif;
     color: #9F0924;
 
