@@ -13,8 +13,9 @@
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')"/>
     <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')"/>
     <router-link to="/">
-      <ItemButton :name="cLang.Profile.unsi"/>
+      <ItemButton :name="cLang.Profile.logout"/>
     </router-link>
+
   </div>
   <ModifPro v-if="popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
   <DropImg v-if="AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />

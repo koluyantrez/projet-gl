@@ -1,5 +1,5 @@
 <template>
-  <TopStudent/>
+  <component :is="top"/>
     <div class="nc"><h1>{{code}} {{course}}</h1></div>
     <div class="rec">
         <Cours :word="cLang.Course.th"/>
@@ -23,6 +23,7 @@
 
 <script>
 import TopStudent from '../../elements/TopStudent.vue';
+import TopProf from '../../elements/TopProf.vue';
 import Cours from '../../elements/Cours.vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -33,7 +34,7 @@ import en from '../../views/en.js';
 
 
 export default {
-  components: {TopStudent, Cours},
+  components: {TopStudent, TopProf, Cours},
 
     data() {
       const store = useStore();
@@ -43,8 +44,14 @@ export default {
           cLang.value = newLang === 'fr' ? fr : en;
       });
 
+      const type = ref(Cookies.get('role'));
+      const top = computed(() => {
+        return type.value === 'student' ? 'TopStudent' : 'TopProf';
+      });
+
       return {
         cLang,
+        top,
         course: '',
         studentName: '',
         prof: '',
@@ -119,6 +126,9 @@ export default {
             });
       }
     },
+
+
+
     getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
