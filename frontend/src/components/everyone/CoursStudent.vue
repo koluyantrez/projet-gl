@@ -11,7 +11,7 @@
     <div class="who">
         <h4>{{cLang.Course.mp}}</h4>
         <p>{{prof}}</p>
-        20@Illumis.professor.ac.be
+        {{emailProf}}
         <h4>Assistant(s)</h4>
         <p>Wout Faes</p>
         205@Illumis.assistant.ac.be
@@ -55,6 +55,7 @@ export default {
         course: '',
         studentName: '',
         prof: '',
+        emailProf: '',
         code: '',
       };
     },
@@ -82,20 +83,21 @@ export default {
                 this.code = info.code;
                 this.prof = info.teacherName;
                 console.log(response.data);
+                axios.get(`http://localhost:1937/teachers/findByName?name=${info.teacherName}`)
+                            .then(response => {
+                                const sensei = response.data;
+                                console.log(sensei.data);
+                                this.emailProf = sensei.email;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
             })
             .catch(error => {
                 console.error(error);
             });
-        /*
-        axios.get(`http://localhost:1937/teachers/findById?matricule=${matricule}`)
-            .then(response => {
-                const teacher = response.data;
-                this.studentName = teacher.name; // Mettre à jour le nom du professeur
-                console.log(teacher.name);
-            })
-            .catch(error => {
-                console.error(error);
-            });*/
+
+
     },
 
     getStudentName() {
@@ -164,8 +166,8 @@ export default {
 
 .who{
   position: absolute;
-  top: 10%;
-  right: 2%;
+  top: 25%;
+  right: 5%;
   color: black;
   font-size: 25px;
   font-family: Roboto,sans-serif;
