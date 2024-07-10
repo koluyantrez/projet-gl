@@ -30,6 +30,11 @@ public class ProfesseurController {
         return professeurService.getTeacherById(matricule);
     }
 
+    @GetMapping("/teachers/findByName")
+    public ResponseEntity<Professeur> getTeacherByName(@RequestParam String name) {
+        return professeurService.getTeacherByName(name);
+    }
+
     @PutMapping("teachers/updatePassword/{matricule}")
     public ResponseEntity<String> updateStudentPassword(@PathVariable Long matricule, @RequestParam String newPassword) {
         return professeurService.updateProfPassword(matricule, newPassword);

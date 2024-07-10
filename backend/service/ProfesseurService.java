@@ -7,6 +7,7 @@ import com.genieLogiciel.Umons.backend.extensionOussama.service.CoursService;
 import com.genieLogiciel.Umons.backend.model.Category;
 import com.genieLogiciel.Umons.backend.model.Personnel;
 import com.genieLogiciel.Umons.backend.model.Professeur;
+import com.genieLogiciel.Umons.backend.model.Student;
 import com.genieLogiciel.Umons.backend.repository.PersonnelRepository;
 import com.genieLogiciel.Umons.backend.repository.ProfesseurRepository;
 import jakarta.persistence.EntityManager;
@@ -344,6 +345,16 @@ public class ProfesseurService {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public ResponseEntity<Professeur> getTeacherByName(String name){
+        List<Professeur> profs = professeurRepository.findAll();
+        for (Professeur prof : profs){
+            if (prof.getName().equals(name)){
+                return new ResponseEntity<>(prof, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(null , HttpStatus.NOT_FOUND);
     }
 
 }
