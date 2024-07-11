@@ -24,6 +24,7 @@
 <script>
 import TopStudent from '../../elements/TopStudent.vue';
 import TopProf from '../../elements/TopProf.vue';
+import TopGuest from '../../elements/TopGuest.vue';
 import Cours from '../../elements/Cours.vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -34,7 +35,7 @@ import en from '../../views/en.js';
 
 
 export default {
-  components: {TopStudent, TopProf, Cours},
+  components: {TopStudent, TopProf, TopGuest, Cours},
 
     data() {
       const store = useStore();
@@ -46,7 +47,15 @@ export default {
 
       const type = ref(Cookies.get('role'));
       const top = computed(() => {
-        return type.value === 'student' ? 'TopStudent' : 'TopProf';
+        let result;
+        if (type.value === 'student') {
+          result = 'TopStudent';
+        } else if (type.value === 'professeur') {
+          result = 'TopProf';
+        } else{
+          return 'TopGuest';
+        }
+
       });
 
       return {

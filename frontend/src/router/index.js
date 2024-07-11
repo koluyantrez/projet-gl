@@ -99,27 +99,27 @@ const routes = [
   {
     path: '/ins/signup',
     name: 'hired',
-    component: () => import(/* webpackChunkName: "signup" */ '../components/everyone/InsSignUp.vue')
+    component: () => import(/* webpackChunkName: "hired" */ '../components/everyone/InsSignUp.vue')
   },
   {
     path: '/addNewCours',
     name: 'newCours',
-    component: () => import(/* webpackChunkName: "signup" */ '../components/everyone/extensionOussama/AddNewCours.vue')
+    component: () => import(/* webpackChunkName: "newCours" */ '../components/everyone/extensionOussama/AddNewCours.vue')
   },
   {
     path: '/roomReservationRequest',
     name: 'roomReservation',
-    component: () => import(/* webpackChunkName: "signup" */ '../components/everyone/extensionOussama/RoomReservation.vue')
+    component: () => import(/* webpackChunkName: "roomReservation" */ '../components/everyone/extensionOussama/RoomReservation.vue')
   },
   {
     path: '/detailsCourse',
     name: 'DetailsCours',
-    component: () => import(/* webpackChunkName: "signup" */ '../components/everyone/extensionOussama/DetailsCourse.vue')
+    component: () => import(/* webpackChunkName: "DetailsCours" */ '../components/everyone/extensionOussama/DetailsCourse.vue')
   },
   {
-    path: '/course-Section',
+    path: '/course-Section/:cours',
     name: 'courseSection',
-    component: () => import(/* webpackChunkName: "signup" */ '../components/everyone/extensionOussama/SectionsCourse.vue')
+    component: () => import(/* webpackChunkName: "courseSection" */ '../components/everyone/CoursStudent.vue')
   },
   {
     path: '/inscription',

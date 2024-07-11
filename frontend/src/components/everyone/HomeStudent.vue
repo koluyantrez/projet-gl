@@ -2,7 +2,7 @@
   <div>
     <TopStudent/>
     <div class="place">
-    <ItemSearch/>
+      <ItemSearch/>
       <ItemCours v-for="(item, index) in itemc" :word="item" :key="index"/>
     </div>
   </div>
@@ -71,8 +71,6 @@ export default {
     },
 
     handleShowDetails(word) {
-        console.log('Show details for:', word);
-        // Ici, vous pouvez gérer la logique pour afficher les détails du cours
         this.$router.push({ name: 'courseSection', params: { courseName: word } });
     },
 

@@ -3,8 +3,8 @@
   <div class="container">
     <div class="place">
       <ItemSearch/>
-      <ItemCoursGuest v-for="(item,index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/>
-      <!--ItemCours v-for="co in cours" :word="co.code+ +co.name" v-bind:key="co.id"/-->
+      <!--ItemCoursGuest v-for="(item,index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/-->
+      <ItemCours v-for="(item, index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/>
     </div>
   </div>
 </template>
@@ -12,12 +12,11 @@
 import TopGuest from '../../elements/TopGuest.vue';
 import ItemCoursGuest from '../../elements/ItemCoursGuest.vue';
 import ItemSearch from '../../elements/ItemSearch.vue';
-import axios from "axios";
-
-//import Cours from '../../entites/Cours.java';
+import ItemCours from '../../elements/ItemCours.vue';
+import axios from 'axios';
 
 export default {
-  components: {ItemCoursGuest, TopGuest, ItemSearch},
+  components: {ItemCoursGuest, TopGuest, ItemSearch, ItemCours},
   data: () => {
     return {
       itemc: [],
@@ -26,7 +25,7 @@ export default {
 
   methods: {
     getCours() {
-      axios.get('http://localhost:1937/cours/AllCours') // Remplacez par l'URL de votre API
+      axios.get('http://localhost:1937/cours/AllCours')
           .then((response) => {
             this.itemc = response.data;
           })
@@ -35,13 +34,11 @@ export default {
           });
     },
     goToCourse(courseName) {
-      const courseNameParts = courseName.split('-');
-      const Name = courseNameParts[1];
-      //this.$router.push(`cours/${Name}`);
+      this.$router.push({ name: 'courseSection', params: { cours: courseName } });
     }
   },
   created() {
-    this.getCours()
+    this.getCours();
   }
 }
 
@@ -50,7 +47,7 @@ export default {
 .container {
   position: absolute;
   width: 100%;
-  height: 54rem;
+  height: 56rem;
   bottom: 0.1rem;
   left: -0.42rem;
   overflow: auto;
