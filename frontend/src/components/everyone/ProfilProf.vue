@@ -1,13 +1,13 @@
 <template>
   <TopProf/>
-  <Profil/>
-  <div class="info">
-    <p>{{ professeurInfo.name }}</p>
-    <p>{{ professeurInfo.adresse }}</p>
-    <p>{{ professeurInfo.numero }}</p>
-    <p>{{ professeurInfo.email }}</p>
-
-  </div>
+    <div class="info">
+      <br>
+      <p><h1>{{ professeurInfo.name }}</h1></p>
+      <p>{{ professeurInfo.email }}</p>
+      <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
+      <p>{{ professeurInfo.adresse }}</p>
+      <p>{{ professeurInfo.numero }}</p>
+    </div>
   <div class="b">
     <ItemButton :name="cLang.Profile.edit"  @click="() => ToModPopup('buTriMod')"/>
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')"/>
@@ -27,7 +27,6 @@
 import TopProf from '../../elements/TopProf.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import ModifPro from '../../popup/ModifPro.vue';
-import Profil from '../../elements/Profil.vue';
 import PassWord from '../../popup/PassWord.vue';
 import DropImg from '../../popup/DropImg.vue';
 import { useStore } from 'vuex';
@@ -39,7 +38,7 @@ import axios from "axios";
 //import Personnel from '../../model/Personnel.java';
 
 export default {
-  components: { TopProf, Profil, ItemButton, ModifPro, PassWord, DropImg },
+  components: { TopProf, ItemButton, ModifPro, PassWord, DropImg },
   setup() {
 
     const matricule = ref(Cookies.get('matriculeProfesseur'));
@@ -81,7 +80,9 @@ export default {
       adresse: '',
       numero: '',
       email: '',
-      matricule: ''
+      matricule: '',
+      dep: '',
+      fili: ''
     });
 
     const fetchProfInfo = async () => {
@@ -92,10 +93,13 @@ export default {
           }
         });
         const professeurData = response.data;
+        console.log(professeurData);
         professeurInfo.value.name = professeurData.name;
         professeurInfo.value.adresse = professeurData.adresse;
         professeurInfo.value.numero = professeurData.numero;
         professeurInfo.value.email = professeurData.email;
+        professeurInfo.value.dep = professeurData.departement;
+        professeurInfo.value.fili = professeurData.filiere;
         professeurInfo.value.matricule = professeurData.matricule; // Set the matricule value
       } catch (error) {
         console.log('error fetching teacher info : ', error);
@@ -119,16 +123,6 @@ export default {
       uploadedFile, //update the database
       handleFileUpload,
       professeurInfo
-
-
-      /* methods:{
-          getAllData(){
-              Personnel.getAllData().then((response)=>{this.cours=response.data})
-          }
-      },
-      created(){
-          this.getAllData()
-      } */
     };
   }
 }
@@ -157,12 +151,12 @@ export default {
 
 .info {
   position: absolute;
-  left: 530px;
-  bottom: 300px;
+  left: 35rem;
+  top: 0rem;
   color: rgb(158, 11, 23);
   font-family: Roboto, sans-serif;
   font-size: 43px;
-  transform: translateY(25px);
+  transform: translateY(20px);
 }
 </style>
 

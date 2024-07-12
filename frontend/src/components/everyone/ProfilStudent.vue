@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <TopStudent />
+    <TopStudent/>
     <div class="b">
       <ItemButton :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
       <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
@@ -16,14 +15,13 @@
     <PassWord v-if="pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
     <DropImg v-if="AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
     <div class="info">
-      <p></p>
       <br>
-      <p>{{ studentInfo.name }}</p>
+      <p><h1>{{ studentInfo.name }}</h1></p>
+      <p>{{ studentInfo.email }}</p>
+      <p>{{ studentInfo.dep }}/{{ studentInfo.fili }}</p>
       <p>{{ studentInfo.adresse }}</p>
       <p>{{ studentInfo.numero }}</p>
-      <p>{{ studentInfo.email }}</p>
     </div>
-  </div>
 </template>
 
 <script>
@@ -90,12 +88,13 @@ export default {
       name: '',
       adresse: '',
       numero: '',
-      email: ''
+      email: '',
+      dep: '',
+      fili: ''
     });
 
     const router = useRouter();
     //const matricule = ref(router.currentRoute.value.query.matricule);
-    console.log("la valeur de matricule " + matricule.value);
 
     const fetchStudentInfo = async () => {
       try {
@@ -105,10 +104,13 @@ export default {
           }
         });
         const studentData = response.data;
+        console.log(studentData);
         studentInfo.value.name = studentData.name;
         studentInfo.value.adresse = studentData.adresse;
         studentInfo.value.numero = studentData.numero;
         studentInfo.value.email = studentData.email;
+        studentInfo.value.dep = studentData.departement;
+        studentInfo.value.fili = studentData.filiere;
       } catch (error) {
         console.error('Error fetching student info:', error);
       }
@@ -159,8 +161,8 @@ export default {
 
 .info {
   position: absolute;
-  left: 530px;
-  bottom: 300px;
+  left: 35rem;
+  top: 0rem;
   color: rgb(158, 11, 23);
   font-family: Roboto, sans-serif;
   font-size: 43px;
