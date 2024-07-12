@@ -7,12 +7,12 @@
     </div>
 
     <router-link to="/ins">
-      <div class="cours"><TextTravel :word="cLang.Top.li"/></div>
+      <div class="cours">{{cLang.Top.li}}</div>
     </router-link>
     <router-link to="/sec">
-      <div class="loc"><TextTravel :word="cLang.Top.course"/></div>
+      <div class="loc">{{cLang.Top.course}}</div>
     </router-link>
-    <div class="la"><TextTravel :word="cLang.Top.loc"/></div>
+    <div class="la">{{cLang.Top.loc}}</div>
 
 
 
@@ -20,13 +20,12 @@
 <script>
   import MoodleTop from './MoodleTop.vue';
   import ProfilPhoto from './ProfilPhoto.vue';
-  import TextTravel from './TextTravel.vue';
   import { useStore } from 'vuex';
   import { computed, watch, ref } from 'vue';
   import fr from '../views/fr.js';
   import en from '../views/en.js';
   export default {
-    components: { TextTravel, MoodleTop, ProfilPhoto },
+    components: { MoodleTop, ProfilPhoto },
     setup() {
         const store = useStore();
         const idLa = computed(() => store.state.lang.curLang);

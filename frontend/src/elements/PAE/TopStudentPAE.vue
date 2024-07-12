@@ -8,22 +8,21 @@
   </div>
 
   <div class="te">
-    <div class="gp"><TextTravel :word="cLang.PAE.gp"/></div>
-    <div class="his"><TextTravel :word="cLang.PAE.his"/></div>
-    <div class="act"><TextTravel :word="cLang.PAE.act"/></div>
+    <div class="gp">cLang.PAE.gp</div>
+    <div class="his">cLang.PAE.his</div>
+    <div class="act">cLang.PAE.act</div>
   </div>
 
 </template>
 <script>
 import MoodleTop from '../MoodleTop.vue';
 import ProfilPhoto from '../ProfilPhoto.vue';
-import TextTravel from '../TextTravel.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref } from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 export default {
-  components: { TextTravel, MoodleTop, ProfilPhoto },
+  components: { MoodleTop, ProfilPhoto },
   setup() {
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
