@@ -69,11 +69,12 @@ public class ProfesseurService {
         newPersonnel.setName(newProfesseur.getName());
         newPersonnel.setAdresse(newProfesseur.getAdresse());
         newPersonnel.setNumero(newProfesseur.getNumero());
-        List<String> listFilieres = new ArrayList<>(); // Initialisation de la liste
+        newPersonnel.setFiliere(newProfesseur.getFiliere());
+        /*List<String> listFilieres = new ArrayList<>(); // Initialisation de la liste
         if (newProfesseur.getFilieres() != null) { // Vérification de nullité
             listFilieres.addAll(newProfesseur.getFilieres());
-        }
-        newPersonnel.setFilieres(listFilieres);
+        }*/
+        //newPersonnel.setFilieres(listFilieres);
         newPersonnel.setEmail(newProfesseur.getEmail());
         newPersonnel.setCategorie(Category.PROFESSEUR);
         personnelRepository.save(newPersonnel);
@@ -186,14 +187,19 @@ public class ProfesseurService {
         Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
         if (professeurOptional.isPresent()){
             Professeur professeur = professeurOptional.get();
-            List<String> listOfAllSectors = professeur.getFilieres();
+            if (sector.equals(professeur.getFiliere())){
+                return new ResponseEntity<>("nothing to change", HttpStatus.NO_CONTENT);
+            }else {
+            /*List<String> listOfAllSectors = professeur.getFilieres();
             if (listOfAllSectors.contains(sector)){
                 return new ResponseEntity<>("teacher have already this sector" , HttpStatus.BAD_REQUEST);
             }
             listOfAllSectors.add(sector);
-            professeur.setFilieres(listOfAllSectors);
-            professeurRepository.save(professeur);
-            return new ResponseEntity<>("sector added with success", HttpStatus.OK);
+            professeur.setFilieres(listOfAllSectors);*/
+                professeur.setFiliere(sector);
+                professeurRepository.save(professeur);
+                return new ResponseEntity<>("sector added with success", HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>("teacher not found" , HttpStatus.BAD_REQUEST);
     }
@@ -204,12 +210,12 @@ public class ProfesseurService {
      * @param matricule L'identifiant du professeur.
      * @return ResponseEntity contenant la liste des filières du professeur.
      */
-    public ResponseEntity<List<String>> getAllFilieresteacher(Long matricule){
+    public ResponseEntity<String> getAllFilieresteacher(Long matricule){
         Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
         if (professeurOptional.isPresent()){
             Professeur professeur = professeurOptional.get();
-            List<String> listOfSectors = professeur.getFilieres();
-            return new ResponseEntity<>(listOfSectors , HttpStatus.OK);
+            String sector = professeur.getFiliere();
+            return new ResponseEntity<>(sector , HttpStatus.OK);
         }
         return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
     }

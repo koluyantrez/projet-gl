@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
+import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -49,6 +50,16 @@ public class Personnel {
     private String departement;
 
     /**
+     * Filière principale du personnel
+     */
+    private String filiere;
+
+    /**
+     * Image du personnel
+     */
+    private byte[] image;
+
+    /**
      * Catégorie à laquelle le membre du personnel appartient.
      */
     @Enumerated(EnumType.STRING)
@@ -57,6 +68,6 @@ public class Personnel {
     /**
      * Liste des filières associées au membre du personnel (uniquement pour les professeurs).
      */
-    @ElementCollection
-    private List<String> filieres;
+    //@ElementCollection
+    //private List<String> filieres;
 }

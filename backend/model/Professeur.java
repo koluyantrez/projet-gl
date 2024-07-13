@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
+import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -71,10 +72,15 @@ public class Professeur {
     private Category category = Category.PROFESSEUR;
 
     /**
+     * Filière principale du professeur
+     */
+    private String filiere;
+
+    /**
      * Liste des filières associées au professeur.
      */
-    @ElementCollection
-    private List<String> filieres;
+    //@ElementCollection
+    //private List<String> filieres;
 
     /**
      * Liste des cours enseignés par le professeur.
@@ -91,4 +97,9 @@ public class Professeur {
      * Mot de passe du compte du professeur.
      */
     private String password;
+
+    /**
+     * Image du professeur
+     */
+    private byte[] image;
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
 import java.util.List;
 import java.util.Random;
 
@@ -29,9 +30,8 @@ public class Assistant {
     private Long numero;
     private String departement;
     private Category category = Category.ASSISTANT;
-
-    @ElementCollection
-    private List<String> filieres;
+    private String filiere;
+    private byte[] image;
 
     @ElementCollection
     private List<String> courseList;

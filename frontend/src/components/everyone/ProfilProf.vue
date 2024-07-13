@@ -6,7 +6,7 @@
       <p>{{ professeurInfo.email }}</p>
       <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
       <p>{{ professeurInfo.adresse }}</p>
-      <p>{{ professeurInfo.numero }}</p>
+      <p>+{{ professeurInfo.numero }}</p>
     </div>
   <div class="b">
     <ItemButton :name="cLang.Profile.edit"  @click="() => ToModPopup('buTriMod')"/>
@@ -20,6 +20,7 @@
   <ModifPro v-if="popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
   <DropImg v-if="AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
   <PassWord v-if="pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
+  <img class="photo" :src="professeurInfo.pic"/>
 </template>
 
 
@@ -82,7 +83,8 @@ export default {
       email: '',
       matricule: '',
       dep: '',
-      fili: ''
+      fili: '',
+      pic: null
     });
 
     const fetchProfInfo = async () => {
@@ -100,6 +102,7 @@ export default {
         professeurInfo.value.email = professeurData.email;
         professeurInfo.value.dep = professeurData.departement;
         professeurInfo.value.fili = professeurData.filiere;
+        professeurInfo.value.pic = `data:image/jpeg;base64,${professeurData.image}`;
         professeurInfo.value.matricule = professeurData.matricule; // Set the matricule value
       } catch (error) {
         console.log('error fetching teacher info : ', error);
@@ -129,6 +132,14 @@ export default {
 </script>
 
 <style scoped>
+.photo{
+  position: absolute;
+  left: 5rem;
+  top: 12rem;
+  width: 20rem;
+  height: 25rem;
+}
+
 .w {
   position: absolute;
   left: 110px;

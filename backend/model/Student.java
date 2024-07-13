@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
+import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -80,6 +81,11 @@ public class Student {
      * Adresse de l'étudiant.
      */
     private String adresse;
+
+    /**
+     * Image de l'étudiant
+     */
+    private byte[] image;
 
     /**
      * Liste des cours réussis par l'étudiant.

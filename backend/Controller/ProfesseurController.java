@@ -61,7 +61,7 @@ public class ProfesseurController {
     }
 
     @GetMapping("/teachers/getAllFilieres/{matricule}")
-    public ResponseEntity<List<String>> getAllFilieresTeacher(@PathVariable Long matricule) {
+    public ResponseEntity<String> getAllFilieresTeacher(@PathVariable Long matricule) {
         return professeurService.getAllFilieresteacher(matricule);
     }
 

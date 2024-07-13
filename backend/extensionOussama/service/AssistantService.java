@@ -63,11 +63,11 @@ public class AssistantService {
         newPersonnel.setName(newAssistant.getName());
         newPersonnel.setAdresse(newAssistant.getAdresse());
         newPersonnel.setNumero(newAssistant.getNumero());
-        List<String> listFilieres = new ArrayList<>(); // Initialisation de la liste
+        /*List<String> listFilieres = new ArrayList<>(); // Initialisation de la liste
         if (newAssistant.getFilieres() != null) { // Vérification de nullité
             listFilieres.addAll(newAssistant.getFilieres());
-        }
-        newPersonnel.setFilieres(listFilieres);
+        }*/
+        newPersonnel.setFiliere(newAssistant.getFiliere());
         newPersonnel.setEmail(newAssistant.getEmail());
         newPersonnel.setCategorie(Category.ASSISTANT);
         personnelRepository.save(newPersonnel);

@@ -20,8 +20,9 @@
       <p>{{ studentInfo.email }}</p>
       <p>{{ studentInfo.dep }}/{{ studentInfo.fili }}</p>
       <p>{{ studentInfo.adresse }}</p>
-      <p>{{ studentInfo.numero }}</p>
+      <p>+{{ studentInfo.numero }}</p>
     </div>
+    <img class="photo" :src="studentInfo.pic"/>
 </template>
 
 <script>
@@ -90,7 +91,8 @@ export default {
       numero: '',
       email: '',
       dep: '',
-      fili: ''
+      fili: '',
+      pic: null
     });
 
     const router = useRouter();
@@ -104,13 +106,14 @@ export default {
           }
         });
         const studentData = response.data;
-        console.log(studentData);
+        console.log(response.data);
         studentInfo.value.name = studentData.name;
         studentInfo.value.adresse = studentData.adresse;
         studentInfo.value.numero = studentData.numero;
         studentInfo.value.email = studentData.email;
         studentInfo.value.dep = studentData.departement;
         studentInfo.value.fili = studentData.filiere;
+        studentInfo.value.pic = `data:image/jpeg;base64,${studentData.image}`;
       } catch (error) {
         console.error('Error fetching student info:', error);
       }
@@ -168,7 +171,13 @@ export default {
   font-size: 43px;
   transform: translateY(20px);
 }
-
+.photo{
+  position: absolute;
+  left: 5rem;
+  top: 12rem;
+  width: 20rem;
+  height: 25rem;
+}
 </style>
 
 
