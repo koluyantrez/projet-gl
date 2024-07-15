@@ -56,14 +56,6 @@ export default{
 
     }
   }
-  /* methods:{
-      getAllData(){
-          Cours.getAllData().then((response)=>{this.cours=response.data})
-      }
-      },
-      created(){
-          this.getAllData()
-      } */
 }
 </script>
 <style scoped>

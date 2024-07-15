@@ -47,16 +47,16 @@ export default {
 
       const type = ref(Cookies.get('role'));
       const top = computed(() => {
-        let result;
-        if (type.value === 'student') {
-          result = 'TopStudent';
-        } else if (type.value === 'professeur') {
-          result = 'TopProf';
-        } else{
-          return 'TopGuest';
-        }
-
-      });
+            let result;
+            if (type.value === 'student') {
+              result = 'TopStudent';
+            } else if (type.value === 'professeur') {
+              result = 'TopProf';
+            } else {
+              result = 'TopGuest';
+            }
+            return result;
+          });
 
       return {
         cLang,
@@ -75,15 +75,12 @@ export default {
         return this.$route.params.cours;
       }
     },
-    mounted() {
-      console.log('Course Name:', this.$route.params.cours);
-      // Effectuez toute action nécessaire, comme récupérer les détails du cours depuis une API
-    },
 
   mounted() {
     this.getStudentName();
     this.getSensei();
   },
+
   methods: {
     getSensei(){
         axios.get(`http://localhost:1937/GetCoursByName?coursName=${this.$route.params.cours}`)

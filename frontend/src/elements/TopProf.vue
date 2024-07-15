@@ -1,11 +1,10 @@
 <template>
     <MoodleTop/>
-    
-    
+
     <div class="te">
     <div class="pic">
       <router-link to="/prof/profil">
-        <ProfilPhoto :src="pp"/>
+        <img class="pic" :src="pic"/>
       </router-link>
     </div>
 
@@ -20,9 +19,12 @@
   import MoodleTop from './MoodleTop.vue';
   import ProfilPhoto from './ProfilPhoto.vue';
   import { useStore } from 'vuex';
-  import { computed, watch, ref } from 'vue';
+  import { computed, watch, ref, onMounted } from 'vue';
   import fr from '../views/fr.js';
   import en from '../views/en.js';
+  import axios from 'axios';
+  import Cookies from 'js-cookie';
+
   export default {
     components: { MoodleTop, ProfilPhoto },
     setup() {
@@ -42,10 +44,31 @@
             cLang.value = newLang === 'fr' ? fr : en;
         });
 
+
+        const matricule = ref(Cookies.get('matriculeProfesseur'));
+        const pic = ref(null);
+
+        const getPic = () => {
+          axios.get('http://localhost:1937/teachers/findById', {
+              params: { matricule: matricule.value }
+          })
+              .then(response => {
+                const info = response.data;
+                pic.value = `data:image/jpeg;base64,${info.image}`;
+              })
+              .catch(error => {
+                console.error(error);
+              });
+            };
+
+        onMounted(() => {
+              getPic();
+        });
+
         return {
             switchLang,
             cLang,
-            pp: require('../assets/profil.png'),
+            pic
         };
     }
   }
@@ -56,43 +79,51 @@
 
 .pic{
   position: absolute; 
-  top: 0rem; 
+  top: -1rem;
   right: 0rem;
-  width: 100rem; 
-  height: auto;
-  z-index: 91;
+  width: 5rem;
+  height: 5rem;
+  z-index: 92;
 }
-.cours{
-  position: fixed; 
-  top: -2rem; 
-  right: 18rem; 
+
+.te .cours{
+  position: absolute;
+  top: -2rem;
+  right: 20rem;
   width: 5rem; 
   height: auto;
   z-index: 91;
   color:azure;
 }
 
-.loc{
+.te .loc{
   position: absolute; 
   top: -2rem;
-  right: 29rem; 
+  right: 32rem;
   width: 6rem; 
   height: auto;
   z-index: 91;
 }
 
 
-.dospii{
+.te .dospii{
   position: absolute; 
   top: -2rem; 
-  right: 42rem; 
+  right: 47rem;
   width: 5rem; 
   height: auto;
   z-index: 91;
 }
 
 .te{
+  position: relative;
+  top: 2rem;
   font-family: Roboto, sans-serif;
-  color:azure;
+  font-size: 60px;
+  color: azure;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style> 

@@ -142,25 +142,13 @@ export default {
 </script>
 
 <style scoped>
-.w {
-  position: absolute;
-  left: 110px;
-  top: 70px;
-}
 
 .b {
   position: absolute;
-  left: 55px;
-  bottom: 100px;
+  left: 5rem;
+  bottom: 3rem;
 }
 
-.i {
-  position: absolute;
-  left: 90px;
-  bottom: 350px;
-  width: 300px;
-  height: 300px;
-}
 
 .info {
   position: absolute;
@@ -175,7 +163,7 @@ export default {
   position: absolute;
   left: 5rem;
   top: 12rem;
-  width: 20rem;
+  width: 25rem;
   height: 25rem;
 }
 </style>

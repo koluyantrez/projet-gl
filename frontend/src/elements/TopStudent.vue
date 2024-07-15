@@ -1,11 +1,10 @@
 <template>
     <MoodleTop/>
     <img class="la" alt="Change the language" src="../assets/lang.png" @click="switchLang"/>
-    <div class="pic">
-      <router-link to="/student/profil">
-        <ProfilPhoto   :src="pp"/>
-      </router-link>
-    </div>
+
+    <router-link to="/student/profil">
+        <img class="pic" :src="pic"/>
+    </router-link>
 
     <div class="te">
       <router-link to="/student">
@@ -18,38 +17,60 @@
   
 </template>
 <script>
-  import MoodleTop from './MoodleTop.vue';
-  import ProfilPhoto from './ProfilPhoto.vue';
-  import { useStore } from 'vuex';
-  import { computed, watch, ref } from 'vue';
-  import fr from '../views/fr.js';
-  import en from '../views/en.js';
-  export default {
-    components: { MoodleTop, ProfilPhoto },
-    setup() {
-        const store = useStore();
-        const idLa = computed(() => store.state.lang.curLang);
-        const cLang = ref(idLa.value === 'fr' ? fr : en);
-        const switchLang = () => {
-            if (idLa.value === 'fr') {
-                store.commit('setLang', 'en');
-            }
-            else if (idLa.value === 'en') {
-                store.commit('setLang', 'fr');
-            }
-        };
+import MoodleTop from './MoodleTop.vue';
+import { useStore } from 'vuex';
+import { computed, watch, ref, onMounted } from 'vue';
+import fr from '../views/fr.js';
+import en from '../views/en.js';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-        watch(idLa, (newLang) => {
-            cLang.value = newLang === 'fr' ? fr : en;
-        });
-        console.log(cLang.value);
-        return {
-            switchLang,
-            cLang,
-            pp: require('../assets/profil.png'),
-        };
-    }
+export default {
+  components: { MoodleTop },
+
+  setup() {
+    const matricule = ref(Cookies.get('matriculeStudent'));
+    const pic = ref(null);
+
+    const getPic = () => {
+      axios.get('http://localhost:1937/students/findById', {
+        params: { matricule: matricule.value }
+      })
+      .then(response => {
+        const info = response.data;
+        pic.value = `data:image/jpeg;base64,${info.image}`;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    };
+
+    onMounted(() => {
+      getPic();
+    });
+
+    const store = useStore();
+    const idLa = computed(() => store.state.lang.curLang);
+    const cLang = ref(idLa.value === 'fr' ? fr : en);
+    const switchLang = () => {
+      if (idLa.value === 'fr') {
+        store.commit('setLang', 'en');
+      } else if (idLa.value === 'en') {
+        store.commit('setLang', 'fr');
+      }
+    };
+
+    watch(idLa, (newLang) => {
+      cLang.value = newLang === 'fr' ? fr : en;
+    });
+
+    return {
+      switchLang,
+      cLang,
+      pic
+    };
   }
+};
 </script>
 
 <style scoped>
@@ -65,20 +86,24 @@
 
 .pic{
   position: absolute; 
-  top: 0rem; 
-  right: 0rem;
-  width: 100rem; 
-  height: auto;
-  z-index: 91;
+  top: 0.5rem;
+  right: 1rem;
+  width: 5rem;
+  height: 5rem;
+  z-index: 92;
 }
 
 .te{
   position: relative;
-  top: 1.5rem;
+  top: 0rem;
   font-family: Roboto, sans-serif;
-  color:azure;
+  font-size: 60px;
+  color: azure;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   z-index: 92;
-
 }
 
 .cours,
@@ -86,29 +111,29 @@
 .bu,
 .dospii {
   position: absolute;
-}
-
-.cours{
-  right: 18rem; 
-  width: 5rem; 
-  height: auto;
   color:azure;
 }
 
+.cours{
+  right: 20rem;
+  width: 5rem; 
+  height: auto;
+}
+
 .loc{
-  right: 28rem; 
+  right: 32rem;
   width: 6rem; 
   height: auto;
 }
 
 .bu{
-  right:41rem; 
+  right: 48rem;
   width: 5rem; 
   height: auto;
 }
 
 .dospii{
-  right: 54rem; 
+  right: 62rem;
   width: 5rem; 
   height: auto;
 }
