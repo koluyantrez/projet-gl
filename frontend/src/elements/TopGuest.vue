@@ -13,7 +13,9 @@
     <router-link to="/guest">
         <p class="cours">{{cLang.Top.course}}</p>
     </router-link>
-    <p class="dospii">DOSPII</p>
+    <router-link to="/dospii">
+        <p class="dospii">DOSPII</p>
+    </router-link>
     </div>
 </template>
 <script>

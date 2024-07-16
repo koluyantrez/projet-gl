@@ -12,7 +12,9 @@
     <div class="cours">{{cLang.Top.course}}</div>
      </router-link>
     <div class="loc">{{cLang.Top.loc}}</div>
-    <div class="dospii">DOSPII</div>
+    <router-link to="/dospii">
+        <div class="dospii">DOSPII</div>
+    </router-link>
     </div>
 </template>
 <script>
@@ -107,7 +109,8 @@
 
 
 .te .dospii{
-  position: absolute; 
+  position: absolute;
+  color: azure;
   top: -2rem; 
   right: 47rem;
   width: 5rem; 

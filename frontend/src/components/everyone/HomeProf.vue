@@ -1,49 +1,54 @@
 <template>
-  <div>
     <TopProf/>
     <div class="container">
-      <div class="add">
-        <button @click="showCourseSelection">Ajouter un cours</button>
-      </div>
+    <ItemAdd class="add" @click="() => ToShow('modalIsOpen')" :word="cLang.AddCours.title" />
+
       <div class="place" :style="{pointerEvents: modalIsOpen ? 'none' : 'auto'}">
         <ItemCours v-for="(cours, index) in courses" :word="cours" :key="index" :role="role" :get-courses="getCourses" @show-details="showDetailsHandler" />
       </div>
     </div>
 
-    <!-- Fenêtre modale de sélection des cours -->
-    <div v-if="modalIsOpen" class="modal">
-      <!-- Contenu de la fenêtre de sélection des cours -->
-      <div class="modal-content">
-        <h2 class="modal-title">Sélection des cours</h2>
-        <div class="course-list">
-          <ul class="course-scroll">
-            <li v-for="(cours, index) in availableCourses" :key="index" class="course-item">
-              {{ cours }}
-              <button @click="addCourse(cours)" class="button-ajouter" id="buttonAjouter">Ajouter</button>
-            </li>
-          </ul>
-        </div>
-        <button @click="hideCourseSelection">Fermer</button>
-      </div>
-    </div>
-  </div>
+    <ListCoursAdd v-if="li.modalIsOpen" :ToShow="() => ToShow('modalIsOpen')" />
 </template>
 
 <script>
 import ItemCours from '../../elements/ItemCours.vue';
+import ItemAdd from '../../elements/ItemAdd.vue';
 import TopProf from '../../elements/TopProf.vue';
+import ListCoursAdd from '../../popup/ListCoursAdd.vue';
+import { useStore } from 'vuex';
+import { computed, watch, ref } from 'vue';
+import fr from '../../views/fr.js';
+import en from '../../views/en.js';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { ItemCours, TopProf },
+  components: { ItemCours, TopProf, ItemAdd, ListCoursAdd },
   data() {
+
+    const li = ref({
+        modalIsOpen: false
+    });
+    const ToShow = (tri) => {
+        li.value[tri] = !li.value[tri]
+    };
+
+    const store = useStore();
+    const idLa = computed(() => store.state.lang.curLang);
+    const cLang = ref(idLa.value === 'fr' ? fr : en);
+
+    watch(idLa, (newLang) => {
+      cLang.value = newLang === 'fr' ? fr : en;
+    });
+
     return {
       courses: [],
       matricule: '',
       showModal: false,
-      availableCourses: [],
-      modalIsOpen: false,
+      li,
+      ToShow,
+      cLang
     };
   },
   methods: {
@@ -56,34 +61,6 @@ export default {
     hideDetail() {
       // Méthode pour cacher la fenêtre modale de détails
       this.showDetailModal = false;
-    },
-    addCourse(cours) {
-      const id = Cookies.get('matriculeProfesseur');
-      const coursName = cours;
-
-      axios.post(`http://localhost:1937/assign-course${id}`, null, {
-        params: {
-          coursName: coursName
-        }
-      })
-          .then(response => {
-            const result = response.data;
-            // Gérer la réponse de la méthode attributeCourse
-            if (result === 'attribute success') {
-              // Le cours a été attribué avec succès au professeur
-              // Mettre à jour la liste des cours
-              this.getCourses();
-              // Fermer la fenêtre de sélection des cours
-              this.hideCourseSelection();
-              alert("attribute success");
-            } else {
-              // Gérer les autres cas de retour de la méthode attributeCourse
-            }
-          })
-          .catch(error => {
-            console.error(error);
-            // Gérer les erreurs de requête
-          });
     },
     extractNumberBeforeAt(email) {
       const atIndex = email.indexOf('@');
@@ -118,21 +95,6 @@ export default {
             // Gérer les erreurs de requête
           });
     },
-    showCourseSelection() {
-      axios.get('http://localhost:1937/cours/AllCours')
-          .then(response => {
-            const courses = response.data;
-            this.availableCourses = courses.map(cours => cours.name);
-            this.modalIsOpen = true;
-          })
-          .catch(error => {
-            console.error(error);
-            // Gérer les erreurs de requête
-          });
-    },
-    hideCourseSelection() {
-      this.modalIsOpen = false;
-    },
   },
   created() {
     this.getCourses();
@@ -143,7 +105,7 @@ export default {
 <style scoped>
 .container {
   position: absolute;
-  width: 100%;
+  width: 99%;
   height: 89%;
   top: 100px;
   overflow: auto;
@@ -156,25 +118,12 @@ export default {
 }
 
 .add {
-  position: relative;
-  top: 0;
-  left: 0;
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
   margin-bottom: 20px;
 }
 
-.add button {
-  font-size: 18px;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add button:hover {
-  background-color: #45a049;
-}
 
 .modal {
   position: fixed;
@@ -182,7 +131,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 20);
   display: flex;
   justify-content: center;
   align-items: center;

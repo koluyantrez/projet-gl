@@ -81,7 +81,7 @@ export default {
     height: 300%; 
     bottom: -25.6rem; 
     left: -32.8rem;  
-    opacity: 0.4;
+    opacity: 0.8;
     overflow: hidden;
     /*border: 3px solid rgb(6, 148, 37); /* Bordure de la zone conteneur */
 }

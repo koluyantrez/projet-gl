@@ -12,7 +12,9 @@
       </router-link>
       <div class="loc">{{cLang.Top.loc}}</div>
       <div class="bu">Bulletin</div>
-      <div class="dospii">DOSPII</div>
+      <router-link to="/dospii">
+        <div class="dospii">DOSPII</div>
+      </router-link>
     </div>
   
 </template>

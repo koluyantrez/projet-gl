@@ -36,6 +36,8 @@ export default{
         rm: "supprimer"
     },
     AddCours:{
+        title: "+ COURS",
+        bye: "Fermer",
         name: "Nom du cours",
         titu: "Matricule du titulaire",
         assi: "Matricule des assistants",

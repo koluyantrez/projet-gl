@@ -39,6 +39,8 @@ export default {
         rm: "remove"
     },
     AddCours:{
+        title: "+ COURSE",
+        bye: "Close",
         name: "Course name",
         titu: "Professor number",
         assi: "Assistants number",

@@ -36,7 +36,6 @@ import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import Cookies from "js-cookie";
 import axios from "axios";
-//import Personnel from '../../model/Personnel.java';
 
 export default {
   components: { TopProf, ItemButton, ModifPro, PassWord, DropImg },

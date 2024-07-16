@@ -130,7 +130,27 @@ const routes = [
     path: '/student/PAE',
     name: 'sPAE',
     component: () => import(/* webpackChunkName: "sPAE" */ '../components/Estebane/StudentPAEHomePage.vue')
-  }
+  },
+  {
+    path: '/dospii',
+    name: 'dhome',
+    component: () => import(/* webpackChunkName: "dhome" */ '../components/ExtensionAina/compo/FirstAina.vue')
+  },
+  {
+    path: '/dospii/profil',
+    name: 'dprofilg',
+    component: () => import(/* webpackChunkName: "dprofilg" */ '../components/ExtensionAina/compo/ProfilGuestDospii.vue')
+  },
+  {
+    path: '/dospii/myprofil',
+    name: 'dprofil',
+    component: () => import(/* webpackChunkName: "dprofil" */ '../components/ExtensionAina/compo/ProfilAina.vue')
+  },
+  {
+    path: '/dospii/posted',
+    name: 'dposted',
+    component: () => import(/* webpackChunkName: "dposted" */ '../components/ExtensionAina/compo/Posted.vue')
+  },
 ]
 
 const router = createRouter({
