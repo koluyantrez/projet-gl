@@ -124,6 +124,10 @@ export default {
                 Cookies.set('matriculeInscription' , mat);
                 this.$router.push({
                   name: 'inscription',
+                  query: {
+                    email: this.email,
+                    password: this.password
+                  }
                 });
               }
             } else if (response.status === 401) {
@@ -132,6 +136,8 @@ export default {
               alert("User non trouvé");
             } else if (response.status === 500) {
               alert("Erreur inattendue");
+            } else if (response.status === 418) {
+              alert("Je ne fais pas de café, je suis une théaire");
             } else {
               alert("Erreur de serveur inattendue");
             }

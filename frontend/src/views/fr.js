@@ -10,8 +10,8 @@ export default{
         signin: "Inscription",
         course: "Cours",
         loc: "Locaux",
-        addco: "+cours",
-        addel:"+étudiant"
+        addco: "+ cours",
+        addel:"+ étudiant"
     },
     SignUp:{
         ln: "Nom",

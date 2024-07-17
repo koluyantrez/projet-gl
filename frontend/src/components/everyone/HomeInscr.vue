@@ -79,7 +79,7 @@ export default {
 <style>
 .container {
   position: absolute;
-  width: 100%;
+  width: 99%;
   height: 89%;
   top: 100px;
   overflow: auto;

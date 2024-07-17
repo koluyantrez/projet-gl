@@ -1,7 +1,13 @@
 <template>
-
   <TopSec/>
-  <Profil style="z-index: 99;"/>
+    <div class="info">
+      <br>
+      <p><h1>{{ professeurInfo.name }}</h1></p>
+      <p>{{ professeurInfo.email }}</p>
+      <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
+      <p>{{ professeurInfo.adresse }}</p>
+      <p>+{{ professeurInfo.numero }}</p>
+    </div>
   <div class="b">
     <ItemButton :name="cLang.Profile.edit"  @click="() => ToModPopup('buTriMod')"/>
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')"/>
@@ -12,11 +18,11 @@
 
   </div>
 
-
   <DropImg v-if = "AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
   <ModifPro v-if = "popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
   <PassWord v-if = "pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
 </template>
+
 <script>
 import TopSec from '../../elements/TopSec.vue';
 import Profil from '../../elements/ProfilIns.vue';

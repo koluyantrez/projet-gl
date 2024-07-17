@@ -7,11 +7,11 @@ export default {
         guest: "Guest",
     },
     Top: {
-        signin: "Sign Up",
+        signin: "SignUp",
         course: "Courses",
         loc: "Locals",
-        addco: "+courses",
-        addel:"+student"
+        addco: "+ courses",
+        addel:"+ student"
     },
     SignUp: {
         ln: "Last Name",

@@ -19,7 +19,6 @@
 </template>
 <script>
   import MoodleTop from './MoodleTop.vue';
-  import ProfilPhoto from './ProfilPhoto.vue';
   import { useStore } from 'vuex';
   import { computed, watch, ref, onMounted } from 'vue';
   import fr from '../views/fr.js';
@@ -28,23 +27,17 @@
   import Cookies from 'js-cookie';
 
   export default {
-    components: { MoodleTop, ProfilPhoto },
+    components: { MoodleTop },
     setup() {
         const store = useStore();
         const idLa = computed(() => store.state.lang.curLang);
         const cLang = ref(idLa.value === 'fr' ? fr : en);
-        const switchLang = () => {
-            if (idLa.value === 'fr') {
-                store.commit('setLang', 'en');
-            }
-            else if (idLa.value === 'en') {
-                store.commit('setLang', 'fr');
-            }
-        };
 
         watch(idLa, (newLang) => {
             cLang.value = newLang === 'fr' ? fr : en;
         });
+
+
 
 
         const matricule = ref(Cookies.get('matriculeProfesseur'));
@@ -68,7 +61,6 @@
         });
 
         return {
-            switchLang,
             cLang,
             pic
         };
@@ -90,7 +82,6 @@
 
 .te .cours{
   position: absolute;
-  top: -2rem;
   right: 20rem;
   width: 5rem; 
   height: auto;
@@ -99,8 +90,7 @@
 }
 
 .te .loc{
-  position: absolute; 
-  top: -2rem;
+  position: absolute;
   right: 32rem;
   width: 6rem; 
   height: auto;
@@ -111,7 +101,6 @@
 .te .dospii{
   position: absolute;
   color: azure;
-  top: -2rem; 
   right: 47rem;
   width: 5rem; 
   height: auto;
@@ -120,7 +109,7 @@
 
 .te{
   position: relative;
-  top: 2rem;
+  top: 0rem;
   font-family: Roboto, sans-serif;
   font-size: 60px;
   color: azure;

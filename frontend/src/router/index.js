@@ -124,7 +124,7 @@ const routes = [
   {
     path: '/inscription',
     name: 'inscription',
-    component: () => import(/* webpackChunkName: "guest" */ '../components/everyone/HomeInscr.vue')
+    component: () => import(/* webpackChunkName: "inscription" */ '../components/everyone/HomeInscr.vue')
   },
   {
     path: '/student/PAE',
