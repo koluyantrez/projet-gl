@@ -1,7 +1,5 @@
 <template>
     <MoodleTop/>
-    <img class="la" alt="Change the language" src="../assets/lang.png" @click="switchLang"/>
-
     <router-link to="/student/profil">
         <img class="pic" :src="pic"/>
     </router-link>
@@ -54,20 +52,12 @@ export default {
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
-    const switchLang = () => {
-      if (idLa.value === 'fr') {
-        store.commit('setLang', 'en');
-      } else if (idLa.value === 'en') {
-        store.commit('setLang', 'fr');
-      }
-    };
 
     watch(idLa, (newLang) => {
       cLang.value = newLang === 'fr' ? fr : en;
     });
 
     return {
-      switchLang,
       cLang,
       pic
     };
@@ -117,6 +107,7 @@ export default {
 }
 
 .cours{
+  top: 0;
   right: 20rem;
   width: 5rem; 
   height: auto;

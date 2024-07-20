@@ -47,7 +47,6 @@
           })
               .then(response => {
                 const info = response.data;
-                console.log(info);
                 pic.value = `data:image/jpeg;base64,${info.image}`;
               })
               .catch(error => {

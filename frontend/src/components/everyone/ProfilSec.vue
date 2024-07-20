@@ -2,11 +2,10 @@
   <TopSec/>
     <div class="info">
       <br>
-      <p><h1>{{ professeurInfo.name }}</h1></p>
-      <p>{{ professeurInfo.email }}</p>
-      <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
-      <p>{{ professeurInfo.adresse }}</p>
-      <p>+{{ professeurInfo.numero }}</p>
+      <p><h1>{{ insInfo.name }}</h1></p>
+      <p>{{ insInfo.email }}</p>
+      <p>{{ insInfo.adresse }}</p>
+      <p>+{{ insInfo.numero }}</p>
     </div>
   <div class="b">
     <ItemButton :name="cLang.Profile.edit"  @click="() => ToModPopup('buTriMod')"/>
@@ -17,6 +16,7 @@
     </router-link>
 
   </div>
+  <img class="photo" :src="insInfo.pic"/>
 
   <DropImg v-if = "AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
   <ModifPro v-if = "popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
@@ -31,10 +31,11 @@ import ModifPro from '../../popup/ModifPro.vue';
 import PassWord from '../../popup/PassWord.vue';
 import DropImg from '../../popup/DropImg.vue';
 import { useStore } from 'vuex';
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, onMounted } from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
-//import Personnel from '../../model/Personnel.java';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default{
   components: {TopSec,ItemButton,ModifPro,PassWord,DropImg,Profil},
@@ -73,33 +74,47 @@ export default{
       pwMod.value[tri3]=!pwMod.value[tri3]
     }
 
+    const insInfo = ref({
+      name: '',
+      adresse: '',
+      numero: '',
+      email: '',
+      pic: null
+    });
+    const matricule = ref(Cookies.get('matriculeInscription'));
+    const fetchInsInfo = async () => {
+          try {
+            const response = await axios.get(`http://localhost:1937/inscription/membreServiceInscription`, {
+              params: { matricule: matricule.value }
+            });
+            const insData = response.data;
+            console.log(insData);
+            insInfo.value.name = insData.name;
+            insInfo.value.adresse = insData.adresse;
+            insInfo.value.numero = insData.numero;
+            insInfo.value.email = insData.email;
+            insInfo.value.pic = `data:image/jpeg;base64,${insData.image}`;
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        onMounted(() => {
+          fetchInsInfo();
+        });
+
     return{
 
       cLang,
-
       popupMod,
       ToModPopup,
       pwMod,
       ToPassPopup,
       AddPic,
       ToPicPopup,
-      uploadedFile, //update the database
+      uploadedFile,
       handleFileUpload,
-
-      src: require('../../assets/profil.png'),
-      id: 'Rosalie Marchal',
-      mail: 'rosalie.marchal@uillumis.ka',
-      matricule: '35624',
-      loc: '55, rue des arbres d\'or 7501 Francorchamps',
-      nu: '+26101870539',
-      /* methods:{
-  getAllData(){
-      Personnel.getAllData().then((response)=>{this.cours=response.data})
-  }
-  },
-  created(){
-      this.getAllData()
-  } */
+      insInfo
     }
   }
 }
@@ -123,5 +138,20 @@ h1{
   font-weight: 450;
   font-size: 100px;
 }
-
+.photo{
+  position: absolute;
+  left: 5rem;
+  top: 12rem;
+  width: 25rem;
+  height: 25rem;
+}
+.info {
+  position: absolute;
+  left: 35rem;
+  top: 0rem;
+  color: rgb(158, 11, 23);
+  font-family: Roboto, sans-serif;
+  font-size: 43px;
+  transform: translateY(20px);
+}
 </style>
