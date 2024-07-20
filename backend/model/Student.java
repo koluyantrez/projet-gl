@@ -1,57 +1,22 @@
-package com.genieLogiciel.Umons.backend.model;
+package com.genieLogiciel.Umons.model;
 
-import com.genieLogiciel.Umons.backend.extensionEsteban.model.Pae;
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
+import com.genieLogiciel.Umons.extensionOussama.model.Cours;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Pattern;
-import java.sql.Blob;
 import java.util.List;
 
 /**
  * Cette classe représente un étudiant de l'université.
  */
 @Entity
-@NoArgsConstructor
-@Setter
 @Getter
-public class Student {
-    /**
-     * Identifiant unique de l'étudiant.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Utilisation de la stratégie IDENTITY pour générer le matricule automatiquement
-    @Pattern(regexp = "\\d{8}", message = "Le matricule doit être un nombre à 8 chiffres")
-    private Long matricule;
-
-    /**
-     * Prénom de l'étudiant.
-     */
-    private String firstName;
-
-    /**
-     * Nom de famille de l'étudiant.
-     */
-    private String lastName;
-
-    /**
-     * Adresse e-mail de l'étudiant.
-     */
-    private String email;
-
-    /**
-     * Nom complet de l'étudiant.
-     */
-    private String name;
-
-    /**
-     * Numéro de téléphone de l'étudiant.
-     */
-    private Long numero;
-
+@Setter
+@NoArgsConstructor
+public class Student extends User {
     /**
      * Filière de l'étudiant.
      */
@@ -61,11 +26,6 @@ public class Student {
      * Département de l'étudiant.
      */
     private String departement;
-
-    /**
-     * Mot de passe du compte de l'étudiant.
-     */
-    private String password;
 
     /**
      * Année d'études de l'étudiant.
@@ -78,36 +38,33 @@ public class Student {
     private Boolean inscrit;
 
     /**
-     * Adresse de l'étudiant.
-     */
-    private String adresse;
-
-    /**
-     * Image de l'étudiant
-     */
-    private byte[] image;
-
-    /**
      * Liste des cours réussis par l'étudiant.
      */
     @ElementCollection
-    private List<String> coursReussie; //liste de cours deja validés
+    private List<String> coursReussie;
 
     /**
      * Liste des anciens PAE de l'étudiant.
      */
     @OneToMany
-    private List<Pae> oldPAE; //liste des old pae
+    private List<Pae> oldPAE;
 
     /**
      * PAE actuel de l'étudiant.
      */
     @OneToOne
-    private Pae actuelPAE; //pae actuel
+    private Pae actuelPAE;
 
     /**
      * Liste des cours actuels de l'étudiant.
      */
     @ManyToMany
-    private List<Cours> listOfActuelCours; // liste de cours actuel de l'etudiant
+    private List<Cours> listOfActuelCours;
+
+    /**
+     * L'image de l'étudiant.
+     */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] image;
 }

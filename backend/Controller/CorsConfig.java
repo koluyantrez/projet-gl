@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

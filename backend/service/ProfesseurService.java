@@ -1,366 +1,173 @@
-package com.genieLogiciel.Umons.backend.service;
+package com.genieLogiciel.Umons.service;
 
-import com.genieLogiciel.Umons.backend.auth.service.AuthService;
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Cours;
-import com.genieLogiciel.Umons.backend.extensionOussama.repository.CoursRepository;
-import com.genieLogiciel.Umons.backend.extensionOussama.service.CoursService;
-import com.genieLogiciel.Umons.backend.model.Category;
-import com.genieLogiciel.Umons.backend.model.Personnel;
-import com.genieLogiciel.Umons.backend.model.Professeur;
-import com.genieLogiciel.Umons.backend.model.Student;
-import com.genieLogiciel.Umons.backend.repository.PersonnelRepository;
-import com.genieLogiciel.Umons.backend.repository.ProfesseurRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
+import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
+import com.genieLogiciel.Umons.auth.service.AuthService;
+import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionOussama.repository.CoursRepository;
+import com.genieLogiciel.Umons.extensionOussama.service.CoursService;
+import com.genieLogiciel.Umons.model.Category;
+import com.genieLogiciel.Umons.auth.service.EmailDomain;
+import com.genieLogiciel.Umons.model.Professeur;
+import com.genieLogiciel.Umons.repository.PersonnelRepository;
+import com.genieLogiciel.Umons.repository.ProfesseurRepository;
+import com.genieLogiciel.Umons.repository.UserRepository;
+import com.genieLogiciel.Umons.util.PersonnelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
-/**
- * Service pour gérer les opérations liées aux professeurs.
- */
 @Service
-public class ProfesseurService {
+public class ProfesseurService extends AbstractLoginService {
 
+    private final ProfesseurRepository professeurRepository;
+    private final CoursService coursService;
+    private final CoursRepository coursRepository;
+    private final PersonnelRepository personnelRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
+
+    @Autowired private PersonnelMapper personnelMapper;
     @Autowired
-    private ProfesseurRepository professeurRepository;
-
-    @Autowired
-    private CoursService coursService;
-
-    @Autowired
-    private EntityManager entityManager;
-
-    @Autowired
-    private CoursRepository coursRepository;
-
-    @Autowired
-    private PersonnelRepository personnelRepository;
-
-    @Autowired
-    private AuthService authService;
-
-    /**
-     * Ajoute un nouveau professeur.
-     *
-     * @param newProfesseur Le nouveau professeur à ajouter.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de l'ajout.
-     */
-    public ResponseEntity<String> addNewTeacher(Professeur newProfesseur){
-        List<Professeur> professeurs = professeurRepository.findAll();
-        for (Professeur professeur : professeurs) {
-            if (professeur.getFirstName().equals(newProfesseur.getFirstName()) && professeur.getLastName().equals(newProfesseur.getLastName())) {
-                return new ResponseEntity<>("Teacher already exists.", HttpStatus.BAD_REQUEST);
-            }
-        }
-        newProfesseur.setName(newProfesseur.getFirstName() + " " + newProfesseur.getLastName());
-        newProfesseur.setPassword(generatePassword());
-        professeurRepository.save(newProfesseur);
-        newProfesseur.setEmail(newProfesseur.getMatricule() + "@Illumis.professeur.ac.be");
-        professeurRepository.save(newProfesseur);
-
-        Personnel newPersonnel = new Personnel();
-        newPersonnel.setDepartement(newProfesseur.getDepartement());
-        newPersonnel.setMatricule(newProfesseur.getMatricule());
-        newPersonnel.setName(newProfesseur.getName());
-        newPersonnel.setAdresse(newProfesseur.getAdresse());
-        newPersonnel.setNumero(newProfesseur.getNumero());
-        newPersonnel.setFiliere(newProfesseur.getFiliere());
-        /*List<String> listFilieres = new ArrayList<>(); // Initialisation de la liste
-        if (newProfesseur.getFilieres() != null) { // Vérification de nullité
-            listFilieres.addAll(newProfesseur.getFilieres());
-        }*/
-        //newPersonnel.setFilieres(listFilieres);
-        newPersonnel.setEmail(newProfesseur.getEmail());
-        newPersonnel.setCategorie(Category.PROFESSEUR);
-        personnelRepository.save(newPersonnel);
-
-        return new ResponseEntity<>("teacher added successfully.", HttpStatus.OK);
+    public ProfesseurService(AuthService authService, UserService userService, ProfesseurRepository professeurRepository,
+                             CoursService coursService, CoursRepository coursRepository, PersonnelRepository personnelRepository, UserRepository userRepository, PersonnelMapper personnelMapper) {
+        super(authService);
+        this.professeurRepository = professeurRepository;
+        this.coursService = coursService;
+        this.coursRepository = coursRepository;
+        this.personnelRepository = personnelRepository;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
-    /**
-     * Récupère un professeur par identifiant.
-     *
-     * @param matricule L'identifiant du professeur à récupérer.
-     * @return ResponseEntity contenant le professeur correspondant à l'identifiant spécifié.
-     */
-    public ResponseEntity<Professeur> getTeacherById(Long matricule){
-        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
-        if (professeurOptional.isPresent()){
-            Professeur professeur = professeurOptional.get();
-            return new ResponseEntity<>(professeur , HttpStatus.OK);
+    public ResponseEntity<String> addNewTeacher(Professeur newProfesseur) {
+        ResponseEntity<String> response = userService.addUser(newProfesseur, EmailDomain.PROFESSOR);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            professeurRepository.save(newProfesseur);
+            personnelMapper.mapToPersonnel(newProfesseur);
+        } else if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
+            return new ResponseEntity<>("Teacher already exists", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
+        return response;
     }
 
-    /**
-     * Authentifie un professeur.
-     *
-     * @param email    L'email du professeur.
-     * @param password Le mot de passe du professeur.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de l'authentification.
-     */
-    public ResponseEntity<String> login(String email, String password) {
-        String matriculeStr = authService.extractMatriculeFromEmail(email);
-        System.out.println("Dans la methode login professeur : " );
-        System.out.println("email = "+ email);
-        System.out.println("password = " + password);
-        System.out.println("Matricule str =  "+ matriculeStr);
-        if (matriculeStr == null) {
-            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
-        }
 
-        try {
-            Long matricule = Long.parseLong(matriculeStr);
-            Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
-            if (professeurOptional.isPresent()) {
-                Professeur professeur = professeurOptional.get();
-                if (professeur.getPassword().equals(password)) {
-                    return new ResponseEntity<>("Login successful", HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
-                }
-            }
-            return new ResponseEntity<>("Teacher not found", HttpStatus.NOT_FOUND);
-        } catch (NumberFormatException e) {
-            return new ResponseEntity<>("Invalid matricule format", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Professeur> getTeacherById(Long matricule) {
+        return professeurRepository.findById(matricule)
+                .map(professeur -> new ResponseEntity<>(professeur, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
-    /**
-     * Supprime tous les professeurs.
-     */
     @Transactional
     public void deleteAllTeachers() {
         professeurRepository.deleteAll();
-
-        // Supprimer tous les professeurs de la liste des personnels en utilisant une requête SQL native
-        String sql = "DELETE FROM Personnel WHERE categorie = 'PROFESSEUR'";
-        entityManager.createNativeQuery(sql).executeUpdate();
-
-        new ResponseEntity<>("Delete All teachers", HttpStatus.OK);
+        personnelRepository.deleteByCategorie(Category.PROFESSEUR);
     }
 
-    /**
-     * Récupère tous les professeurs.
-     *
-     * @return La liste de tous les professeurs.
-     */
-    public List<Professeur> getAllteachers(){
+    public List<Professeur> getAllTeachers() {
         return professeurRepository.findAll();
     }
 
-    /**
-     * Supprime un professeur par identifiant.
-     *
-     * @param matricule L'identifiant du professeur à supprimer.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de la suppression.
-     */
     public ResponseEntity<String> deleteTeacherById(Long matricule) {
         Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
         if (professeurOptional.isPresent()) {
-            Professeur professeur = professeurOptional.get();
-            // Vérifier si le professeur existe dans la liste des personnels
-            Optional<Personnel> personnelOptional = personnelRepository.findById(matricule);
-            if (personnelOptional.isPresent()) {
-                Personnel personnel = personnelOptional.get();
-                personnelRepository.delete(personnel); // Supprimer le professeur de la liste des personnels
-            }
-            professeurRepository.deleteById(matricule); // Supprimer le professeur de la base de données des professeurs
-            return new ResponseEntity<>("delete success", HttpStatus.OK);
+            professeurRepository.deleteById(matricule);
+            personnelRepository.findById(matricule).ifPresent(personnelRepository::delete);
+            userRepository.findById(matricule).ifPresent(userRepository :: delete);
+            return new ResponseEntity<>("Delete success", HttpStatus.OK);
         }
         return new ResponseEntity<>("Teacher not found", HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Ajoute une filière à un professeur.
-     *
-     * @param matricule L'identifiant du professeur.
-     * @param sector    La filière à ajouter.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de l'ajout.
-     */
-    public ResponseEntity<String> addFiliereToTeacher(Long matricule , String sector){
-        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
-        if (professeurOptional.isPresent()){
-            Professeur professeur = professeurOptional.get();
-            if (sector.equals(professeur.getFiliere())){
-                return new ResponseEntity<>("nothing to change", HttpStatus.NO_CONTENT);
-            }else {
-            /*List<String> listOfAllSectors = professeur.getFilieres();
-            if (listOfAllSectors.contains(sector)){
-                return new ResponseEntity<>("teacher have already this sector" , HttpStatus.BAD_REQUEST);
-            }
-            listOfAllSectors.add(sector);
-            professeur.setFilieres(listOfAllSectors);*/
-                professeur.setFiliere(sector);
-                professeurRepository.save(professeur);
-                return new ResponseEntity<>("sector added with success", HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>("teacher not found" , HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> addFiliereToTeacher(Long matricule, String sector) {
+        return professeurRepository.findById(matricule)
+                .map(professeur -> {
+                    if (professeur.getFilieres().contains(sector)) {
+                        return new ResponseEntity<>("Teacher already has this sector", HttpStatus.BAD_REQUEST);
+                    }
+                    professeur.getFilieres().add(sector);
+                    professeurRepository.save(professeur);
+                    return new ResponseEntity<>("Sector added successfully", HttpStatus.OK);
+                }).orElseGet(() -> new ResponseEntity<>("Teacher not found", HttpStatus.BAD_REQUEST));
     }
 
-    /**
-     * Récupère toutes les filières d'un professeur.
-     *
-     * @param matricule L'identifiant du professeur.
-     * @return ResponseEntity contenant la liste des filières du professeur.
-     */
-    public ResponseEntity<String> getAllFilieresteacher(Long matricule){
-        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
-        if (professeurOptional.isPresent()){
-            Professeur professeur = professeurOptional.get();
-            String sector = professeur.getFiliere();
-            return new ResponseEntity<>(sector , HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<String>> getAllFilieresTeacher(Long matricule) {
+        return professeurRepository.findById(matricule)
+                .map(professeur -> new ResponseEntity<>(professeur.getFilieres(), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
-    /**
-     * Vérifie l'existence d'un professeur par identifiant.
-     *
-     * @param matricule L'identifiant du professeur.
-     * @return true si le professeur existe, sinon false.
-     */
-    public Boolean existTeacherById(Long matricule){
+    public Boolean existsTeacherById(Long matricule) {
         return professeurRepository.existsById(matricule);
     }
 
-    /**
-     * Met à jour le mot de passe d'un professeur.
-     *
-     * @param matricule   L'identifiant du professeur.
-     * @param newPassword Le nouveau mot de passe.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de la mise à jour.
-     */
     public ResponseEntity<String> updateProfPassword(Long matricule, String newPassword) {
-        Optional<Professeur> professeur = professeurRepository.findById(matricule);
-        if (professeur.isPresent()) {
-            if (newPassword.length() < 15) {
-                return new ResponseEntity<>("The password must be at least 15 characters long", HttpStatus.BAD_REQUEST);
-            }
-            professeur.get().setPassword(newPassword);
-            professeurRepository.save(professeur.get());
-            return new ResponseEntity<>("Success update of password", HttpStatus.OK);
+        if (newPassword.length() < 15) {
+            return new ResponseEntity<>("The password must be at least 15 characters long", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Teacher doesn't exist", HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Récupère les cours d'un professeur.
-     *
-     * @param email    L'email du professeur.
-     * @param password Le mot de passe du professeur.
-     * @return ResponseEntity contenant la liste des cours du professeur.
-     */
-    public ResponseEntity<List<String>> getCourses(String  email,String password){
-        Long matricule = Long.valueOf(authService.extractMatriculeFromEmail(email));
-        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
-        if (professeurOptional.isPresent()){
-            Professeur professeur = professeurOptional.get();
-            if (professeur.getPassword().equals(password)){
-                List<String> result = professeur.getCourseList();
-                return new ResponseEntity<>(result , HttpStatus.OK);
-            }
-            return new ResponseEntity<>(null , HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Associe un cours à un professeur.
-     *
-     * @param coursName Le nom du cours.
-     * @param matricule L'identifiant du professeur.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de l'association.
-     */
-    public ResponseEntity<String> attributeCourse(String coursName , Long matricule){
-        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);//chercher le prof avec son matricule
-        if (professeurOptional.isPresent()){
-            Professeur professeur = professeurOptional.get();//recuperer le professeur
-            ResponseEntity<Cours> coursSearch = coursService.getCoursByName(coursName);//recuperer le cours en utilisant son nom
-            if(coursSearch.getStatusCode().is2xxSuccessful()){
-                Cours cours = coursSearch.getBody(); //recuperer le cours
-                List<String> courseList = professeur.getCourseList(); //recuperer liste de cours de ce prof
-                List<String> teacherList = Objects.requireNonNull(cours).getListOfAllteachersToThisCours();//liste de profs de ce cours
-                if (!(courseList.contains(coursName))){
-                    courseList.add(coursName);
-                    professeur.setCourseList(courseList);
+        return professeurRepository.findById(matricule)
+                .map(professeur -> {
+                    professeur.setPassword(newPassword);
                     professeurRepository.save(professeur);
-                }else{
-                    return new ResponseEntity<>("teacher have already this course" , HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
+                }).orElseGet(() -> new ResponseEntity<>("Teacher not found", HttpStatus.NOT_FOUND));
+    }
+
+    public ResponseEntity<List<String>> getCourses(String email, String password) {
+        Long matricule = Long.valueOf(authService.extractMatriculeFromEmail(email));
+        return professeurRepository.findById(matricule)
+                .filter(professeur -> professeur.getPassword().equals(password))
+                .map(professeur -> new ResponseEntity<>(professeur.getCourseList(), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+
+    public ResponseEntity<String> attributeCourse(String coursName, Long matricule) {
+        Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
+        if (professeurOptional.isPresent()) {
+            Professeur professeur = professeurOptional.get();
+            ResponseEntity<Cours> coursResponse = coursService.getCoursByName(coursName);
+            if (coursResponse.getStatusCode().is2xxSuccessful() && coursResponse.getBody() != null) {
+                Cours cours = coursResponse.getBody();
+                if (!professeur.getCourseList().contains(coursName)) {
+                    professeur.getCourseList().add(coursName);
+                    professeurRepository.save(professeur);
+                } else {
+                    return new ResponseEntity<>("Teacher already has this course", HttpStatus.BAD_REQUEST);
                 }
-                if (!(teacherList.contains(professeur.getName()))){ //verifier si la liste de profs de ce cours contienne deja ce prof
-                    teacherList.add(professeur.getName());
-                    cours.setListOfAllteachersToThisCours(teacherList);
+                if (!cours.getListOfAllteachersToThisCours().contains(professeur.getName())) {
+                    cours.getListOfAllteachersToThisCours().add(professeur.getName());
                     coursRepository.save(cours);
                 }
-                return new ResponseEntity<>("attribute success" , HttpStatus.OK);
+                return new ResponseEntity<>("Attribute success", HttpStatus.OK);
             }
-            return new ResponseEntity<>("course not found" , HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("teacher not found" , HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Teacher not found", HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Génère un mot de passe aléatoire.
-     *
-     * @return Le mot de passe généré.
-     */
-    public String generatePassword() {
-        // Définir les caractères autorisés pour le mot de passe
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@";
-
-        // Générer le mot de passe aléatoire
-        StringBuilder password = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            password.append(characters.charAt(randomIndex));
-        }
-
-        return password.toString();
-    }
-
-    /**
-     * Supprime un cours de la liste des cours des professeurs.
-     *
-     * @param coursName Le nom du cours à supprimer.
-     * @return ResponseEntity contenant un message indiquant le succès ou l'échec de la suppression.
-     */
     public ResponseEntity<String> deleteCoursFromProfesseur(String coursName) {
-        // Supprimer le cours de la liste de cours des professeurs
         List<String> affectedProfessors = professeurRepository.deleteCourseFromProfessors(coursName);
-
-        // Supprimer chaque professeur de la liste de professeurs associés à ce cours
         coursRepository.deleteProfesseurFromCourse(coursName, affectedProfessors);
-
-        return new ResponseEntity<>("delete success", HttpStatus.OK);
+        return new ResponseEntity<>("Delete success", HttpStatus.OK);
     }
 
     public Professeur findProfesseurByName(String teacherName) {
-        String queryString = "SELECT p FROM Professeur p WHERE p.name = :teacherName";
-        try {
-            return (Professeur) entityManager.createQuery(queryString)
-                    .setParameter("teacherName", teacherName)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return professeurRepository.findByName(teacherName);
     }
 
-    public ResponseEntity<Professeur> getTeacherByName(String name){
-        List<Professeur> profs = professeurRepository.findAll();
-        for (Professeur prof : profs){
-            if (prof.getName().equals(name)){
-                return new ResponseEntity<>(prof, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(null , HttpStatus.NOT_FOUND);
+    @Override
+    protected ResponseEntity<String> authenticate(Long matricule, String password) {
+        return professeurRepository.findById(matricule)
+                .map(professeur -> {
+                    if (professeur.getPassword().equals(password)) {
+                        return ResponseEntity.ok("Login successful");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+                    }
+                }).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found"));
     }
-
 }

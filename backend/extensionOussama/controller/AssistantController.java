@@ -1,7 +1,7 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.controller;
+package com.genieLogiciel.Umons.extensionOussama.controller;
 
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Assistant;
-import com.genieLogiciel.Umons.backend.extensionOussama.service.AssistantService;
+import com.genieLogiciel.Umons.extensionOussama.model.Assistant;
+import com.genieLogiciel.Umons.extensionOussama.service.AssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * Contrôleur pour la gestion des assistants.
  */
 @RestController
-@RequestMapping("/assistant")
+@RequestMapping("/api/assistant")
 @CrossOrigin("http://localhost:8080")
 public class AssistantController {
     @Autowired

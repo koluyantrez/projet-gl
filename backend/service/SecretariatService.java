@@ -1,7 +1,9 @@
-package com.genieLogiciel.Umons.backend.service;
+package com.genieLogiciel.Umons.service;
 
-import com.genieLogiciel.Umons.backend.model.Secretariat;
-import com.genieLogiciel.Umons.backend.repository.SecretariatRepository;
+import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
+import com.genieLogiciel.Umons.auth.service.AuthService;
+import com.genieLogiciel.Umons.model.Secretariat;
+import com.genieLogiciel.Umons.repository.SecretariatRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SecretariatService {
+public class SecretariatService extends AbstractLoginService {
     private SecretariatRepository secretariatRepository;
+    protected AuthService authService;
 
-    public SecretariatService(SecretariatRepository secretariatRepository) {
+    public SecretariatService(SecretariatRepository secretariatRepository,AuthService authService) {
+        super(authService);
         this.secretariatRepository = secretariatRepository;
     }
 
@@ -42,5 +46,15 @@ public class SecretariatService {
     public ResponseEntity<String> supprimer(int matricule) {
         this.secretariatRepository.deleteById(matricule);
         return new ResponseEntity<>("Secretary deleted successfully", HttpStatus.OK);
+    }
+
+    /**
+     * @param matricule
+     * @param password
+     * @return
+     */
+    @Override
+    protected ResponseEntity<String> authenticate(Long matricule, String password) {
+        return null;
     }
 }

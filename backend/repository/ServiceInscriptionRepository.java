@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.repository;
+package com.genieLogiciel.Umons.repository;
 
-import com.genieLogiciel.Umons.backend.model.ServiceInscription;
+import com.genieLogiciel.Umons.model.ServiceInscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 ;
 

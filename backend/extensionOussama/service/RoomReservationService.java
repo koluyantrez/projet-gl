@@ -1,9 +1,9 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.service;
+package com.genieLogiciel.Umons.extensionOussama.service;
 
-import com.genieLogiciel.Umons.backend.extensionOussama.model.RoomReservation;
-import com.genieLogiciel.Umons.backend.extensionOussama.repository.RoomReservationRepository;
-import com.genieLogiciel.Umons.backend.model.Student;
-import com.genieLogiciel.Umons.backend.repository.StudentRepository;
+import com.genieLogiciel.Umons.extensionOussama.model.RoomReservation;
+import com.genieLogiciel.Umons.extensionOussama.repository.RoomReservationRepository;
+import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

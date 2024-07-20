@@ -1,10 +1,10 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
-import com.genieLogiciel.Umons.backend.model.ServiceInscription;
+import com.genieLogiciel.Umons.model.ServiceInscription;
 
-import com.genieLogiciel.Umons.backend.model.Student;
-import com.genieLogiciel.Umons.backend.service.ServiceInscriptionService;
-import com.genieLogiciel.Umons.backend.service.StudentService;
+import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.service.ServiceInscriptionService;
+import com.genieLogiciel.Umons.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class ServiceInscriptionController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/addMembreServiceInscirption")
     public ResponseEntity<String> creer(@RequestBody ServiceInscription inscription){
-        return serviceInscriptionService.creer(inscription);
+        return serviceInscriptionService.addNewMember(inscription);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)

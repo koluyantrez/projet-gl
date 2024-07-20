@@ -1,11 +1,14 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.model;
+package com.genieLogiciel.Umons.extensionOussama.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -18,7 +21,15 @@ public class Batiment {
 
     private String name;
     private String adresse;
-    private Boolean disponible;
+    private Boolean available;
+    private int numberOfRooms;
+    private int numbersOfOffices;
+
+    @ElementCollection
+    private List<String> allRooms;
+
+    @ElementCollection
+    private List<String> allOffices;
 
     //liste des salles
 }

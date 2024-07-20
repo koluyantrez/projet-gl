@@ -1,12 +1,10 @@
-package com.genieLogiciel.Umons.backend.model;
+package com.genieLogiciel.Umons.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Pattern;
-import java.sql.Blob;
 import java.util.List;
 
 /**
@@ -16,48 +14,20 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Personnel {
-    /**
-     * Identifiant unique du membre du personnel.
-     */
+public class Personnel{
+
     @Id
-    @Pattern(regexp = "\\d{6}", message = "Le matricule doit être un nombre à 6 chiffres")
     private Long matricule;
 
-    /**
-     * Nom complet du membre du personnel.
-     */
-    private String name;
-
-    /**
-     * Adresse e-mail du membre du personnel.
-     */
-    private String email;
-
-    /**
-     * Numéro de téléphone du membre du personnel.
-     */
-    private Long numero;
-
-    /**
-     * Adresse du membre du personnel.
-     */
     private String adresse;
+    private String email;
+    private String name;
+    private Long numero;
 
     /**
      * Département auquel le membre du personnel est associé.
      */
     private String departement;
-
-    /**
-     * Filière principale du personnel
-     */
-    private String filiere;
-
-    /**
-     * Image du personnel
-     */
-    private byte[] image;
 
     /**
      * Catégorie à laquelle le membre du personnel appartient.
@@ -68,6 +38,7 @@ public class Personnel {
     /**
      * Liste des filières associées au membre du personnel (uniquement pour les professeurs).
      */
-    //@ElementCollection
-    //private List<String> filieres;
+    @ElementCollection
+    private List<String> filieres;
+
 }

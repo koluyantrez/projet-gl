@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend;
+package com.genieLogiciel.Umons;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

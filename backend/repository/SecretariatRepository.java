@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.repository;
+package com.genieLogiciel.Umons.repository;
 
-import com.genieLogiciel.Umons.backend.model.Secretariat;
+import com.genieLogiciel.Umons.model.Secretariat;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SecretariatRepository extends JpaRepository<Secretariat, Integer> {

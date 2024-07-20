@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.model;
+package com.genieLogiciel.Umons.extensionOussama.model;
 
-import com.genieLogiciel.Umons.backend.model.Professeur;
+import com.genieLogiciel.Umons.model.Professeur;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

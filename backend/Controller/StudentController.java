@@ -1,112 +1,117 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
-import com.genieLogiciel.Umons.backend.auth.LoginRequest;
-import com.genieLogiciel.Umons.backend.auth.service.AuthService;
-import com.genieLogiciel.Umons.backend.extensionEsteban.model.Pae;
-import com.genieLogiciel.Umons.backend.model.Student;
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Cours;
-import com.genieLogiciel.Umons.backend.service.StudentService;
+import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
+import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin( "http://localhost:8080")
+@RequestMapping("/api/students")
+@CrossOrigin(origins = "http://localhost:8080")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private AuthService authService;
-
-    @PostMapping("/AddStudent")
+    @PostMapping
     public ResponseEntity<String> addStudent(@RequestBody Student newStudent) {
         return studentService.addStudent(newStudent);
     }
 
-    @PostMapping("/students/addCourseCompleted/{matricule}")
-    public ResponseEntity<String> addCourseCompleted(@PathVariable Long matricule, @RequestParam String courseName) {
-        return studentService.addCourseCompleted(matricule, courseName);
+    @PostMapping("/{matricule}/image")
+    public ResponseEntity<String> addImageToStudent(@PathVariable Long matricule, @RequestParam("imageFile") MultipartFile imageFile) {
+        return studentService.addImageToStudent(matricule, imageFile);
     }
 
-    @PostMapping("/students/login")
-    public ResponseEntity<String> login(@RequestBody String email, @RequestBody String password) {
-        return studentService.login(email, password);
+    @GetMapping("/{matricule}/image")
+    public ResponseEntity<byte[]> getImageOfStudent(@PathVariable Long matricule) {
+        return studentService.getImageOfStudent(matricule);
     }
 
-    @PostMapping("/students/updateOldPAE")
-    public ResponseEntity<String> updateOldPAE(@RequestParam Long matricule , @RequestBody Pae pae){
-        return studentService.updateOldPAE(matricule,pae);
-    }
-
-    @PostMapping("/students/addCoursInActuelPAE/{matricule}")
-    public ResponseEntity<String> addCourseInActuelPae(@PathVariable Long matricule , @RequestParam String coursName){
-        return studentService.addCoursInActuelPAE(matricule,coursName);
-    }
-
-    @DeleteMapping("/students/deleteById")
-    public ResponseEntity<String> deleteStudentById(@RequestParam Long matricule) {
+    @DeleteMapping("/{matricule}")
+    public ResponseEntity<String> deleteStudentById(@PathVariable Long matricule) {
         return studentService.deleteStudentById(matricule);
     }
 
-    @DeleteMapping("/students/deleteByName")
-    public ResponseEntity<String> deleteStudentByName(@RequestParam String name) {
+    @DeleteMapping("/name/{name}")
+    public ResponseEntity<String> deleteStudentByName(@PathVariable String name) {
         return studentService.deleteStudentByName(name);
     }
 
-    @DeleteMapping("/students/deleteAllStudents")
-    public ResponseEntity<String> deleteAllStudent() {
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllStudents() {
         return studentService.deleteAllStudent();
     }
 
-    @GetMapping("/students/getAll")
+    @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("/students/findById")
-    public ResponseEntity<Student> getStudentByMatricule(@RequestParam Long matricule) {
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Student> getStudentByName(@PathVariable String name) {
+        return studentService.getStudentByName(name);
+    }
+
+    @GetMapping("/{matricule}")
+    public ResponseEntity<Student> getStudentByMatricule(@PathVariable Long matricule) {
         return studentService.getStudentByMatricule(matricule);
     }
 
-    @GetMapping("/students/getCompletedCourse/")
-    public ResponseEntity<List<String>> getCoursesCompleted(@RequestParam Long matricule) {
-        return studentService.getCoursReussie(matricule);
-    }
-
-    @GetMapping("/student")
-    public Student getStudentByEmail(@RequestParam String email , @RequestBody String password){
-        return studentService.getStudentByEmail(email , password);
-    }
-
-    @PostMapping("/students/getActuelCours")
-    public List<Cours> getActuelCours(@RequestBody LoginRequest login){
-        String email = login.getEmail();
-        String password = login.getPassword();
-        return studentService.getActuelCours(email,password);
-    }
-
-    @PutMapping("/students/updateFiliere/{matricule}")
+    @PutMapping("/{matricule}/filiere")
     public ResponseEntity<String> updateStudentFiliere(@PathVariable Long matricule, @RequestParam String newFiliere) {
         return studentService.updateStudentFiliere(matricule, newFiliere);
     }
 
-    @PutMapping("/students/updateDepartement/{matricule}")
+    @PutMapping("/{matricule}/departement")
     public ResponseEntity<String> updateStudentDepartement(@PathVariable Long matricule, @RequestParam String newDepartement) {
         return studentService.updateStudentDepartement(matricule, newDepartement);
     }
 
-    @PutMapping("students/updatePassword/{matricule}")
+    @PutMapping("/{matricule}/password")
     public ResponseEntity<String> updateStudentPassword(@PathVariable Long matricule, @RequestParam String newPassword) {
         return studentService.updateStudentPassword(matricule, newPassword);
     }
 
-    @PostMapping("/students/addCourseWithCourseId/{matricule}")
-    public ResponseEntity<String> addNewCoursToStudentWithCourseId(@PathVariable Long matricule , @RequestParam Long coursId){
-        return studentService.addNewCourseWithCourseId(matricule,coursId);
+    @PutMapping("/{matricule}/courses")
+    public ResponseEntity<String> addCourseCompleted(@PathVariable Long matricule, @RequestParam String courseName) {
+        return studentService.addCourseCompleted(matricule, courseName);
+    }
+
+    @GetMapping("/{matricule}/courses/completed")
+    public ResponseEntity<List<String>> getCoursReussie(@PathVariable Long matricule) {
+        return studentService.getCoursReussie(matricule);
+    }
+
+    @PostMapping("/{matricule}/courses/{coursId}")
+    public ResponseEntity<String> addNewCourseWithCourseId(@PathVariable Long matricule, @PathVariable Long coursId) {
+        return studentService.addNewCourseWithCourseId(matricule, coursId);
+    }
+
+    @GetMapping("/courses")
+    public List<Cours> getActuelCours(@RequestParam String email, @RequestParam String password) {
+        return studentService.getActuelCours(email, password);
+    }
+
+    @PutMapping("/{matricule}/pae")
+    public ResponseEntity<String> updateOldPAE(@PathVariable Long matricule, @RequestBody Pae newOldPae) {
+        return studentService.updateOldPAE(matricule, newOldPae);
+    }
+
+    @PutMapping("/{matricule}/pae/courses")
+    public ResponseEntity<String> addCoursInActuelPAE(@PathVariable Long matricule, @RequestParam String coursName) {
+        return studentService.addCoursInActuelPAE(matricule, coursName);
+    }
+
+    @DeleteMapping("/{matricule}/pae/courses")
+    public ResponseEntity<String> removeCoursFromActuelPae(@RequestParam Cours cours, @PathVariable Long matricule) {
+        return studentService.removeCoursFromActuelPae(cours, matricule);
     }
 
 }

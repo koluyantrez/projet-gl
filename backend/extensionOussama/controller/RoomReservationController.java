@@ -1,19 +1,17 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.controller;
+package com.genieLogiciel.Umons.extensionOussama.controller;
 
-import com.genieLogiciel.Umons.backend.extensionOussama.model.RoomReservation;
-import com.genieLogiciel.Umons.backend.extensionOussama.service.RoomReservationService;
+import com.genieLogiciel.Umons.extensionOussama.model.RoomReservation;
+import com.genieLogiciel.Umons.extensionOussama.service.RoomReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Contrôleur pour la gestion des réservations de salles.
  */
 @RestController
 @CrossOrigin("http://localhost:8080")
+@RequestMapping("/api/roomReservation")
 public class RoomReservationController {
 
     @Autowired
@@ -25,7 +23,7 @@ public class RoomReservationController {
      * @param roomReservation La demande de réservation de salle à ajouter.
      * @return ResponseEntity contenant le message de succès ou d'erreur.
      */
-    @PostMapping("/addRoomReservationRequest")
+    @PostMapping("/addReservation")
     public ResponseEntity<String> addRoomReservationRequest(@RequestBody RoomReservation roomReservation){
         return roomReservationService.addRoomReservationRequest(roomReservation);
     }

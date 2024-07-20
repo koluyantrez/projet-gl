@@ -1,26 +1,32 @@
-package com.genieLogiciel.Umons.backend.model;
+package com.genieLogiciel.Umons.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Cette classe représente un membre du secrétariat de l'université.
+ */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Secretariat {
-    @Id
-    @GeneratedValue
-    @Pattern(regexp = "\\d{6}", message = "Matricule must be a 6-digit number")
-    private Long matricule;
-    private String Name;
-    private String mail;
+public class Secretariat extends User {
+
+
+    /**
+     * Indique si le membre du secrétariat est directeur.
+     */
     private Integer directeur;
+
+    /**
+     * Filière du secrétariat.
+     */
     private String filiere;
+
+    /**
+     * Zone du secrétariat.
+     */
     private String zone;
-    private String password;
 }

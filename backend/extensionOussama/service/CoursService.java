@@ -1,10 +1,10 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.service;
+package com.genieLogiciel.Umons.extensionOussama.service;
 
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Cours;
-import com.genieLogiciel.Umons.backend.extensionOussama.repository.CoursRepository;
-import com.genieLogiciel.Umons.backend.model.Professeur;
-import com.genieLogiciel.Umons.backend.repository.ProfesseurRepository;
-import com.genieLogiciel.Umons.backend.service.ProfesseurService;
+import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionOussama.repository.CoursRepository;
+import com.genieLogiciel.Umons.model.Professeur;
+import com.genieLogiciel.Umons.repository.ProfesseurRepository;
+import com.genieLogiciel.Umons.service.ProfesseurService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

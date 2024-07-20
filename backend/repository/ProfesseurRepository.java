@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.repository;
+package com.genieLogiciel.Umons.repository;
 
-import com.genieLogiciel.Umons.backend.model.Professeur;
+import com.genieLogiciel.Umons.model.Professeur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +28,8 @@ public interface ProfesseurRepository extends JpaRepository<Professeur, Long> {
     }
 
     List<Professeur> findByCourseListContaining(String courseName);
+
+    Professeur findByName(String name);
+
 }
 

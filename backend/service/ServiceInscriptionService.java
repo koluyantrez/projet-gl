@@ -1,12 +1,12 @@
-package com.genieLogiciel.Umons.backend.service;
+package com.genieLogiciel.Umons.service;
 
-import com.genieLogiciel.Umons.backend.auth.service.AuthService;
-import com.genieLogiciel.Umons.backend.model.Category;
-import com.genieLogiciel.Umons.backend.model.Personnel;
-import com.genieLogiciel.Umons.backend.model.ServiceInscription;
-import com.genieLogiciel.Umons.backend.model.Student;
-import com.genieLogiciel.Umons.backend.repository.PersonnelRepository;
-import com.genieLogiciel.Umons.backend.repository.ServiceInscriptionRepository;
+import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
+import com.genieLogiciel.Umons.auth.service.AuthService;
+import com.genieLogiciel.Umons.auth.service.EmailDomain;
+import com.genieLogiciel.Umons.model.*;
+import com.genieLogiciel.Umons.repository.PersonnelRepository;
+import com.genieLogiciel.Umons.repository.ServiceInscriptionRepository;
+import com.genieLogiciel.Umons.util.PersonnelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Service
 @CrossOrigin(origins = "http://localhost:3000")
-public class ServiceInscriptionService {
+public class ServiceInscriptionService extends AbstractLoginService {
     private ServiceInscriptionRepository serviceInscriptionRepository;
 
     @Autowired
@@ -30,19 +30,22 @@ public class ServiceInscriptionService {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private PersonnelRepository personnelRepository;
+    @Autowired private final UserService userService;
 
-    @Autowired private ProfesseurService professeurService;
+    private final PersonnelMapper personnelMapper;
 
     /**
      * Construit un nouveau ServiceInscriptionService.
      *
      * @param serviceInscriptionRepository Le repository pour les membres du Service Inscription.
      */
-    public ServiceInscriptionService(ServiceInscriptionRepository serviceInscriptionRepository) {
+    public ServiceInscriptionService(ServiceInscriptionRepository serviceInscriptionRepository, AuthService authService, UserService userService, PersonnelMapper personnelMapper) {
+        super(authService);
         this.serviceInscriptionRepository = serviceInscriptionRepository;
+        this.userService = userService;
+        this.personnelMapper = personnelMapper;
     }
+
 
     /**
      * Crée un nouveau membre du Service Inscription.
@@ -50,29 +53,15 @@ public class ServiceInscriptionService {
      * @param newServiceInscription Le nouveau membre du Service Inscription à créer.
      * @return ResponseEntity indiquant le succès ou l'échec de l'opération.
      */
-    public ResponseEntity<String> creer(ServiceInscription newServiceInscription) {
-        List<ServiceInscription> listMembre = serviceInscriptionRepository.findAll();
-        for (ServiceInscription membre : listMembre) {
-            if (membre.getFirstName().equals(newServiceInscription.getFirstName()) && membre.getLastName().equals(newServiceInscription.getLastName())) {
-                return new ResponseEntity<>("membre déjà existant.", HttpStatus.BAD_REQUEST);
-            }
+    public ResponseEntity<String> addNewMember(ServiceInscription newServiceInscription) {
+        ResponseEntity<String> response = userService.addUser(newServiceInscription , EmailDomain.SERVICE_INSCRIPTION);
+        if (response.getStatusCode() == HttpStatus.OK){
+            serviceInscriptionRepository.save(newServiceInscription);
+            personnelMapper.mapToPersonnel(newServiceInscription);
+        }else if (response.getStatusCode() == HttpStatus.BAD_REQUEST){
+            return new ResponseEntity<>("Member already exist" , HttpStatus.OK);
         }
-        newServiceInscription.setName(newServiceInscription.getFirstName() + " " + newServiceInscription.getLastName());
-        newServiceInscription.setPassword(professeurService.generatePassword());
-        serviceInscriptionRepository.save(newServiceInscription);
-        newServiceInscription.setEmail(newServiceInscription.getMatricule() + "@Illumis.inscription.ac.be");
-        serviceInscriptionRepository.save(newServiceInscription);
-
-        Personnel newPersonnel = new Personnel();
-        newPersonnel.setMatricule(newServiceInscription.getMatricule());
-        newPersonnel.setName(newServiceInscription.getName());
-        newPersonnel.setAdresse(newServiceInscription.getAdresse());
-        newPersonnel.setNumero(newServiceInscription.getNumero());
-        newPersonnel.setEmail(newServiceInscription.getEmail());
-        newPersonnel.setCategorie(Category.SECRETARIAT);
-        personnelRepository.save(newPersonnel);
-
-        return new ResponseEntity<>("membre ajouté avec succès.", HttpStatus.OK);
+        return response;
     }
 
     /**
@@ -148,5 +137,15 @@ public class ServiceInscriptionService {
         } catch (NumberFormatException e) {
             return new ResponseEntity<>("Format de matricule invalide", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * @param matricule
+     * @param password
+     * @return
+     */
+    @Override
+    protected ResponseEntity<String> authenticate(Long matricule, String password) {
+        return null;
     }
 }

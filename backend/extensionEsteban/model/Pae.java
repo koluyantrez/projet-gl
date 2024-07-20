@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.extensionEsteban.model;
+package com.genieLogiciel.Umons.extensionEsteban.model;
 
-import com.genieLogiciel.Umons.backend.model.Student;
+import com.genieLogiciel.Umons.model.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;

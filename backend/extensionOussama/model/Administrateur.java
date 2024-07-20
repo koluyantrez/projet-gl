@@ -1,28 +1,23 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.model;
+package com.genieLogiciel.Umons.extensionOussama.model;
 
-import com.genieLogiciel.Umons.backend.model.Category;
+import com.genieLogiciel.Umons.model.Category;
+import com.genieLogiciel.Umons.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
-public class Administrateur {
+public class Administrateur extends User {
 
 
-    private String name;
 
     @Enumerated(EnumType.STRING)
     private Category category = Category.ADMIN;
-
-    private String password;
-    private String email;
-    @Id
-    @GeneratedValue
-    private Long id;
-
 
 }

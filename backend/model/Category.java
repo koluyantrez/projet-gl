@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend.model;
+package com.genieLogiciel.Umons.model;
 
 /**
  * Enumération représentant les différentes catégories de personnel.
@@ -26,5 +26,9 @@ public enum Category {
     /**
      * Catégorie représentant un administrateur
      */
-    ADMIN
+    ADMIN,
+    /**
+     * Catégorie représentant un membre de service d'inscription
+     */
+    MembreSI
 }

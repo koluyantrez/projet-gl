@@ -1,7 +1,7 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
-import com.genieLogiciel.Umons.backend.model.Secretariat;
-import com.genieLogiciel.Umons.backend.service.SecretariatService;
+import com.genieLogiciel.Umons.model.Secretariat;
+import com.genieLogiciel.Umons.service.SecretariatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

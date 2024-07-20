@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.model;
+package com.genieLogiciel.Umons.extensionOussama.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -39,11 +38,5 @@ public class RoomReservation {
         EXPIRED
     }
 
-    public enum RoomStatus{
-        AVAILABLE,
-        OCCUPIED,
-        RESERVED,
-        MAITENANCE
-    }
 
 }

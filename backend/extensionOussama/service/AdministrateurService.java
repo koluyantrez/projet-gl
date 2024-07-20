@@ -1,13 +1,22 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.service;
+package com.genieLogiciel.Umons.extensionOussama.service;
 
-import com.genieLogiciel.Umons.backend.auth.service.AuthService;
-import com.genieLogiciel.Umons.backend.extensionOussama.model.Administrateur;
-import com.genieLogiciel.Umons.backend.extensionOussama.repository.AdministrateurRepository;
-import com.genieLogiciel.Umons.backend.model.Category;
-import com.genieLogiciel.Umons.backend.model.Personnel;
-import com.genieLogiciel.Umons.backend.repository.PersonnelRepository;
-import com.genieLogiciel.Umons.backend.service.ProfesseurService;
+import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
+import com.genieLogiciel.Umons.auth.service.AuthService;
+import com.genieLogiciel.Umons.auth.service.EmailDomain;
+import com.genieLogiciel.Umons.extensionOussama.model.Administrateur;
+import com.genieLogiciel.Umons.extensionOussama.model.Batiment;
+import com.genieLogiciel.Umons.extensionOussama.repository.AdministrateurRepository;
+import com.genieLogiciel.Umons.extensionOussama.repository.BatimentRepository;
+import com.genieLogiciel.Umons.model.Category;
+import com.genieLogiciel.Umons.model.Personnel;
+import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.repository.PersonnelRepository;
+import com.genieLogiciel.Umons.service.ProfesseurService;
+import com.genieLogiciel.Umons.service.UserService;
+import com.genieLogiciel.Umons.util.PersonnelMapper;
+import com.google.zxing.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,34 +25,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdministrateurService {
+public class AdministrateurService extends AbstractLoginService {
 
     @Autowired private AdministrateurRepository administrateurRepository;
-    @Autowired private ProfesseurService professeurService;
     @Autowired private PersonnelRepository personnelRepository;
-    @Autowired private AuthService authService;
+    private final UserService userService;
+    private final PersonnelMapper personnelMapper;
+
+    public AdministrateurService(AuthService authService, UserService userService, PersonnelMapper personnelMapper) {
+        super(authService);
+        this.userService = userService;
+        this.personnelMapper = personnelMapper;
+    }
 
     public ResponseEntity<String> addAdmin(Administrateur newAdmin){
-        List<Administrateur> administrateurs = administrateurRepository.findAll();
-        for (Administrateur administrateur : administrateurs) {
-            if (administrateur.getName().equals(newAdmin.getName())) {
-                return new ResponseEntity<>("admin already exists.", HttpStatus.BAD_REQUEST);
-            }
+        ResponseEntity<String> response = userService.addUser(newAdmin, EmailDomain.ADMIN);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            administrateurRepository.save(newAdmin);
+            personnelMapper.mapToPersonnel(newAdmin);
+        } else if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
+            return new ResponseEntity<>("Admin already exists", HttpStatus.BAD_REQUEST);
         }
-        newAdmin.setPassword(professeurService.generatePassword());
-        administrateurRepository.save(newAdmin);
-        newAdmin.setEmail(newAdmin.getId() + "@Illumis.admin.ac.be");
-        administrateurRepository.save(newAdmin);
-
-        Personnel newPersonnel = new Personnel();
-        newPersonnel.setMatricule(newAdmin.getId());
-        newPersonnel.setName(newAdmin.getName());
-
-        newPersonnel.setEmail(newAdmin.getEmail());
-        newPersonnel.setCategorie(Category.ADMIN);
-        personnelRepository.save(newPersonnel);
-
-        return new ResponseEntity<>("admin added successfully.", HttpStatus.OK);
+        return response;
     }
 
     public ResponseEntity<Administrateur> getAdminById(Long ID){
@@ -55,32 +58,7 @@ public class AdministrateurService {
         return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> login(String email, String password) {
-        String matriculeStr = authService.extractMatriculeFromEmail(email);
-        System.out.println("Dans la methode login admin : " );
-        System.out.println("email = "+ email);
-        System.out.println("password = " + password);
-        System.out.println("Matricule str =  "+ matriculeStr);
-        if (matriculeStr == null) {
-            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
-        }
 
-        try {
-            Long matricule = Long.parseLong(matriculeStr);
-            Optional<Administrateur> administrateurOptional = administrateurRepository.findById(matricule);
-            if (administrateurOptional.isPresent()) {
-                Administrateur administrateur = administrateurOptional.get();
-                if (administrateur.getPassword().equals(password)) {
-                    return new ResponseEntity<>("Login successful", HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
-                }
-            }
-            return new ResponseEntity<>("admin not found", HttpStatus.NOT_FOUND);
-        } catch (NumberFormatException e) {
-            return new ResponseEntity<>("Invalid id format", HttpStatus.BAD_REQUEST);
-        }
-    }
 
     public List<Administrateur> getAllAdmin(){
         return administrateurRepository.findAll();
@@ -101,5 +79,25 @@ public class AdministrateurService {
         }
         return new ResponseEntity<>("admin not found", HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * @param matricule
+     * @param password
+     * @return
+     */
+    @Override
+    protected ResponseEntity<String> authenticate(Long matricule, String password) {
+        Optional<Administrateur> administrateurOptional = administrateurRepository.findById(matricule);
+        if (administrateurOptional.isPresent()) {
+            Administrateur administrateur = administrateurOptional.get();
+            if (administrateur.getPassword().equals(password)) {
+                return ResponseEntity.ok().build(); // Login successful
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Invalid password
+            }
+        }
+        return ResponseEntity.notFound().build(); // Admin not found
+    }
+
 
 }

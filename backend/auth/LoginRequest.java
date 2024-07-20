@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend.auth;
+package com.genieLogiciel.Umons.auth;
 
 import lombok.Getter;
 import lombok.Setter;

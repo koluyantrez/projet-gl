@@ -1,8 +1,6 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.model;
+package com.genieLogiciel.Umons.extensionOussama.model;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,12 +13,15 @@ import java.util.List;
 @NoArgsConstructor
 public class Room {
     @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
     private String type;
     private int capacity;
     private String associatedBuilding;
+    private Boolean available;
+    private RoomStatus status;
 
     @ElementCollection
     private List<String> equipement;

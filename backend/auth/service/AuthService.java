@@ -1,5 +1,6 @@
-package com.genieLogiciel.Umons.backend.auth.service;
+package com.genieLogiciel.Umons.auth.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;

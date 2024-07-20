@@ -1,92 +1,94 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
-
-import com.genieLogiciel.Umons.backend.auth.LoginRequest;
-import com.genieLogiciel.Umons.backend.model.Professeur;
-import com.genieLogiciel.Umons.backend.service.ProfesseurService;
+import com.genieLogiciel.Umons.model.Professeur;
+import com.genieLogiciel.Umons.service.ProfesseurService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@RequestMapping("/api/professeurs")
 public class ProfesseurController {
 
     private final ProfesseurService professeurService;
 
+    @Autowired
     public ProfesseurController(ProfesseurService professeurService) {
         this.professeurService = professeurService;
     }
 
-
-    @PostMapping("/AddTeacher")
+    @PostMapping("/add")
     public ResponseEntity<String> addNewTeacher(@RequestBody Professeur newProfesseur) {
         return professeurService.addNewTeacher(newProfesseur);
     }
 
-    @GetMapping("/teachers/findById")
-    public ResponseEntity<Professeur> getTeacherById(@RequestParam Long matricule) {
+    @GetMapping("/{matricule}")
+    public ResponseEntity<Professeur> getTeacherById(@PathVariable Long matricule) {
         return professeurService.getTeacherById(matricule);
     }
 
-    @GetMapping("/teachers/findByName")
-    public ResponseEntity<Professeur> getTeacherByName(@RequestParam String name) {
-        return professeurService.getTeacherByName(name);
-    }
-
-    @PutMapping("teachers/updatePassword/{matricule}")
-    public ResponseEntity<String> updateStudentPassword(@PathVariable Long matricule, @RequestParam String newPassword) {
-        return professeurService.updateProfPassword(matricule, newPassword);
-    }
-
-    @DeleteMapping("/teachers/deleteAllTeachers")
-    public void deleteAllTeachers() {
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<Void> deleteAllTeachers() {
         professeurService.deleteAllTeachers();
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/teachers/getAll")
-    public List<Professeur> getAllTeachers() {
-        return professeurService.getAllteachers();
+    @GetMapping("/all")
+    public ResponseEntity<List<Professeur>> getAllTeachers() {
+        List<Professeur> allTeachers = professeurService.getAllTeachers();
+        return ResponseEntity.ok(allTeachers);
     }
 
-    @DeleteMapping("/teachers/deleteById")
-    public ResponseEntity<String> deleteTeacherById(@RequestParam Long matricule) {
+    @DeleteMapping("/{matricule}")
+    public ResponseEntity<String> deleteTeacherById(@PathVariable Long matricule) {
         return professeurService.deleteTeacherById(matricule);
     }
 
-    @PostMapping("/teachers/addFiliere/{matricule}")
-    public ResponseEntity<String> addFiliereTeacher(@PathVariable Long matricule, @RequestParam String sector) {
+    @PostMapping("/{matricule}/addFiliere")
+    public ResponseEntity<String> addFiliereToTeacher(@PathVariable Long matricule, @RequestBody String sector) {
         return professeurService.addFiliereToTeacher(matricule, sector);
     }
 
-    @GetMapping("/teachers/getAllFilieres/{matricule}")
-    public ResponseEntity<String> getAllFilieresTeacher(@PathVariable Long matricule) {
-        return professeurService.getAllFilieresteacher(matricule);
+    @GetMapping("/{matricule}/filieres")
+    public ResponseEntity<List<String>> getAllFilieresTeacher(@PathVariable Long matricule) {
+        return professeurService.getAllFilieresTeacher(matricule);
     }
 
-    @GetMapping("/teachers/verifyTeacherById/{matricule}")
-    public Boolean existTeacherById(@PathVariable Long matricule) {
-        return professeurService.existTeacherById(matricule);
+    @GetMapping("/{matricule}/exists")
+    public ResponseEntity<Boolean> existsTeacherById(@PathVariable Long matricule) {
+        return ResponseEntity.ok(professeurService.existsTeacherById(matricule));
     }
 
-    @PostMapping("/teachers/getCourses")
-    public ResponseEntity<List<String>> getCourses(@RequestBody LoginRequest login){
-        String email = login.getEmail();
-        String password = login.getPassword();
-        return professeurService.getCourses(email,password);
+    @PostMapping("/{matricule}/updatePassword")
+    public ResponseEntity<String> updateProfPassword(@PathVariable Long matricule, @RequestBody String newPassword) {
+        return professeurService.updateProfPassword(matricule, newPassword);
     }
 
+    @PostMapping("/courses")
+    public ResponseEntity<List<String>> getCourses(@RequestBody String email, @RequestBody String password) {
+        return professeurService.getCourses(email, password);
+    }
 
-    @DeleteMapping("/teachers/deleteCoursFromProf")
-    public ResponseEntity<String> deleteCoursFromProfesseur(@RequestParam String coursName){
+    @PostMapping("/{matricule}/attributeCourse")
+    public ResponseEntity<String> attributeCourse(@RequestBody String coursName, @PathVariable Long matricule) {
+        return professeurService.attributeCourse(coursName, matricule);
+    }
+
+    @DeleteMapping("/deleteCourse")
+    public ResponseEntity<String> deleteCoursFromProfesseur(@RequestBody String coursName) {
         return professeurService.deleteCoursFromProfesseur(coursName);
     }
 
-    @PostMapping("/assign-course{id}")
-    public ResponseEntity<String> assignCourseToTeacher(@PathVariable Long id , @RequestParam String coursName) {
-        return professeurService.attributeCourse(coursName, id);
+    @GetMapping("/findByName")
+    public ResponseEntity<Professeur> findProfesseurByName(@RequestParam String teacherName) {
+        Professeur professeur = professeurService.findProfesseurByName(teacherName);
+        if (professeur != null) {
+            return ResponseEntity.ok(professeur);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
 
 }

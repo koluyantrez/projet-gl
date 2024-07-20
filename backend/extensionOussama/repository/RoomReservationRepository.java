@@ -1,6 +1,6 @@
-package com.genieLogiciel.Umons.backend.extensionOussama.repository;
+package com.genieLogiciel.Umons.extensionOussama.repository;
 
-import com.genieLogiciel.Umons.backend.extensionOussama.model.RoomReservation;
+import com.genieLogiciel.Umons.extensionOussama.model.RoomReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
