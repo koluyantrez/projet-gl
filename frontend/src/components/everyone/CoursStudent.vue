@@ -88,11 +88,10 @@ export default {
                 const info = response.data;
                 this.code = info.code;
                 this.prof = info.teacherName;
-                console.log(response.data);
                 axios.get(`http://localhost:1937/teachers/findByName?name=${info.teacherName}`)
                             .then(response => {
                                 const sensei = response.data;
-                                console.log(sensei.data);
+                                console.log(sensei);
                                 this.emailProf = sensei.email;
                             })
                             .catch(error => {

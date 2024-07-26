@@ -72,8 +72,7 @@
 
 
 .pic{
-  position: absolute; 
-  top: -1rem;
+  position: absolute;
   right: 0rem;
   width: 5rem;
   height: 5rem;
@@ -82,6 +81,7 @@
 
 .te .cours{
   position: absolute;
+  top: 0;
   right: 20rem;
   width: 5rem; 
   height: auto;

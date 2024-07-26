@@ -2,12 +2,15 @@
   <TopSec/>
   <div class="container">
     <div class="place">
-      <ItemAdd :word="cLang.Top.addel" @click="() => ToCreatePopup('buCreate')"/>
+      <ItemAdd word="inscription"/>
+      <ItemAdd word="désinscription"/>
+      <ItemAdd word="tous"/>
       <ItemSearch/>
-      <ItemCours v-for="(student, index) in students" :word="student.name" :key="index"/>
+      <ItemCours v-for="(student, index) in students" :word="student.name" :key="index" @click="() => showStudentInfo(student.name)"/>
     </div>
   </div>
-  <AddStudent v-if="popupCreate.buCreate" :ToCreatePopup="() => ToCreatePopup('buCreate') "/>
+  <GiveInfo v-if="popupShow.buShow" :student="selectedStudent" :ToShow="() => ToShow('buShow')" />
+
 </template>
 
 <script>
@@ -16,24 +19,26 @@ import ItemCours from '../../elements/ItemStudent.vue';
 import ItemSearch from '../../elements/ItemSearch.vue';
 import ItemAdd from '../../elements/ItemAdd.vue';
 import AddCours from '../../popup/AddCours.vue';
+import GiveInfo from '../../popup/GiveInfo.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref, onMounted } from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import axios from "axios";
-import AddStudent from "@/popup/AddStudent.vue";
+
 
 export default {
   components: {
-    AddStudent,
     ItemCours,
     TopSec,
     ItemSearch,
     ItemAdd,
-    AddCours
+    AddCours,
+    GiveInfo
   },
   setup() {
     const students = ref([]);
+    const selectedStudent = ref(null);
 
     const getStudents = () => {
       axios.get('http://localhost:1937/students/getAll')
@@ -59,6 +64,13 @@ export default {
       buCreate: false
     });
 
+    const popupShow = ref({
+        buShow: false
+    });
+    const ToShow = (tri2)=>{
+        popupShow.value[tri2]=!popupShow.value[tri2]
+    }
+
     const ToCreatePopup = (tri1) => {
       popupCreate.value[tri1] = !popupCreate.value[tri1];
       if (!popupCreate.value[tri1]) {
@@ -66,11 +78,29 @@ export default {
       }
     };
 
+    const showStudentInfo = async (name) => {
+      try {
+        const response = await axios.get(`http://localhost:1937/students/findByName?name=${name}`)
+        selectedStudent.value = response.data;
+        popupShow.value.buShow = true;
+      } catch (error) {
+        console.error('Error fetching student info:', error);
+      }
+    };
+
+    onMounted(() => {
+      getStudents();
+    });
+
     return {
       students,
       popupCreate,
       ToCreatePopup,
-      cLang
+      cLang,
+      popupShow,
+      ToShow,
+      showStudentInfo,
+      selectedStudent
     };
   }
 }
