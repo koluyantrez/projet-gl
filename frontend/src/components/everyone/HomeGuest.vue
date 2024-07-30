@@ -2,24 +2,26 @@
   <TopGuest/>
   <div class="container">
     <div class="place">
-      <ItemSearch/>
+      <ItemSearch @search="filterCourses"/>
       <!--ItemCoursGuest v-for="(item,index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/-->
-      <ItemCours v-for="(item, index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/>
+      <ItemCours v-for="(item, index) in filteredCourses" :word="item" :key="index" @course-clicked="goToCourse"/>
     </div>
   </div>
 </template>
 <script>
 import TopGuest from '../../elements/TopGuest.vue';
 import ItemCoursGuest from '../../elements/ItemCoursGuest.vue';
-import ItemSearch from '../../elements/ItemSearch.vue';
+
 import ItemCours from '../../elements/ItemCours.vue';
 import axios from 'axios';
+import ItemSearch from "@/elements/ItemSearch.vue";
 
 export default {
   components: {ItemCoursGuest, TopGuest, ItemSearch, ItemCours},
   data: () => {
     return {
       itemc: [],
+      filteredCourses: []
     }
   },
 
@@ -28,6 +30,7 @@ export default {
       axios.get('http://localhost:1937/cours/AllCours')
           .then((response) => {
             this.itemc = response.data;
+            this.filteredCourses = this.itemc;
           })
           .catch((error) => {
             console.error(error);
@@ -35,6 +38,11 @@ export default {
     },
     goToCourse(courseName) {
       this.$router.push({ name: 'courseSection', params: { cours: courseName } });
+    },
+    filterCourses(query) {
+      this.filteredCourses = this.itemc.filter(course =>
+          course.name.toLowerCase().includes(query.toLowerCase())
+      );
     }
   },
   created() {
