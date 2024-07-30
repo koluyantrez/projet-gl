@@ -4,11 +4,12 @@
     <div class="place">
       <ItemSearch @search="filterCourses"/>
       <!--ItemCoursGuest v-for="(item,index) in itemc" :word="item.name" :key="index" @course-clicked="goToCourse"/-->
-      <ItemCours v-for="(item, index) in filteredCourses" :word="item" :key="index" @course-clicked="goToCourse"/>
+      <ItemCours v-for="(item, index) in filteredCourses" :word="item.name" :key="index" @course-clicked="goToCourse"/>
     </div>
   </div>
 </template>
 <script>
+
 import TopGuest from '../../elements/TopGuest.vue';
 import ItemCoursGuest from '../../elements/ItemCoursGuest.vue';
 
@@ -17,7 +18,7 @@ import axios from 'axios';
 import ItemSearch from "@/elements/ItemSearch.vue";
 
 export default {
-  components: {ItemCoursGuest, TopGuest, ItemSearch, ItemCours},
+  components: {ItemSearch, ItemCoursGuest, TopGuest,  ItemCours},
   data: () => {
     return {
       itemc: [],
@@ -55,17 +56,16 @@ export default {
 .container {
   position: absolute;
   width: 100%;
-  height: 56rem;
-  bottom: 0.1rem;
-  left: -0.42rem;
+  height: 89%;
+  top: 100px;
   overflow: auto;
-  /* border: 3px solid rgb(6, 148, 37); *//* Bordure de la zone conteneur*/
+  /*border: 3px solid rgb(6, 148, 37); /* Bordure de la zone conteneur */
 }
 
 .place {
   position: absolute;
-  top: 1rem;
-  left: 10rem;
+  top: 5%;
+  left: 10%;
 }
 
 
