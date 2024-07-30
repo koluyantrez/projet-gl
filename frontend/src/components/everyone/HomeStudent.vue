@@ -1,9 +1,9 @@
 <template>
   <div>
-    <TopStudent/>
+    <TopStudent />
     <div class="place">
-      <ItemSearch/>
-      <ItemCours v-for="(item, index) in itemc" :word="item" :key="index"/>
+      <ItemSearch @search="filterCourses" />
+      <ItemCours v-for="(item, index) in filteredCourses" :word="item" :key="index" @show-details="handleShowDetails" />
     </div>
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
   components: { ItemCours, TopStudent, ItemSearch },
   data() {
     return {
-      itemc: [],
+      itemc: [], // Liste complète des cours
+      filteredCourses: [], // Liste filtrée des cours
       matricule: ''
     };
   },
@@ -48,18 +49,14 @@ export default {
       };
 
       console.log("email : " + login.email);
-      this.matricule = this.extractNumberBeforeAt(login.email)
+      this.matricule = this.extractNumberBeforeAt(login.email);
       console.log("matricule : " + this.matricule);
       Cookies.set('matriculeStudent', this.matricule);
       axios.post('http://localhost:1937/students/getActuelCours', login)
           .then(response => {
             const cours = response.data.map(cours => cours.name);
             this.itemc = cours;
-            this.$router.push({
-              query: {
-                matricule: login.email
-              }
-            });
+            this.filteredCourses = cours; // Initialiser les cours filtrés
           })
           .catch(error => {
             console.error(error);
@@ -71,9 +68,16 @@ export default {
     },
 
     handleShowDetails(word) {
-        this.$router.push({ name: 'courseSection', params: { courseName: word } });
+      this.$router.push({ name: 'courseSection', params: { courseName: word } });
     },
 
+    filterCourses(query) {
+      console.log('Filter query:', query); // Debug: vérifier la valeur de la requête
+      this.filteredCourses = this.itemc.filter(course =>
+          course.toLowerCase().includes(query.toLowerCase())
+      );
+      console.log('Filtered courses:', this.filteredCourses); // Debug: vérifier les cours filtrés
+    }
   },
 
   created() {
@@ -85,8 +89,16 @@ export default {
 
 <style scoped>
 .place {
-    position: absolute;
-    top: 20%;
-    left: 8%;
+  position: absolute;
+  top: 20%;
+  left: 8%;
+  width: 80%; /* Assurez-vous que la largeur est suffisante */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-search {
+  margin-bottom: 20px; /* Espacer la barre de recherche des cours */
 }
 </style>
