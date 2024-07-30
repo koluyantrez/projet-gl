@@ -1,5 +1,5 @@
 <template>
-  <center>
+  <div class="center">
     <div class="group">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
         <g>
@@ -8,16 +8,34 @@
           ></path>
         </g>
       </svg>
-      <input class="input" type="recherche"  />
+      <input v-model="query" @input="onInput" placeholder="Rechercher..." />
     </div>
-  </center>
+  </div>
 </template>
 
 <script>
 
+  export default {
+    data() {
+      return {
+        query: '',
+      };
+    },
+    methods: {
+      onInput() {
+        this.$emit('search', this.query);
+      },
+    },
+  };
+
 </script>
 
 <style scoped>
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .group {
   display: flex;
   line-height: 28px;
