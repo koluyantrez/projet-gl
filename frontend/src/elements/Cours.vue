@@ -15,14 +15,14 @@ export default{
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   padding: 1rem; /* Adjust padding to your needs */
   transition: transform 0.3s;
-  width: 35rem; /* Set fixed width */
-  height: 7rem; /* Set fixed height */
+  width: 36rem; /* Set fixed width */
+  height: 9rem; /* Set fixed height */
   margin: 0.1rem ; /* Center the section horizontally */
 }
 
 .course-section h2 {
   margin-top: 0;
-  font-size: 35px; /* Adjust font size as needed */
+  font-size: 35px;
   font-family: Roboto, sans-serif;
   color: black;
 }

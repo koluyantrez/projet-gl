@@ -16,7 +16,7 @@ Projet du groupe 4
 Avant de commencer, assurez-vous de disposer des éléments suivants :
 
 - Avoir installé Java 21.
-- Avoir installé Node.js et npm (npm install ou npm install --force). 
+- Avoir installé Node.js et npm (npm install ou npm install --force).
 - Avoir téléchargé le code source du projet.
 
 
@@ -48,3 +48,4 @@ Le fichier `demarrage.bat` contient les commandes nécessaires au démarrage du 
 - Pour lancer seulement le backend, utilisez la commande `gradlew bootrun`.
 - Pour lancer seulement le frontend, utilisez la commande `npm run serve`.
 - Pour exécuter les tests unitaires, utilisez la commande `gradlew test`.
+

@@ -1,0 +1,16 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-body {
+    text-align: left;
+}
+
+.navbar-text {
+    margin-left: auto;
+}

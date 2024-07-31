@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter/Modifier Bureau</title>
+    <link rel="stylesheet" href="/Bureaux/styles.css">
+</head>
+<body>
+<header>
+    <h1>Ajouter/Modifier Bureau</h1>
+    <a href="index.html">Retour à la Liste</a>
+</header>
+<main>
+    <form id="office-form">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" name="name" required>
+        <label for="location">Emplacement :</label>
+        <input type="text" id="location" name="location" required>
+        <input type="hidden" id="office-id" name="office-id">
+        <button type="submit">Enregistrer</button>
+    </form>
+</main>
+<script src="/Bureaux/form.js"></script>
+</body>
+</html>

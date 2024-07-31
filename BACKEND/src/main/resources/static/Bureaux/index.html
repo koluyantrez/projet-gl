@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Bureaux</title>
+    <link rel="stylesheet" href="/Bureaux/styles.css">
+</head>
+<body>
+<header>
+    <h1>Liste des Bureaux</h1>
+    <a href="office-form.html">Ajouter un Bureau</a>
+</header>
+<main>
+    <table id="office-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Emplacement</th>
+            <th>Occupant</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Les lignes de bureaux seront ajoutées ici par JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Modale pour attribuer un personnel -->
+    <div id="assign-personnel-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Attribuer un Personnel</h2>
+            <input type="text" id="personnel-search" placeholder="Rechercher un personnel...">
+            <ul id="personnel-suggestions" class="suggestions-list"></ul>
+            <button id="assign-personnel-btn">Attribuer</button>
+        </div>
+    </div>
+
+</main>
+<script src="/Bureaux/script.js"></script>
+</body>
+</html>

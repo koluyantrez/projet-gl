@@ -26,12 +26,12 @@ import Cookies from 'js-cookie';
 export default {
   components: { ItemCours, TopProf, ItemAdd, ListCoursAdd },
   data() {
-
     const li = ref({
-        modalIsOpen: false
+      modalIsOpen: false
     });
+
     const ToShow = (tri) => {
-        li.value[tri] = !li.value[tri]
+      li.value[tri] = !li.value[tri];
     };
 
     const store = useStore();
@@ -65,8 +65,7 @@ export default {
     extractNumberBeforeAt(email) {
       const atIndex = email.indexOf('@');
       if (atIndex !== -1) {
-        const number = email.substring(0, atIndex);
-        return number;
+        return email.substring(0, atIndex);
       } else {
         return null;
       }
@@ -82,11 +81,14 @@ export default {
         email: email,
         password: password
       };
-      console.log("email :  " + login.email);
       this.matricule = this.extractNumberBeforeAt(login.email);
       Cookies.set('matriculeProfesseur', this.matricule);
-      axios.post(`http://localhost:1937/teachers/getCourses`, login)
+      axios.post(`http://localhost:1937/api/professeurs/courses`, {
+        email: Cookies.get('emailProfesseur'),
+        password: Cookies.get('passwordProfesseur')
+      })
           .then(response => {
+            // Supposons que la réponse contienne un tableau de cours
             const courses = response.data;
             this.courses = courses;
           })
@@ -94,6 +96,7 @@ export default {
             console.error(error);
             // Gérer les erreurs de requête
           });
+
     },
   },
   created() {
@@ -102,19 +105,20 @@ export default {
 }
 </script>
 
+
 <style scoped>
 .container {
-  position: absolute;
-  width: 99%;
-  height: 89%;
-  top: 100px;
-  overflow: auto;
+    position: absolute;
+    width: 100rem; 
+    height: 54rem; 
+    bottom: 0.1rem; 
+    /*border: 3px solid rgb(6, 148, 37); /* Bordure de la zone conteneur */
 }
 
 .place {
-  position: absolute;
-  top: 5%;
-  left: 10%;
+    position: absolute;
+    top: 7rem;
+    left: 10rem;
 }
 
 .add {
@@ -124,99 +128,4 @@ export default {
   margin-bottom: 20px;
 }
 
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 20);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal h2 {
-  color: white;
-}
-
-.modal ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  color: white;
-}
-
-#buttonAjouter {
-  padding: 10px 10px;
-  font-size: 15px;
-  border-radius: 20px;
-  color: white;
-  cursor: pointer;
-  background-color: white;
-  color: black;
-  border: solid black 2px;
-
-}
-
-#buttonAjouter:hover {
-  background-color: green;
-}
-
-.small {
-  background-color: green;
-  font-size: 12px;
-}
-
-.medium {
-  background-color: orange;
-  font-size: 14px;
-}
-
-.large {
-  background-color: red;
-  font-size: 16px;
-}
-
-.modal button {
-  font-size: 18px;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modal button:hover {
-  background-color: #45a049;
-}
-
-.course-item {
-  list-style-type: disc;
-  font-size: 20px;
-}
-
-.modal-title {
-  font-size: 30px;
-  transform: translateX(-100px);
-}
-
-.course-item {
-  list-style-type: disc;
-  font-size: 20px;
-}
-
-.course-list {
-  max-height: 300px; /* Hauteur maximale de la liste des cours */
-  overflow-y: auto; /* Activation du défilement vertical */
-}
-
-.course-scroll {
-  padding: 0;
-  margin: 0;
-  color: white;
-  overflow: hidden; /* Masquer le contenu qui dépasse */
-}
 </style>

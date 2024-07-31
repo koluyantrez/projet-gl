@@ -1,13 +1,15 @@
 <template>
   <div class="popup">
     <div class="inner">
+      <slots/>
       <center>
-        <ItemInput type="password" :name="cLang.pw.old" v-model:val="currentPassword"/>
-        <ItemInput type="password" :name="cLang.pw.new" v-model:val="newPassword"/>
-        <ItemInput type="password" :name="cLang.pw.check" v-model:val="confirmPassword"/>
-
+        <div class="allInput">
+          <ItemInput type="password" :name="cLang.pw.old" v-model:val="currentPassword"/>
+          <ItemInput type="password" :name="cLang.pw.new" v-model:val="newPassword"/>
+          <ItemInput type="password" :name="cLang.pw.check" v-model:val="confirmPassword"/>
+        </div>
         <ItemAdd :word="cLang.pw.ok" @click="changePassword()" />
-        <ItemAdd class="close" :word="cLang.pw.back" @click="ToPassPopup()" />
+        <ItemAdd :word="cLang.pw.back" @click="ToPassPopup()" />
       </center>
     </div>
   </div>
@@ -134,5 +136,10 @@ export default {
   background: rgb(255, 255, 255);
   padding: 39px;
   border-radius: 10%;
+}
+
+.allInput{
+  position: relative;
+  bottom: 2.5rem;
 }
 </style>

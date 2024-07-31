@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illumis - Liste des demandes de réservations</title>
+    <link rel="stylesheet" href="/DemandeReservation/afficheList.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            <h1>Illumis</h1>
+            <p>Université d'Illumis</p>
+        </div>
+    </header>
+    <main>
+        <h2>Liste des demandes de réservations :</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Demandeur</th>
+                <th>Date de la demande</th>
+                <th>Heure de la demande</th>
+                <th>Salle</th>
+                <th>Statut</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="reservations-list">
+            <!-- Les demandes seront ajoutées ici dynamiquement -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button class="nav-btn" id="prev-btn">&lt;</button>
+            <button class="nav-btn" id="next-btn">&gt;</button>
+        </div>
+    </main>
+</div>
+<script src="/DemandeReservation/afficheList.js"></script>
+</body>
+</html>

@@ -40,8 +40,8 @@
 }
 
 .input {
-  width: 100%;
-  height: 40px;
+  width: 40rem;
+  height: 4rem;
   line-height: 28px;
   padding: 0 1rem;
   padding-left: 2.5rem;
