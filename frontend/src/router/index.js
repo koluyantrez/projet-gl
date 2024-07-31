@@ -104,17 +104,17 @@ const routes = [
   {
     path: '/addNewCours',
     name: 'newCours',
-    component: () => import(/* webpackChunkName: "newCours" */ '../components/everyone/extensionOussama/AddNewCours.vue')
+    component: () => import(/* webpackChunkName: "newCours" */ '@/components/extensionOussama/AddNewCours.vue')
   },
   {
     path: '/roomReservationRequest',
     name: 'roomReservation',
-    component: () => import(/* webpackChunkName: "roomReservation" */ '../components/everyone/extensionOussama/RoomReservation.vue')
+    component: () => import(/* webpackChunkName: "roomReservation" */ '@/components/extensionOussama/RoomReservation.vue')
   },
   {
     path: '/detailsCourse',
     name: 'DetailsCours',
-    component: () => import(/* webpackChunkName: "DetailsCours" */ '../components/everyone/extensionOussama/DetailsCourse.vue')
+    component: () => import(/* webpackChunkName: "DetailsCours" */ '@/components/extensionOussama/DetailsCourse.vue')
   },
   {
     path: '/course-Section/:cours',
@@ -145,6 +145,11 @@ const routes = [
     path: '/dospii/myprofil',
     name: 'dprofil',
     component: () => import(/* webpackChunkName: "dprofil" */ '../components/ExtensionAina/compo/ProfilAina.vue')
+  },
+  {
+    path: '/roomsManagement',
+    name : 'roomManagement',
+    component: () =>import ('../components/extensionOussama/RoomManagement.vue')
   },
   {
     path: '/dospii/posted',

@@ -10,7 +10,6 @@
   </div>
   <ItemAdd class="pic" word="Photo" @click="() => ToPicPopup('buPic')"/>
   <ItemButton class="finish" :name="cLang.SignUp.done"/>
-  <ItemGrade class="tmp"/>
   <input id="file" type="file" style="display: none;" @change="handleFileUpload" />
 
   <div class="uploaded-image" v-if="uploadedFile">
@@ -25,14 +24,13 @@ import TopGuest from '../../elements/TopGuest.vue';
 import ItemInput from '../../elements/ItemInput.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import ItemAdd from '../../elements/ItemAdd.vue';
-import ItemGrade from '../../elements/ItemGrade.vue';
 import DropImg from '../../popup/DropImg.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref } from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 export default{
-  components: { TopGuest, ItemInput, ItemButton ,ItemAdd, DropImg,ItemGrade},
+  components: { TopGuest, ItemInput, ItemButton ,ItemAdd, DropImg},
   setup(){
 
     const store = useStore();
@@ -74,8 +72,8 @@ export default{
 
 .pic{
   position: absolute;
-  top: 15rem;
-  right: 15rem;
+  top: 10rem;
+  left: 40rem;
 
 }
 

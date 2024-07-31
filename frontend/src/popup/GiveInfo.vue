@@ -3,25 +3,26 @@
     <div class="inner">
       <slot></slot>
       <center>
-        <img :src="pic" style="width: 7rem; height: 7rem;"/>
+        <img :src="src" alt="Profil" style="width: 7rem; height: 7rem;"/> <!--:src=data.photo-->
         <div class="info">
-          <p>{{student.email }}</p>
-          <p>{{student.name }}</p>
-          <p>{{student.matricule }}</p>
-          <p>{{student.adresse }}</p>
-          <p>+{{student.numero }}</p>
+          <p>{{ "Email : " + email }}</p>
+          <p>{{ "Prénom et Nom : " + name }}</p>
+          <p>{{ "Matricule : " + matricule }}</p>
+          <p>{{"Adresse : " + adresse }}</p>
+          <p>{{ "Numero : " + numero }}</p>
         </div>
-        <ItemAdd class="close" :word="cLang.pw.back" @click="ToShow()"/>
+        <router-link to="/ins">
+          <ItemAdd class="close" :word="cLang.pw.back" @click="closePopup"/>
+        </router-link>
       </center>
     </div>
   </div>
 </template>
 
-
 <script>
 import ItemAdd from '../elements/ItemAdd.vue';
 import { useStore } from 'vuex';
-import { computed, watch, ref, onMounted } from 'vue';
+import { computed, watch, ref } from 'vue';
 import fr from '../views/fr.js'
 import en from '../views/en.js'
 import Cookies from "js-cookie";
@@ -29,14 +30,12 @@ import axios from 'axios';
 
 export default {
   components: { ItemAdd },
-  props: ['ToShow','student'],
+  props: ['toShow'],
 
   data() {
-    const pic = ref(null);
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
-
     const namePer = Cookies.get('selectedPersonName');
     console.log(namePer);
 
@@ -44,17 +43,33 @@ export default {
       cLang.value = newLang === 'fr' ? fr : en;
     });
 
-    const getPic = () => {
-        pic.value = `data:image/jpeg;base64,${this.student.image}`
-    }
-
-    onMounted(() => {
-        getPic();
-    });
-
     return {
       cLang,
-      pic
+      src: require('../assets/profil.png'),
+      name : '',
+      email: '',
+      matricule: '',
+      adresse: '',
+      numero: '',
+    }
+  },
+  methods: {
+    closePopup() {
+      this.toShow('buShow');
+    },
+    getPersonnelInfo(name) {
+      axios.get(`http://localhost:1937/personnel/name/${name}`)
+          .then(response => {
+            const data = response.data;
+            this.email = data.email;
+            this.matricule = data.matricule;
+            this.adresse = data.adresse;
+            this.numero = data.numero;
+            this.name = data.name;
+          })
+          .catch(error => {
+            console.error('Error fetching personnel info:', error);
+          });
     }
   },
   created() {

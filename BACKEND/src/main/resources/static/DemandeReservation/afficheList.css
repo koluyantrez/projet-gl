@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header .logo h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #b70000;
+}
+
+header .logo p {
+    margin: 0;
+    font-size: 1.2em;
+    color: #666;
+}
+
+h2 {
+    color: #b70000;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table thead {
+    background-color: #b70000;
+    color: white;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.modify-btn {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.modify-btn:hover {
+    background-color: #444;
+}
+
+.pagination {
+    text-align: center;
+}
+
+.nav-btn {
+    background-color: #b70000;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    background-color: #930000;
+}

@@ -1,0 +1,111 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-header {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #6c757d;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 220px; /* Fixed width for sidebar */
+    background-color: #343a40;
+    transition: all 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#sidebar .nav-link {
+    font-size: 1.1rem;
+    color: #adb5bd;
+    padding: 10px 20px;
+    transition: all 0.3s;
+}
+
+#sidebar .nav-link:hover {
+    background-color: #495057;
+    color: white;
+}
+
+#sidebar .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+main {
+    margin-left: 220px; /* Matches the sidebar width */
+    padding: 20px;
+}
+
+header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    font-weight: 300;
+    color: #343a40;
+}
+
+p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.card {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-body .list-group-item {
+    font-size: 1rem;
+}
+
+.card-body .list-group-item .badge {
+    font-size: 0.9rem;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.list-group-item + .list-group-item {
+    border-top: 1px solid #dee2e6;
+}
+
+.rounded-circle {
+    border: 3px solid #007bff;
+}
+
+.ml-3 {
+    margin-left: 1rem;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}

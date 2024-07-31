@@ -1,6 +1,6 @@
 <template>
   <component :is="top"/>
-    <div class="nc"><h1>{{code}} {{course}}</h1></div>
+    <div class="nc">{{code}} {{courseName}}</div>
     <div class="rec">
         <Cours :word="cLang.Course.th"/>
         <Cours :word="cLang.Course.tp"/>
@@ -58,15 +58,14 @@ export default {
             return result;
           });
 
-      return {
-        cLang,
-        top,
-        course: '',
-        studentName: '',
-        prof: '',
-        emailProf: '',
-        code: '',
-      };
+          return {
+      cLang,
+      top,
+      courseName: '',
+      prof: '',
+      emailProf: '',
+      code: '',
+    };
     },
 
   name: 'courseSection',
@@ -83,15 +82,17 @@ export default {
 
   methods: {
     getSensei(){
-        axios.get(`http://localhost:1937/GetCoursByName?coursName=${this.$route.params.cours}`)
+        axios.get(`http://localhost:1937/api/cours/getByName?coursName=${this.$route.params.cours}`)
             .then(response => {
-                const info = response.data;
-                this.code = info.code;
-                this.prof = info.teacherName;
-                axios.get(`http://localhost:1937/teachers/findByName?name=${info.teacherName}`)
+              const info = response.data;
+              this.code = info.code;
+              console.log(this.code);
+              this.courseName = info.name;
+              this.prof = info.teacherName;
+                console.log(info.teacherName);
+                axios.get(`http://localhost:1937/api/professeurs/findByName?teacherName=${this.prof}`)
                             .then(response => {
                                 const sensei = response.data;
-                                console.log(sensei);
                                 this.emailProf = sensei.email;
                             })
                             .catch(error => {
@@ -151,9 +152,9 @@ export default {
 
 .nc{
     position: absolute;
-    top: 5%;
+    top: 10%;
     left: 2%;
-    font-size: 42px;
+    font-size: 70px;
     font-family: Roboto,sans-serif;
     color: #9F0924;
 
@@ -177,5 +178,4 @@ export default {
   font-size: 25px;
   font-family: Roboto,sans-serif;
 }
-
 </style>

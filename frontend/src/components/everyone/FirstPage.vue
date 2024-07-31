@@ -3,7 +3,7 @@
     <center>
       <img class="logo" src="../../assets/illumis.png" alt="MyLogo">
       <h1>{{cLang.FirstPage.region}}</h1>
-      <ItemInput type="text" :name="cLang.FirstPage.id" v-model:val="email" @keyup.enter="submitform"/>
+      <ItemInput type="text" name="Email" v-model:val="email" @keyup.enter="submitform"/>
       <ItemInput type="password" :name="cLang.FirstPage.pw" v-model:val="password" @keyup.enter="submitform"/>
     </center>
     <div class="forb">
@@ -69,19 +69,16 @@ export default {
     extractNumberBeforeAt(email) {
       const atIndex = email.indexOf('@');
       if (atIndex !== -1) {
-        const number = email.substring(0, atIndex);
-        return number;
-      } else {
-        return null;
+        return email.substring(0, atIndex);
       }
+      return null;
     },
     submitform() {
-
       const authentification = {
         email: this.email,
         password: this.password,
       };
-      fetch('http://localhost:1937/login', {
+      fetch('http://localhost:1937/login_', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -91,13 +88,13 @@ export default {
           .then(response => {
             this.role = determineUserRole(this.email);
             if (response.ok) {
+              Cookies.set('email', this.email);
+              Cookies.set('password', this.password);
+              Cookies.set('role', this.role);
+
               if (this.role === 'student') {
-                // Stockage du mail et du mot de passe dans les cookies
                 Cookies.set('emailStudent', this.email);
                 Cookies.set('passwordStudent', this.password);
-                Cookies.set('role' , this.role);
-                console.log("cookies student : " + Cookies.get('emailStudent'));
-                console.log("cookies password student " + Cookies.get('passwordStudent'));
                 this.$router.push({
                   name: 'student',
                   query: {
@@ -105,10 +102,11 @@ export default {
                     password: this.password
                   }
                 });
-              } else if (this.role === 'professeur'){
+              } else if (this.role === 'professeur') {
                 Cookies.set('emailProfesseur', this.email);
                 Cookies.set('passwordProfesseur', this.password);
-                Cookies.set('role' , this.role);
+                const mat = this.extractNumberBeforeAt(this.email);
+                Cookies.set('matriculeProfesseur', mat);
                 this.$router.push({
                   name: 'prof',
                   query: {
@@ -116,12 +114,11 @@ export default {
                     password: this.password
                   }
                 });
-              }else if (this.role === 'inscription'){
+              } else if (this.role === 'inscription') {
                 Cookies.set('emailInscription', this.email);
                 Cookies.set('passwordInscription', this.password);
-                Cookies.set('role' , this.role);
-                const mat = this.extractNumberBeforeAt(this.email)
-                Cookies.set('matriculeInscription' , mat);
+                const mat = this.extractNumberBeforeAt(this.email);
+                Cookies.set('matriculeInscription', mat);
                 this.$router.push({
                   name: 'inscription',
                   query: {
@@ -130,30 +127,8 @@ export default {
                   }
                 });
               }
-            } else if (response.status === 401) {
-              alert("Mot de passe incorrect");
-            } else if (response.status === 404) {
-              alert("User non trouvé");
-            } else if (response.status === 500) {
-              alert("Erreur inattendue");
-            } else if (response.status === 418) {
-              alert("Je ne fais pas de café, je suis une théaire");
             } else {
-              alert("Erreur de serveur inattendue");
-            }
-          })
-          .then(() => {
-            console.log("role : " + this.role);
-            Cookies.set('role ' , this.role);
-            console.log("cookies role :  " + this.role);
-            if (this.role === 'assistant') {
-              // Reste du code pour le rôle d'assistant
-            } else if (this.role === 'professeur') {
-              // Reste du code pour le rôle de professeur
-            } else if (this.role === 'student') {
-              // Reste du code pour le rôle d'étudiant
-            } else {
-              console.log('Rôle d\'utilisateur inconnu');
+              // Gestion des erreurs
             }
           })
           .catch(error => {
@@ -162,7 +137,8 @@ export default {
           });
     }
   }
-  
+
+
 };
 </script>
 

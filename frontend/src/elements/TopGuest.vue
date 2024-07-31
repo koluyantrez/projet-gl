@@ -83,7 +83,6 @@
 
 .te{
   position: relative;
-  top: -3rem;
   font-family: Roboto, sans-serif;
   font-size: 60px;
   color: azure;

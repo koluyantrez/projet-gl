@@ -88,11 +88,7 @@ export default {
 
     const fetchProfInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:1937/teachers/findById', {
-          params: {
-            matricule: matricule.value
-          }
-        });
+        const response = await axios.get(`http://localhost:1937/api/professeurs/${matricule.value}`);
         const professeurData = response.data;
         console.log(professeurData);
         professeurInfo.value.name = professeurData.name;
@@ -107,6 +103,7 @@ export default {
         console.log('error fetching teacher info : ', error);
       }
     };
+
 
     onMounted(() => {
       fetchProfInfo();
@@ -134,9 +131,9 @@ export default {
 .photo{
   position: absolute;
   left: 5rem;
-  top: 12rem;
-  width: 25rem;
-  height: 25rem;
+  top: 10rem;
+  width: 20rem;
+  height: 20rem;
 }
 
 .b {
@@ -149,10 +146,10 @@ export default {
 .info {
   position: absolute;
   left: 35rem;
-  top: 0rem;
+  top: 4.5rem;
   color: rgb(158, 11, 23);
   font-family: Roboto, sans-serif;
-  font-size: 43px;
+  font-size: 35px;
   transform: translateY(20px);
 }
 </style>

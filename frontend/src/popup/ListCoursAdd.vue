@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     showCourseSelection() {
-      axios.get('http://localhost:1937/cours/AllCours')
+      axios.get('http://localhost:1937/api/cours/All')
         .then(response => {
           const courses = response.data;
           this.availableCourses = courses.map(cours => cours.name);
