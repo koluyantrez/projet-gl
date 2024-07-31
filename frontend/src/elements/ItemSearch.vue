@@ -8,7 +8,7 @@
           ></path>
         </g>
       </svg>
-      <input v-model="query" @input="onInput" placeholder="Rechercher..." />
+      <input class="input" v-model="query" @input="onInput" />
     </div>
   </div>
 </template>
@@ -31,11 +31,6 @@
 </script>
 
 <style scoped>
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .group {
   display: flex;
   line-height: 28px;
@@ -45,36 +40,35 @@
 }
 
 .input {
-  width: 1000px;
-  height: 50px;
+  width: 100%;
+  height: 40px;
   line-height: 28px;
   padding: 0 1rem;
   padding-left: 2.5rem;
   border: 2px solid transparent;
   border-radius: 8px;
   outline: none;
-  background-color: #d4d4d4;
+  background-color: #f3f3f4;
   color: #0d0c22;
   transition: 0.3s ease;
 }
 
 .input::placeholder {
-  color: #37373a;
-  font-family: Roboto,sans-serif;
+  color: #9e9ea7;
 }
 
 .input:focus,
 input:hover {
   outline: none;
-  border-color: rgba(0, 48, 73, 0.4);
+  border-color: rgba(158, 11, 23, 0.8);
   background-color: #fff;
-  box-shadow: 0 0 0 4px rgb(0 48 73 / 10%);
+  box-shadow: 0 0 0 4px rgb(254 166 178 / 40%);
 }
 
 .icon {
   position: absolute;
   left: 1rem;
-  fill: #37373a;
+  fill: #9e9ea7;
   width: 1rem;
   height: 1rem;
 }
