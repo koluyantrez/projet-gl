@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/ins',
     name: 'ins',
-    component: () => import(/* webpackChunkName: "ins" */ '../components/everyone/HomeIns.vue')
+    component: () => import(/* webpackChunkName: "ins" */ '../components/everyone/HomeInscr.vue')
   },
   {
     path: '/sec',

@@ -13,6 +13,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(path = "secretariat")
 public class SecretariatController {
+    @Autowired
+    private SignUpRequestRepository signUpRequestRepository;
     private SecretariatService secretariatService;
 
     public SecretariatController(SecretariatService secretariatService) {
@@ -41,5 +43,27 @@ public class SecretariatController {
     public ResponseEntity<String> supprimer(@PathVariable int matricule){
         this.secretariatService.supprimer(matricule);
         return new ResponseEntity<>("Secretary member deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/requests")
+    public ResponseEntity<List<SignUpRequest>> getAllSignUpRequests() {
+        List<SignUpRequest> signUpRequests = signUpRequestRepository.findAll();
+        return ResponseEntity.ok(signUpRequests);
+    }
+
+    @PostMapping("/approve/{id}")
+    public ResponseEntity<String> approveSignup(@PathVariable Long id) {
+        SignUpRequest request = signUpRequestRepository.findById(id).orElseThrow(() -> new RuntimeException("Request not found"));
+        request.setStatus("accepted");
+        signUpRequestRepository.save(request);
+        return ResponseEntity.ok("Signup request approved!");
+    }
+
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<String> rejectSignup(@PathVariable Long id) {
+        SignUpRequest request = signUpRequestRepository.findById(id).orElseThrow(() -> new RuntimeException("Request not found"));
+        request.setStatus("rejected");
+        signUpRequestRepository.save(request);
+        return ResponseEntity.ok("Signup request rejected!");
     }
 }

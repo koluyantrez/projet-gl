@@ -1,5 +1,6 @@
 <template>
     <MoodleTop/>
+    <img class="la" alt="Change the language" src="../assets/lang.png" @click="switchLang"/>
     <div class="pic">
         <router-link to="/">
             <ProfilPhoto class="pic" :src="pp"/>
@@ -9,12 +10,12 @@
       <router-link to="/guest/signup">
         <p class="ins" >{{cLang.Top.signin}}</p>
       </router-link>
-      <router-link to="/guest">
+    <router-link to="/guest">
         <p class="cours">{{cLang.Top.course}}</p>
-      </router-link>
-      <router-link to="/dospii">
+    </router-link>
+    <router-link to="/dospii">
         <p class="dospii">DOSPII</p>
-      </router-link>
+    </router-link>
     </div>
 </template>
 <script>
@@ -30,12 +31,21 @@
         const store = useStore();
         const idLa = computed(() => store.state.lang.curLang);
         const cLang = ref(idLa.value === 'fr' ? fr : en);
+        const switchLang = () => {
+            if (idLa.value === 'fr') {
+                store.commit('setLang', 'en');
+            }
+            else if (idLa.value === 'en') {
+                store.commit('setLang', 'fr');
+            }
+        };
 
         watch(idLa, (newLang) => {
             cLang.value = newLang === 'fr' ? fr : en;
         });
         console.log(cLang.value);
         return {
+            switchLang,
             cLang,
             pp: require('../assets/profil.png')
         };
@@ -47,6 +57,7 @@
 
 .la{
   position: fixed;
+  top: 1rem;
   left: 13rem;
   width: 4rem; 
   height: auto;
@@ -64,7 +75,6 @@
 
 .te .cours{
   position: absolute;
-  top: 0;
   right: 21rem;
   width: 5rem;
   height: auto;
@@ -78,11 +88,11 @@
   width: 7rem;
   height: auto;
   z-index: 91;
-  color:azure;
 }
 
 .te{
   position: relative;
+  top: -3rem;
   font-family: Roboto, sans-serif;
   font-size: 60px;
   color: azure;

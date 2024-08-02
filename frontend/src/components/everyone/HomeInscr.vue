@@ -3,11 +3,12 @@
   <div class="container">
     <div class="place">
       <ItemAdd :word="cLang.Top.addel" @click="() => ToCreatePopup('buCreate')"/>
-      <ItemSearch/>
-      <ItemCours v-for="(student, index) in students" :word="student.name" :key="index"/>
+      <ItemSearch @search="filterRequest"/>
+      <ItemCours v-for="(request, index) in filteredRequest" :word="request.name + ' ' + request.firstName" :key="index" @click="showRequestPopup(request)"/>
     </div>
   </div>
   <AddStudent v-if="popupCreate.buCreate" :ToCreatePopup="() => ToCreatePopup('buCreate') "/>
+  <Request v-if="showPopup" :request="selectedRequest" @close="closeRequestPopup" @accept="handleAcceptRequest" @reject="handleRejectRequest"/>
 </template>
 
 <script>
@@ -22,9 +23,11 @@ import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import axios from "axios";
 import AddStudent from "@/popup/AddStudent.vue";
+import Request from "@/popup/Request.vue";
 
 export default {
   components: {
+    Request,
     AddStudent,
     ItemCours,
     TopSec,
@@ -33,19 +36,29 @@ export default {
     AddCours
   },
   setup() {
-    const students = ref([]);
+    const signupRequests = ref([]);
+    const filteredRequest = ref(signupRequests.value);
+    const selectedRequest = ref(null);
+    const showPopup = ref(false);
 
-    const getStudents = () => {
-      axios.get('http://localhost:1937/students/getAll')
+    const getSignupRequests = () => {
+      axios.get('http://localhost:1937/secretariat/requests')
           .then((response) => {
-            students.value = response.data;
+            signupRequests.value = response.data;
+            filteredRequest.value = signupRequests.value;
           })
           .catch((error) => {
             console.error(error);
           });
     };
 
-    onMounted(getStudents);
+    const filterRequest = (query) => {
+      filteredRequest.value = signupRequests.value.filter((request) => {
+        return request.name.toLowerCase().includes(query.toLowerCase()) || request.firstName.toLowerCase().includes(query.toLowerCase());
+      });
+    };
+
+    onMounted(getSignupRequests);
 
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
@@ -62,15 +75,45 @@ export default {
     const ToCreatePopup = (tri1) => {
       popupCreate.value[tri1] = !popupCreate.value[tri1];
       if (!popupCreate.value[tri1]) {
-        getStudents();
+        getSignupRequests();
       }
     };
 
+    const showRequestPopup = (request) => {
+      selectedRequest.value = request;
+      showPopup.value = true;
+    };
+
+    const closeRequestPopup = () => {
+      showPopup.value = false;
+      selectedRequest.value = null;
+    };
+
+    const handleAcceptRequest = (request) => {
+      // Handle additional logic if needed
+      closeRequestPopup();
+      getSignupRequests();
+    };
+
+    const handleRejectRequest = (request) => {
+      // Handle additional logic if needed
+      closeRequestPopup();
+      getSignupRequests();
+    };
+
     return {
-      students,
+      signupRequests,
+      selectedRequest,
+      showPopup,
       popupCreate,
       ToCreatePopup,
-      cLang
+      showRequestPopup,
+      closeRequestPopup,
+      handleAcceptRequest,
+      handleRejectRequest,
+      cLang,
+      filterRequest,
+      filteredRequest
     };
   }
 }
