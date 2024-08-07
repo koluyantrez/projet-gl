@@ -5,6 +5,7 @@ public enum EmailDomain {
     PROFESSOR("@Illumis.professeur.ac.be"),
     ADMIN("@Illumis.admin.ac.be"),
     ASSISTANT("@Illumis.assistant.ac.be"),
+    SECRETARIAT("@Illumis.secretariat.ac.be"),
     SERVICE_INSCRIPTION("@Illumis.inscription.ac.be");
 
     private final String domain;

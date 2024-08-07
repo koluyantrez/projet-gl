@@ -13,7 +13,8 @@ public abstract class AbstractLoginService {
 
     public ResponseEntity<String> login(String email, String password) {
         String matriculeStr = authService.extractMatriculeFromEmail(email);
-        System.out.println(matriculeStr);
+
+        System.out.println("matricule : " + matriculeStr);
         if (matriculeStr == null) {
             return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
         }
@@ -22,7 +23,6 @@ public abstract class AbstractLoginService {
             Long matricule = Long.parseLong(matriculeStr);
             ResponseEntity<String> result = authenticate(matricule, password);
             System.out.println("mat = " + matricule);
-            System.out.println("pass : " + password);
             if (result != null) {
                 System.out.println("null");
                 return result;

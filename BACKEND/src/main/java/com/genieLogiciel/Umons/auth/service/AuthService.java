@@ -29,6 +29,8 @@ public class AuthService {
             return "inscription";
         } else if (email.endsWith("@Illumis.admin.ac.be")){
             return "administrateur";
+        } else if (email.endsWith("@Illumis.secretariat.ac.be")){
+            return "secretariat";
         }
         else {
             return "inconnu";
@@ -42,7 +44,7 @@ public class AuthService {
      * @return Le matricule extrait de l'adresse e-mail.
      */
     public String extractMatriculeFromEmail(String email) {
-        Pattern pattern = Pattern.compile("^(\\d+)@Illumis\\.(student|assistant|professeur|inscription|admin)\\.ac\\.be$");
+        Pattern pattern = Pattern.compile("^(\\d+)@Illumis\\.(student|secretariat|assistant|professeur|inscription|admin)\\.ac\\.be$");
         Matcher matcher = pattern.matcher(email);
 
         if (matcher.find()) {

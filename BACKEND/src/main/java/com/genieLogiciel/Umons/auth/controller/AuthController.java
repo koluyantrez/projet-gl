@@ -3,6 +3,7 @@ package com.genieLogiciel.Umons.auth.controller;
 import com.genieLogiciel.Umons.auth.LoginRequest;
 import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
 import com.genieLogiciel.Umons.service.ProfesseurService;
+import com.genieLogiciel.Umons.service.SecretariatService;
 import com.genieLogiciel.Umons.service.ServiceInscriptionService;
 import com.genieLogiciel.Umons.service.StudentService;
 import com.genieLogiciel.Umons.extensionOussama.service.AssistantService;
@@ -27,6 +28,7 @@ public class AuthController {
    @Autowired private ProfesseurService professeurService;
    @Autowired private AdministrateurService administrateurService;
    @Autowired private ServiceInscriptionService serviceInscriptionService;
+   @Autowired private SecretariatService secretariatService;
 
     @PostMapping("/login_")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginData) {
@@ -47,12 +49,15 @@ public class AuthController {
 
     private ResponseEntity<String> handleLogin(String role, String email, String password) {
         System.out.println("le role : " + role);
+        System.out.println("pass : " + password);
+        System.out.println("Email : " + email);
         return switch (role) {
             case "assistant" -> assistantService.login(email, password);
             case "professeur" -> professeurService.login(email, password);
             case "student" -> studentService.login(email, password);
             case "inscription" -> serviceInscriptionService.login(email, password);
             case "administrateur" -> administrateurService.login(email, password);
+            case "secretariat" -> secretariatService.login(email,password);
             default -> new ResponseEntity<>("{\"message\":\"Unknown role\"}", HttpStatus.UNAUTHORIZED);
         };
     }
