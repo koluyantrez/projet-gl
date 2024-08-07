@@ -13,7 +13,7 @@
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')"/>
     <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')"/>
     <router-link to="/">
-      <ItemButton :name="cLang.Profile.logout"/>
+      <ItemButton :name="cLang.Profile.logout" @click="clearCookies"/>
     </router-link>
 
   </div>
@@ -39,6 +39,13 @@ import axios from "axios";
 
 export default {
   components: { TopProf, ItemButton, ModifPro, PassWord, DropImg },
+  methods: {
+    clearCookies() {
+      Object.keys(Cookies.get()).forEach(cookieName => {
+        Cookies.remove(cookieName);
+      });
+    }
+  },
   setup() {
 
     const matricule = ref(Cookies.get('matriculeProfesseur'));

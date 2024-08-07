@@ -5,7 +5,7 @@
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
     <ItemButton :name="cLang.Profile.edit" @click="() => ToModPopup('buTriMod')" />
     <router-link to="/">
-      <ItemButton :name="cLang.Profile.logout" />
+      <ItemButton :name="cLang.Profile.logout" @click="clearCookies"/>
     </router-link>
     <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
     <ItemButton name="PAE" />
@@ -42,7 +42,13 @@ import Cookies from 'js-cookie';
 
 export default {
   components: { TopStudent, ItemButton, YesOrNo, ModifPro, PassWord, DropImg },
-
+  methods: {
+    clearCookies() {
+      Object.keys(Cookies.get()).forEach(cookieName => {
+        Cookies.remove(cookieName);
+      });
+    }
+  },
   setup() {
     const matricule = ref(Cookies.get('matriculeStudent'));
     console.log("la valeur de matricule " + matricule.value);

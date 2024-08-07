@@ -12,7 +12,7 @@
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
     <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
     <router-link to="/">
-      <ItemButton :name="cLang.Profile.logout" />
+      <ItemButton :name="cLang.Profile.logout" @click="clearCookies"/>
     </router-link>
   </div>
   <img class="photo" :src="insInfo.pic" />
@@ -35,6 +35,13 @@ import Cookies from 'js-cookie';
 
 export default {
   components: { TopSec, ItemButton, ModifPro, PassWord, DropImg },
+  methods: {
+    clearCookies() {
+      Object.keys(Cookies.get()).forEach(cookieName => {
+        Cookies.remove(cookieName);
+      });
+    }
+  },
   setup() {
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);

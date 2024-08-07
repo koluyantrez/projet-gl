@@ -1,32 +1,56 @@
 <template>
-  <div class="details-container">
-    <h1 class="details-title">{{ courseDetails.name }}</h1>
-    <div class="details-info">
-      <p><strong>Filière :</strong> {{ courseDetails.filiere }}</p>
-      <p><strong>Département :</strong> {{ courseDetails.departement }}</p>
-      <p><strong>Enseignant :</strong> {{ courseDetails.teacherName }}</p>
-      <p><strong>Code :</strong> {{ courseDetails.code }}</p>
-      <p><strong>Liste des enseignants :</strong></p>
-      <ul>
-        <li v-for="(teacher, index) in courseDetails.listOfAllteachersToThisCours" :key="index">{{ teacher }}</li>
-      </ul>
-      <p><strong>Liste des étudiants :</strong></p>
-      <ul>
-        <li v-for="(student, index) in courseDetails.studentList" :key="index">{{ student }}</li>
-      </ul>
+<component :is="top"/>
+    <div class="details-container">
+
+      <h1 class="details-title">{{ courseDetails.name }}</h1>
+      <div class="details-info">
+        <p><strong>Filière :</strong> {{ courseDetails.filiere }}</p>
+        <p><strong>Département :</strong> {{ courseDetails.departement }}</p>
+        <p><strong>Enseignant :</strong> {{ courseDetails.teacherName }}</p>
+        <p><strong>Code :</strong> {{ courseDetails.code }}</p>
+        <p><strong>Liste des enseignants :</strong></p>
+        <ul>
+          <li v-for="(teacher, index) in courseDetails.listOfAllteachersToThisCours" :key="index">{{ teacher }}</li>
+        </ul>
+        <p><strong>Liste des étudiants :</strong></p>
+        <ul>
+          <li v-for="(student, index) in courseDetails.studentList" :key="index">{{ student }}</li>
+        </ul>
+      </div>
     </div>
-  </div>
+
 </template>
 
 
+
 <script>
+import TopStudent from '../../elements/TopStudent.vue';
+import TopProf from '../../elements/TopProf.vue';
+import TopGuest from '../../elements/TopGuest.vue';
+import { computed, watch, ref } from 'vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
+  components: {TopStudent, TopProf, TopGuest},
   data() {
+
+    const type = ref(Cookies.get('role'));
+    const top = computed(() => {
+      let result;
+      if (type.value === 'student') {
+        result = 'TopStudent';
+      } else if (type.value === 'professeur') {
+        result = 'TopProf';
+      } else {
+        result = 'TopGuest';
+      }
+      return result;
+    });
+
     return {
-      courseDetails: {}
+      courseDetails: {},
+      top
     };
   },
   mounted() {

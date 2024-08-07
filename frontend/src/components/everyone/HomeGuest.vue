@@ -3,7 +3,7 @@
   <div class="container">
   <ItemSearch class="se" @search="filterCourses"/>
     <div class="place">
-      <ItemCours v-for="(item, index) in filteredCourses" :word="item.name" :key="index"/>
+      <ItemCours v-for="(item, index) in filteredCourses" :word="item.name" :key="index" @show-details="showDetailsHandler"/>
     </div>
   </div>
 </template>
@@ -11,9 +11,9 @@
 
 import TopGuest from '../../elements/TopGuest.vue';
 import ItemCoursGuest from '../../elements/ItemCoursGuest.vue';
-
 import ItemCours from '../../elements/ItemCours.vue';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import ItemSearch from "@/elements/ItemSearch.vue";
 
 export default {
@@ -35,6 +35,12 @@ export default {
           .catch((error) => {
             console.error(error);
           });
+    },
+    showDetailsHandler(courseName) {
+      // Enregistrer le nom du cours dans les cookies
+      Cookies.set('selectedCourse', courseName);
+      // Rediriger vers la page DetailsCours
+      this.$router.push({name: 'DetailsCours'});
     },
     filterCourses(query) {
       this.filteredCourses = this.itemc.filter(course =>

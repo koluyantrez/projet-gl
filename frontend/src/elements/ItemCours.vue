@@ -6,8 +6,7 @@
       </router-link>
       <!-- Ajouter une condition pour afficher le bouton de suppression uniquement si le rôle est "professeur" -->
       <button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
-      <!-- Ajouter une condition pour afficher le bouton "Supprimer" uniquement si le rôle est "professeur" -->
-      <button class="details-button" @click="showDetails">Détails</button>
+      <button class="details-button" @click="showDetails">Info</button>
     </div>
   </center>
 </template>
@@ -75,9 +74,7 @@ export default {
       this.$emit('show-details', this.word);
     },
     redirectToDetails() {
-      // Enregistrer le nom du cours dans les cookies
       Cookies.set('selectedCourse', this.word);
-      // Rediriger vers la page "DetailsCourse"
       this.$router.push({ name: 'DetailsCourse', params: { courseName: this.word }});
     }
   }
@@ -144,7 +141,7 @@ export default {
 .delete-button {
   margin-left: 10px;
   background-color: red;
-  color: white;
+  color: azure;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -157,8 +154,8 @@ export default {
 
 .details-button {
   margin-left: 10px;
-  background-color: blue;
-  color: white;
+  background-color: whitesmook;
+  color: black;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -166,6 +163,6 @@ export default {
 }
 
 .details-button:hover {
-  background-color: darkblue;
+  background-color: grey;
 }
 </style>
