@@ -16,7 +16,7 @@ export default{
   padding: 1rem; /* Adjust padding to your needs */
   transition: transform 0.3s;
   width: 35rem; /* Set fixed width */
-  height: 7rem; /* Set fixed height */
+  height: 9rem; /* Set fixed height */
   margin: 0.1rem ; /* Center the section horizontally */
 }
 
