@@ -44,7 +44,7 @@ public class UserService {
         }
 
         // Génération du nom et du mot de passe
-        newUser.setName(newUser.getFirstName()+newUser.getLastName());
+        newUser.setName(newUser.getFirstName() +" "+ newUser.getLastName());
         newUser.setPassword(generatePassword());
         // Sauvegarde de l'utilisateur
         userRepository.save(newUser);
@@ -71,6 +71,28 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<String> updateUserPassword(Long id, String newPassword) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()){
+            if (newPassword.length() < 15){
+                return new ResponseEntity<>("The password must be at least 15 characters long", HttpStatus.BAD_REQUEST);
+            }
+            User user  =  userOptional.get();
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return new ResponseEntity<>("Succes update of password",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User Not Found" , HttpStatus.NOT_FOUND);
+    }
+
+
+    public ResponseEntity<User> getUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 
 
 
@@ -104,5 +126,9 @@ public class UserService {
             return new ResponseEntity<>("Phone number updated successfully.", HttpStatus.OK);
         }
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

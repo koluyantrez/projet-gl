@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
-@RequestMapping(path = "inscription")
+@RequestMapping( "/api/inscription")
 public class ServiceInscriptionController {
 
     private ServiceInscriptionService serviceInscriptionService;
@@ -28,8 +28,7 @@ public class ServiceInscriptionController {
         this.studentService = studentService;
     }
 
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping("/addMembreServiceInscirption")
+    @PostMapping("/addMember")
     public ResponseEntity<String> creer(@RequestBody ServiceInscription inscription){
         return serviceInscriptionService.addNewMember(inscription);
     }

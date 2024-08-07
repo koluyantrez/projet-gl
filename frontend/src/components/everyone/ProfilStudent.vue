@@ -1,28 +1,28 @@
 <template>
-    <TopStudent/>
-    <div class="b">
-      <ItemButton :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
-      <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
-      <ItemButton :name="cLang.Profile.edit" @click="() => ToModPopup('buTriMod')" />
-      <router-link to="/">
-        <ItemButton :name="cLang.Profile.logout" />
-      </router-link>
-      <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
-      <ItemButton name="PAE" />
-    </div>
-    <YesOrNo v-if="popupUnsub.buTriUnsub" :ToUnsubPopup="() => ToUnsubPopup('buTriUnsub')" />
-    <ModifPro v-if="popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
-    <PassWord v-if="pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
-    <DropImg v-if="AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
-    <div class="info">
-      <br>
-      <p><h1>{{ studentInfo.name }}</h1></p>
-      <p>{{ studentInfo.email }}</p>
-      <p>{{ studentInfo.dep }}/{{ studentInfo.fili }}</p>
-      <p>{{ studentInfo.adresse }}</p>
-      <p>+{{ studentInfo.numero }}</p>
-    </div>
-    <img class="photo" :src="studentInfo.pic"/>
+  <TopStudent/>
+  <div class="b">
+    <ItemButton :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
+    <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
+    <ItemButton :name="cLang.Profile.edit" @click="() => ToModPopup('buTriMod')" />
+    <router-link to="/">
+      <ItemButton :name="cLang.Profile.logout" />
+    </router-link>
+    <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
+    <ItemButton name="PAE" />
+  </div>
+  <YesOrNo v-if="popupUnsub.buTriUnsub" :ToUnsubPopup="() => ToUnsubPopup('buTriUnsub')" />
+  <ModifPro v-if="popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />
+  <PassWord v-if="pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
+  <DropImg v-if="AddPic.buPic" :ToPicPopup="() => ToPicPopup('buPic')" />
+  <div class="info">
+    <br>
+    <p><h1>{{ studentInfo.name }}</h1></p>
+    <p>{{ studentInfo.email }}</p>
+    <p>{{ studentInfo.departement }}/{{ studentInfo.fili }}</p>
+    <p>{{ studentInfo.adresse }}</p>
+    <p>+{{ studentInfo.numero }}</p>
+  </div>
+  <img class="photo" :src="studentInfo.pic" v-if="studentInfo.image"/>
 </template>
 
 <script>
@@ -40,13 +40,10 @@ import en from '../../views/en';
 import { useStore } from 'vuex';
 import Cookies from 'js-cookie';
 
-
 export default {
   components: { TopStudent, ItemButton, YesOrNo, ModifPro, PassWord, DropImg },
 
-
   setup() {
-
     const matricule = ref(Cookies.get('matriculeStudent'));
     console.log("la valeur de matricule " + matricule.value);
     const store = useStore();
@@ -90,7 +87,7 @@ export default {
       adresse: '',
       numero: '',
       email: '',
-      dep: '',
+      departement: '',
       fili: '',
       pic: null
     });
@@ -100,20 +97,17 @@ export default {
 
     const fetchStudentInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:1937/students/findById', {
-          params: {
-            matricule: matricule.value
-          }
-        });
+        const response = await axios.get(`http://localhost:1937/api/students/${matricule.value}`);
         const studentData = response.data;
         console.log(response.data);
         studentInfo.value.name = studentData.name;
         studentInfo.value.adresse = studentData.adresse;
         studentInfo.value.numero = studentData.numero;
         studentInfo.value.email = studentData.email;
-        studentInfo.value.dep = studentData.departement;
+        studentInfo.value.departement = studentData.departement;
         studentInfo.value.fili = studentData.filiere;
-        studentInfo.value.pic = `data:image/jpeg;base64,${studentData.image}`;
+        studentInfo.value.image = `data:image/jpeg;base64,${studentData.image}`;
+        console.log('image : ' + studentData.image);
       } catch (error) {
         console.error('Error fetching student info:', error);
       }
@@ -137,18 +131,14 @@ export default {
     };
   }
 }
-
-
 </script>
 
 <style scoped>
-
 .b {
   position: absolute;
   left: 5rem;
   bottom: 3rem;
 }
-
 
 .info {
   position: absolute;
@@ -159,15 +149,16 @@ export default {
   font-size: 43px;
   transform: translateY(20px);
 }
-.photo{
+
+.photo {
   position: absolute;
   left: 5rem;
   top: 12rem;
   width: 25rem;
   height: 25rem;
 }
-</style>
 
+</style>
 
 <style>
 h1 {

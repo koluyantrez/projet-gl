@@ -1,5 +1,6 @@
 package com.genieLogiciel.Umons.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class User {
+public class User {
     /**
      * Identifiant unique de l'utilisateur.
      */
@@ -54,6 +55,7 @@ public abstract class User {
     /**
      * Mot de passe du compte de l'utilisateur.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**

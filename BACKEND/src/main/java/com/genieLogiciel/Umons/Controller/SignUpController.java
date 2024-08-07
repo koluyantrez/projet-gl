@@ -1,7 +1,7 @@
-package com.genieLogiciel.Umons.backend.Controller;
+package com.genieLogiciel.Umons.Controller;
 
-import com.genieLogiciel.Umons.backend.model.SignUpRequest;
-import com.genieLogiciel.Umons.backend.service.SignUpService;
+import com.genieLogiciel.Umons.model.SignUpRequest;
+import com.genieLogiciel.Umons.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

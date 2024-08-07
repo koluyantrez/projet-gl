@@ -74,10 +74,12 @@ public class ProfesseurController {
         return professeurService.getCourses(loginRequest.getEmail(), loginRequest.getPassword());
     }
 
+
     @PostMapping("/{matricule}/attributeCourse")
     public ResponseEntity<String> attributeCourse(@RequestBody String coursName, @PathVariable Long matricule) {
         return professeurService.attributeCourse(coursName, matricule);
     }
+
 
     @DeleteMapping("/deleteCourse")
     public ResponseEntity<String> deleteCoursFromProfesseur(@RequestBody String coursName) {

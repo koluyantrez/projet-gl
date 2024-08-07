@@ -6,7 +6,6 @@ import com.genieLogiciel.Umons.model.Professeur;
 import com.genieLogiciel.Umons.repository.ProfesseurRepository;
 import com.genieLogiciel.Umons.service.ProfesseurService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service pour la gestion des cours.
+ * Service class for managing course-related operations.
  */
 @Service
 public class CoursService {
@@ -29,52 +28,57 @@ public class CoursService {
     private ProfesseurRepository professeurRepository;
 
     @Autowired
-    @Lazy
     private ProfesseurService professeurService;
 
     /**
-     * Ajoute un nouveau cours.
+     * Adds a new course to the repository.
+     * Also generates and assigns a unique code to the course and associates it with a teacher if specified.
      *
-     * @param newCours Le cours à ajouter.
-     * @return ResponseEntity contenant un message sur le succès de l'opération.
+     * @param newCours The course entity to be added.
+     * @return A ResponseEntity containing a message indicating the result of the operation.
+     *         If successful and the teacher is found, the status code is OK (200).
+     *         If the course already exists, the status code is BAD_REQUEST (400).
+     *         If the teacher is not found, the status code is BAD_REQUEST (400).
      */
     @Transactional
     public ResponseEntity<String> addNewCours(Cours newCours) {
         if (coursRepository.existsByName(newCours.getName())) {
-            return ResponseEntity.badRequest().body("Cours already exists");
+            return ResponseEntity.badRequest().body("Course already exists");
         }
 
-        // Sauvegarder le cours dans la base de données avant d'ajouter le code
+        // Save the course in the database before generating the code
         Cours savedCours = coursRepository.save(newCours);
 
-        // Générer et sauvegarder le code du cours
+        // Generate and save the course code
         savedCours.setCode("S-" + savedCours.getId());
         coursRepository.save(savedCours);
-        System.out.println("le teacher est : " + newCours.getTeacherName());
+
+        System.out.println("The teacher is: " + newCours.getTeacherName());
+
         if (newCours.getTeacherName() != null) {
             Optional<Professeur> professeurOptional = professeurRepository.findByName(newCours.getTeacherName());
             if (professeurOptional.isPresent()) {
                 Professeur professeur = professeurOptional.get();
-                // Ajouter le cours à la liste des cours du professeur
-                List<String> listCours = professeur.getCourseList() != null ? professeur.getCourseList() : new ArrayList<>();
-                listCours.add(savedCours.getName());
-                professeur.setCourseList(listCours);
+                // Add the course to the professor's course list
+                List<String> courseList = professeur.getCourseList() != null ? professeur.getCourseList() : new ArrayList<>();
+                courseList.add(savedCours.getName());
+                professeur.setCourseList(courseList);
                 professeurRepository.save(professeur);
 
-                return ResponseEntity.ok("Cours added and assigned to teacher successfully");
+                return ResponseEntity.ok("Course added and assigned to teacher successfully");
             } else {
                 return ResponseEntity.badRequest().body("Teacher not found");
             }
         }
 
-        return ResponseEntity.ok("Cours added successfully");
+        return ResponseEntity.ok("Course added successfully");
     }
 
     /**
-     * Récupère un cours par son nom.
+     * Retrieves a course by its name.
      *
-     * @param coursName Le nom du cours à récupérer.
-     * @return ResponseEntity contenant le cours s'il est trouvé, sinon un message d'erreur.
+     * @param coursName The name of the course to retrieve.
+     * @return A ResponseEntity containing the course if found, otherwise a NOT_FOUND (404) status.
      */
     public ResponseEntity<Cours> getCoursByName(String coursName) {
         Optional<Cours> coursOptional = coursRepository.findByName(coursName);
@@ -87,10 +91,13 @@ public class CoursService {
     }
 
     /**
-     * Supprime un cours par son nom.
+     * Deletes a course by its name.
+     * Also removes the course from associated professors.
      *
-     * @param coursName Le nom du cours à supprimer.
-     * @return ResponseEntity contenant un message sur le succès de l'opération.
+     * @param coursName The name of the course to delete.
+     * @return A ResponseEntity containing a message indicating the result of the operation.
+     *         If successful, the status code is OK (200).
+     *         If the course is not found, the status code is NOT_FOUND (404).
      */
     @Transactional
     public ResponseEntity<String> deleteCoursByName(String coursName) {
@@ -99,16 +106,17 @@ public class CoursService {
             Cours cours = coursOptional.get();
             removeCoursFromProfesseurs(cours);
             coursRepository.delete(cours);
-            return ResponseEntity.ok("Cours deleted successfully");
+            return ResponseEntity.ok("Course deleted successfully");
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     /**
-     * Supprime tous les cours.
+     * Deletes all courses from the repository.
      *
-     * @return ResponseEntity contenant un message sur le succès de l'opération.
+     * @return A ResponseEntity containing a message indicating the result of the operation.
+     *         The status code is OK (200).
      */
     @Transactional
     public ResponseEntity<String> deleteAllCours() {
@@ -117,9 +125,9 @@ public class CoursService {
     }
 
     /**
-     * Récupère tous les cours.
+     * Retrieves all courses from the repository.
      *
-     * @return ResponseEntity contenant la liste de tous les cours.
+     * @return A ResponseEntity containing a list of all courses.
      */
     public ResponseEntity<List<Cours>> getAllCours() {
         List<Cours> coursList = coursRepository.findAll();
@@ -127,10 +135,10 @@ public class CoursService {
     }
 
     /**
-     * Récupère la liste des étudiants pour un cours donné.
+     * Retrieves the list of students enrolled in a specific course.
      *
-     * @param coursName Le nom du cours.
-     * @return ResponseEntity contenant la liste des étudiants du cours, s'il existe.
+     * @param coursName The name of the course.
+     * @return A ResponseEntity containing the list of students if the course exists, otherwise a NOT_FOUND (404) status.
      */
     public ResponseEntity<List<String>> studentListForThisCours(String coursName) {
         Optional<Cours> coursOptional = coursRepository.findByName(coursName);
@@ -143,10 +151,10 @@ public class CoursService {
     }
 
     /**
-     * Récupère la liste de tous les professeurs pour un cours donné.
+     * Retrieves the list of all teachers associated with a specific course.
      *
-     * @param coursName Le nom du cours.
-     * @return ResponseEntity contenant la liste de tous les professeurs pour le cours, s'il existe.
+     * @param coursName The name of the course.
+     * @return A ResponseEntity containing the list of all teachers if the course exists, otherwise a NOT_FOUND (404) status.
      */
     public ResponseEntity<List<String>> listOfAllTeachersToThisCours(String coursName) {
         Optional<Cours> coursOptional = coursRepository.findByName(coursName);
@@ -159,10 +167,13 @@ public class CoursService {
     }
 
     /**
-     * Supprime un cours par son ID.
+     * Deletes a course by its ID.
+     * Also removes the course from associated professors.
      *
-     * @param id L'ID du cours à supprimer.
-     * @return ResponseEntity contenant un message sur le succès de l'opération.
+     * @param id The ID of the course to delete.
+     * @return A ResponseEntity containing a message indicating the result of the operation.
+     *         If successful, the status code is OK (200).
+     *         If the course is not found, the status code is NOT_FOUND (404).
      */
     @Transactional
     public ResponseEntity<String> deleteCoursById(Long id) {
@@ -171,28 +182,28 @@ public class CoursService {
             Cours cours = coursOptional.get();
             removeCoursFromProfesseurs(cours);
             coursRepository.delete(cours);
-            return ResponseEntity.ok("Cours deleted successfully");
+            return ResponseEntity.ok("Course deleted successfully");
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     /**
-     * Supprime un cours de la liste des cours des professeurs associés.
+     * Removes a course from the list of courses associated with professors.
      *
-     * @param cours Le cours à supprimer.
+     * @param cours The course to remove.
      */
     private void removeCoursFromProfesseurs(Cours cours) {
-        List<String> listTeachersToThisCours = cours.getListOfAllteachersToThisCours();
-        if (listTeachersToThisCours != null) {
-            for (String teacherName : listTeachersToThisCours) {
+        List<String> teachers = cours.getListOfAllteachersToThisCours();
+        if (teachers != null) {
+            for (String teacherName : teachers) {
                 Optional<Professeur> professeurOptional = professeurRepository.findByName(teacherName);
                 if (professeurOptional.isPresent()) {
                     Professeur professeur = professeurOptional.get();
-                    List<String> listCours = professeur.getCourseList();
-                    if (listCours != null) {
-                        listCours.remove(cours.getName());
-                        professeur.setCourseList(listCours);
+                    List<String> courseList = professeur.getCourseList();
+                    if (courseList != null) {
+                        courseList.remove(cours.getName());
+                        professeur.setCourseList(courseList);
                         professeurRepository.save(professeur);
                     }
                 }

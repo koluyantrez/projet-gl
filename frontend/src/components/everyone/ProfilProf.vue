@@ -1,13 +1,13 @@
 <template>
   <TopProf/>
-    <div class="info">
-      <br>
-      <p><h1>{{ professeurInfo.name }}</h1></p>
-      <p>{{ professeurInfo.email }}</p>
-      <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
-      <p>{{ professeurInfo.adresse }}</p>
-      <p>+{{ professeurInfo.numero }}</p>
-    </div>
+  <div class="info">
+    <br>
+    <p><h1>{{ professeurInfo.name }}</h1></p>
+    <p>{{ professeurInfo.email }}</p>
+    <p>{{ professeurInfo.dep }}/{{ professeurInfo.fili }}</p>
+    <p>{{ professeurInfo.adresse }}</p>
+    <p>+{{ professeurInfo.numero }}</p>
+  </div>
   <div class="b">
     <ItemButton :name="cLang.Profile.edit"  @click="() => ToModPopup('buTriMod')"/>
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')"/>
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style scoped>
-.photo{
+.photo {
   position: absolute;
   left: 5rem;
   top: 10rem;

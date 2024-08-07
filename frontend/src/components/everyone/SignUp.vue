@@ -96,14 +96,14 @@ export default{
 }
 
 .uploaded-image{
-    position: absolute;
-    bottom: 40rem;
-    left: 50rem;
+  position: absolute;
+  bottom: 40rem;
+  left: 50rem;
 }
-    
+
 .see{
-    position: absolute;
-    width: 25rem;
-    height: 25rem;
+  position: absolute;
+  width: 25rem;
+  height: 25rem;
 }
 </style>

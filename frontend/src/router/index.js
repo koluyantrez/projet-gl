@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/ins',
     name: 'ins',
-    component: () => import(/* webpackChunkName: "ins" */ '../components/everyone/HomeInscr.vue')
+    component: () => import(/* webpackChunkName: "ins" */ '../components/everyone/HomeIns.vue')
   },
   {
     path: '/sec',
@@ -147,14 +147,49 @@ const routes = [
     component: () => import(/* webpackChunkName: "dprofil" */ '../components/ExtensionAina/compo/ProfilAina.vue')
   },
   {
+    path:'/dashboardAdmin',
+    name : 'dashAdmin',
+    component: () => import(/* webpackChunkName: "dprofil" */ '../components/extensionOussama/DashboardAdmin.vue')
+  },
+  {
     path: '/roomsManagement',
     name : 'roomManagement',
     component: () =>import ('../components/extensionOussama/RoomManagement.vue')
   },
   {
+    path : '/updateReservation',
+    name : 'updateReservation',
+    component: () =>import ('../components/extensionOussama/UpdateReservation.vue')
+  },
+  {
+    path : '/reservationList',
+    name : 'reservationList',
+    component: () =>import ('../components/extensionOussama/ReservationList.vue')
+  },
+  {
     path: '/dospii/posted',
     name: 'dposted',
     component: () => import(/* webpackChunkName: "dposted" */ '../components/ExtensionAina/compo/Posted.vue')
+  },
+  {
+    path : '/userManage',
+    name : 'userManage',
+    component: () => import(/* webpackChunkName: "dposted" */ '../components/extensionOussama/UserManagement.vue')
+  },
+  {
+    path :'/settings',
+    name : 'settings',
+    component: () => import(/* webpackChunkName: "dposted" */ '../components/extensionOussama/AdminSettings.vue')
+  },
+  {
+    path : '/buildingManage',
+    name : 'buildingMange',
+    component: () => import(/* " */ '../components/extensionOussama/BuildingManagement.vue')
+  },
+  {
+    path : '/officeManage',
+    name : 'officeManage',
+    component: () => import('../components/extensionOussama/OfficeManage.vue')
   },
 ]
 

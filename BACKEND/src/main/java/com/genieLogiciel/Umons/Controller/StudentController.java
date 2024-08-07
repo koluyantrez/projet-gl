@@ -2,6 +2,7 @@ package com.genieLogiciel.Umons.Controller;
 
 import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
 import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionOussama.model.Filiere;
 import com.genieLogiciel.Umons.model.Departement;
 import com.genieLogiciel.Umons.model.Student;
 import com.genieLogiciel.Umons.service.StudentService;
@@ -66,7 +67,7 @@ public class StudentController {
     }
 
     @PutMapping("/{matricule}/filiere")
-    public ResponseEntity<String> updateStudentFiliere(@PathVariable Long matricule, @RequestParam String newFiliere) {
+    public ResponseEntity<String> updateStudentFiliere(@PathVariable Long matricule, @RequestParam Filiere newFiliere) {
         return studentService.updateStudentFiliere(matricule, newFiliere);
     }
 

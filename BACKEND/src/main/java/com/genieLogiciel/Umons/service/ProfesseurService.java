@@ -136,6 +136,7 @@ public class ProfesseurService extends AbstractLoginService {
         Optional<Professeur> professeurOptional = professeurRepository.findById(matricule);
         if (professeurOptional.isPresent()) {
             Professeur professeur = professeurOptional.get();
+            System.out.println("coursName : " + coursName);
             Optional<Cours> coursResponse = coursRepository.findByName(coursName);
             if (coursResponse.isPresent()) {
                 Cours cours = coursResponse.get();
@@ -143,19 +144,18 @@ public class ProfesseurService extends AbstractLoginService {
                     professeur.getCourseList().add(coursName);
                     professeurRepository.save(professeur);
                 } else {
-                    return new ResponseEntity<>("Teacher already has this course", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Le professeur a déjà ce cours", HttpStatus.BAD_REQUEST);
                 }
                 if (!cours.getListOfAllteachersToThisCours().contains(professeur.getName())) {
                     cours.getListOfAllteachersToThisCours().add(professeur.getName());
                     coursRepository.save(cours);
                 }
-                return new ResponseEntity<>("Attribute success", HttpStatus.OK);
+                return new ResponseEntity<>("Attribution réussie", HttpStatus.OK);
             }
-            return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Cours non trouvé", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("Teacher not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Professeur non trouvé", HttpStatus.NOT_FOUND);
     }
-
     public ResponseEntity<String> deleteCoursFromProfesseur(String coursName) {
         List<String> affectedProfessors = professeurRepository.deleteCourseFromProfessors(coursName);
         coursRepository.deleteProfesseurFromCourse(coursName, affectedProfessors);

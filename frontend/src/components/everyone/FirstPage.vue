@@ -3,7 +3,7 @@
     <center>
       <img class="logo" src="../../assets/illumis.png" alt="MyLogo">
       <h1>{{cLang.FirstPage.region}}</h1>
-      <ItemInput type="text" name="Email" v-model:val="email" @keyup.enter="submitform"/>
+      <ItemInput type="text" :name="cLang.FirstPage.id" v-model:val="email" @keyup.enter="submitform"/>
       <ItemInput type="password" :name="cLang.FirstPage.pw" v-model:val="password" @keyup.enter="submitform"/>
     </center>
     <div class="forb">
@@ -27,19 +27,21 @@ import Cookies from 'js-cookie';
 
 function determineUserRole(email) {
   console.log(email);
-  if (email.endsWith("@Illumis.assistant.ac.be")) {
+  if (email.endsWith("@Illumis.admin.ac.be")) {
+    return "admin";
+  } else if (email.endsWith("@Illumis.assistant.ac.be")) {
     return "assistant";
   } else if (email.endsWith("@Illumis.professeur.ac.be")) {
     return "professeur";
   } else if (email.endsWith("@Illumis.student.ac.be")) {
     return "student";
-  }else if (email.endsWith("@Illumis.inscription.ac.be")) {
+  } else if (email.endsWith("@Illumis.inscription.ac.be")) {
     return "inscription";
-  }
-  else {
+  } else {
     return "inconnu";
   }
 }
+
 export default {
   components: { ItemButton, ItemInput },
   data() {
@@ -47,12 +49,12 @@ export default {
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
     const switchLang = () => {
-        if (idLa.value === 'fr') {
-            store.commit('setLang', 'en');
-        }
-        else if (idLa.value === 'en') {
-            store.commit('setLang', 'fr');
-        } 
+      if (idLa.value === 'fr') {
+        store.commit('setLang', 'en');
+      }
+      else if (idLa.value === 'en') {
+        store.commit('setLang', 'fr');
+      }
     };
     watch(idLa, (newLang) => {
       cLang.value = newLang === 'fr' ? fr : en;
@@ -87,6 +89,7 @@ export default {
       })
           .then(response => {
             this.role = determineUserRole(this.email);
+            Cookies.set('loginUser',this.extractNumberBeforeAt(this.email));
             if (response.ok) {
               Cookies.set('email', this.email);
               Cookies.set('password', this.password);
@@ -95,6 +98,9 @@ export default {
               if (this.role === 'student') {
                 Cookies.set('emailStudent', this.email);
                 Cookies.set('passwordStudent', this.password);
+                const mat = this.extractNumberBeforeAt(this.email);
+                Cookies.set('matriculeStudent', mat);
+                console.log("CookiesStudent : " + Cookies.get('matriculeStudent'));
                 this.$router.push({
                   name: 'student',
                   query: {
@@ -107,6 +113,7 @@ export default {
                 Cookies.set('passwordProfesseur', this.password);
                 const mat = this.extractNumberBeforeAt(this.email);
                 Cookies.set('matriculeProfesseur', mat);
+                console.log("cookiesProf : " + Cookies.get('matriculeProfesseur'));
                 this.$router.push({
                   name: 'prof',
                   query: {
@@ -118,9 +125,22 @@ export default {
                 Cookies.set('emailInscription', this.email);
                 Cookies.set('passwordInscription', this.password);
                 const mat = this.extractNumberBeforeAt(this.email);
-                Cookies.set('matriculeInscription', mat);
+                Cookies.set('demandeur', mat);
+                console.log("CookiesInsc : " + Cookies.get('matriculeInscription'));
                 this.$router.push({
                   name: 'inscription',
+                  query: {
+                    email: this.email,
+                    password: this.password
+                  }
+                });
+              } else if (this.role === 'admin') {
+                Cookies.set('emailAdmin', this.email);
+                Cookies.set('passwordAdmin', this.password);
+                const mat = this.extractNumberBeforeAt(this.email);
+                Cookies.set('matriculeAdmin', mat);
+                this.$router.push({
+                  name: 'dashAdmin',
                   query: {
                     email: this.email,
                     password: this.password
@@ -137,10 +157,9 @@ export default {
           });
     }
   }
-
-
 };
 </script>
+
 
 <style scoped>
 .container1 h1 {
@@ -180,6 +199,6 @@ export default {
   height: auto;
   bottom: -30px;
   left: 47%;
-  }
+}
 </style>
 

@@ -42,7 +42,7 @@
         const pic = ref(null);
 
         const getPic = () => {
-          axios.get('http://localhost:1937/inscription/membreServiceInscription', {
+          axios.get('http://localhost:1937/api/inscription/membreServiceInscription', {
               params: { matricule: matricule.value }
           })
               .then(response => {

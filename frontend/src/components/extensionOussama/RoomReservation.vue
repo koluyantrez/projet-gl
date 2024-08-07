@@ -1,152 +1,240 @@
 <template>
-  <div>
+  <div class="container">
     <header>
-      <img src="../../assets/illumis.png" id="logoUmons" style="height: 100px; background-color: white;" >
+      <div class="logo">
+        <h1>ILLUMIS</h1>
+        <p>Université d'Illumis</p>
+      </div>
     </header>
-
     <main>
-      <article class="container">
-        <div> -Nom : <input type="text" v-model="nom"> </div>
-        <div> -Prenom : <input type="text" v-model="prenom"> </div>
-        <div> -Votre matricule : <input type="number" v-model="matricule"></div>
-        <div> -Id de salle souhaitée : <input type="number" v-model="idRoom"></div>
-        <div> -Date de réservation : <input type="date" v-model="date"></div>
-        <div> -Heure de début : <input type="time" v-model="start"></div>
-        <div> -Heure de fin : <input type="time" v-model="end"></div>
-        <div> -Motif de la demande  :
-          <select v-model="motif">
-            <option value="evenement">EVENEMENT</option>
-            <option value="cours">COURS</option>
-            <option value="seminaire">SEMINAIRE</option>
-            <option value="remediation">Remediation</option>
-          </select>
+      <h2>Formulaire de demande d'une réservation :</h2>
+      <form @submit.prevent="submitReservationForm" id="reservation-form">
+        <div class="form-group">
+          <label for="firstName">-Prénom :</label>
+          <input type="text" v-model="firstName" id="firstName" required  readonly/>
         </div>
-        <button type="submit" id="buttonEnvoyer" @click="submitForm"> Envoyer</button>
-      </article>
+        <div class="form-group">
+          <label for="lastName">-Nom :</label>
+          <input type="text" v-model="lastName" id="lastName" required readonly/>
+        </div>
+        <div class="form-group">
+          <label for="date">-Date de réservation :</label>
+          <input type="date" v-model="date" id="date" required />
+        </div>
+        <div class="form-group">
+          <label for="start">-Heure de début :</label>
+          <input type="time" v-model="start" id="start" required />
+        </div>
+        <div class="form-group">
+          <label for="end">-Heure de fin :</label>
+          <input type="time" v-model="end" id="end" required />
+        </div>
+        <div class="form-group">
+          <label for="reason">-Motif de la demande :</label>
+          <input type="text" v-model="reason" id="reason" list="reasons" required />
+          <datalist id="reasons">
+            <option v-for="reason in reasons" :key="reason" :value="reason">{{ reason }}</option>
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="building">-Bâtiment :</label>
+          <input type="text" v-model="building" id="building" list="buildings" @change="loadRooms" required />
+          <datalist id="buildings">
+            <option v-for="building in buildings" :key="building.name" :value="building.name">{{ building.name }}</option>
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label for="desiredRoom">-Salle souhaitée :</label>
+          <input type="text" v-model="desiredRoom" id="desiredRoom" list="rooms" required />
+          <datalist id="rooms">
+            <option v-for="room in rooms" :key="room.name" :value="room.name">{{ room.name }}</option>
+          </datalist>
+        </div>
+        <button type="submit">Envoyer</button>
+      </form>
     </main>
   </div>
 </template>
 
 <script>
+import Cookies from 'js-cookie';
+
 export default {
   data() {
     return {
-      nom: '',
-      prenom: '',
-      matricule: '',
-      idRoom: '',
+      firstName: '',
+      lastName: '',
       date: '',
       start: '',
       end: '',
-      motif: 'evenement'
+      reason: '',
+      building: '',
+      desiredRoom: '',
+      reasons: [],
+      buildings: [],
+      rooms: [],
     };
   },
+  mounted() {
+    this.loadBuildings();
+    this.loadReasons();
+    this.loadUserDetails();
+  },
   methods: {
-    submitForm() {
-      // Vérifier si tous les champs sont remplis
-      if (this.nom === '' || this.prenom === '' || this.matricule === '' || this.idRoom === '' || this.date === '' || this.start === '' || this.end === '' || this.motif === '') {
-        alert("Veuillez remplir tous les champs avant d'envoyer la demande.");
+    loadBuildings() {
+      fetch('http://localhost:1937/api/buildings')
+          .then((response) => response.json())
+          .then((data) => {
+            this.buildings = data;
+          })
+          .catch((error) => console.error('Erreur lors de la récupération des bâtiments:', error));
+    },
+    loadRooms() {
+      const buildingName = this.building;
+      if (!buildingName) {
+        this.rooms = [];
         return;
       }
 
-      // Créer un objet avec les données
-      const reservation = {
-        nom: this.nom,
-        prenom: this.prenom,
-        matricule: this.matricule,
-        idRoom: this.idRoom,
-        date: this.date,
-        start: this.start,
-        end: this.end,
-        motif: this.motif
-      };
-
-      // Envoyer les données à votre backend via une requête HTTP POST
-      fetch('http://localhost:1937/addRoomReservationRequest', {
+      fetch(`http://localhost:1937/api/rooms/building/${buildingName}`)
+          .then((response) => response.json())
+          .then((data) => {
+            this.rooms = data.filter((room) => room.type !== 'OFFICE');
+          })
+          .catch((error) => console.error('Erreur lors de la récupération des salles:', error));
+    },
+    loadReasons() {
+      fetch('http://localhost:1937/api/reservation/reasons')
+          .then((response) => response.json())
+          .then((data) => {
+            this.reasons = data;
+          })
+          .catch((error) => console.error('Erreur lors de la récupération des motifs:', error));
+    },
+    loadUserDetails() {
+      const matricule = Cookies.get('demandeur');
+      console.log("mat : " + matricule);
+      if (matricule) {
+        fetch(`http://localhost:1937/users/${matricule}`)
+            .then((response) => response.json())
+            .then((data) => {
+              this.firstName = data.firstName;
+              this.lastName = data.lastName;
+            })
+            .catch((error) => console.error('Erreur lors de la récupération des détails de l\'étudiant:', error));
+      }
+    },
+    submitReservationForm() {
+      const {firstName, lastName, date, start, end, reason, desiredRoom} = this;
+      if (!firstName || !lastName || !date || !start || !end || !reason || !desiredRoom) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+      }
+      console.log('firstName :  '+ firstName);
+      fetch('http://localhost:1937/api/roomReservation/addReservation', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(reservation)
+        body: JSON.stringify({firstName, lastName, date, start, end, reason, desiredRoom}),
       })
-          .then(response => {
-            if (response.ok) {
-              alert("Demande envoyée avec succès !");
-            } else {
-              alert("Erreur lors de l'envoi de la demande !");
-            }
+          .then((response) => response.json())
+          .then(() => {
+            alert('Réservation envoyée avec succès');
+            this.resetForm();
           })
-          .catch(error => console.error('Erreur :', error));
-    }
-  }
+          .catch((error) => {
+            console.error('Erreur lors de l\'envoi de la réservation:', error);
+            alert('Une erreur est survenue lors de l\'envoi de la réservation.');
+          });
+    },
+    resetForm() {
+      this.firstName = '';
+      this.lastName = '';
+      this.date = '';
+      this.start = '';
+      this.end = '';
+      this.reason = '';
+      this.building = '';
+      this.desiredRoom = '';
+      this.rooms = [];
+    },
+  },
 };
 </script>
 
-<style>
-* {
-  padding: 0%;
-  margin: 0%;
-}
-
-header {
-  background-color: rgba(187, 33, 33, 0.877);
-  width: 100%;
-  height: 100px;
-}
-
-div {
-  padding: 10px;
-  font-style: italic;
-  font-weight: 300px;
-  font-size: 20px;
-}
-
-div input {
-  width: 200px;
-  border-radius: 10px;
-  height: 20px;
-  text-align: center;
-  box-shadow: 5px 4px 5px rgba(0, 0, 0, 0.5);
-  border: 2px solid black;
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-  transform: translateX(130px);
+<style scoped>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  transform: translateX(700px);
-  padding: 50px;
-  border: 2px solid black;
-  width: 500px;
-  text-align: center;
-  margin-top: 100px;
-  box-shadow: 15px 4px 10px rgba(19, 18, 18, 0.5);
-}
-
-#buttonEnvoyer {
+  width: 80%;
+  margin: 0 auto;
   background-color: white;
-  height: 30px;
-  width: 100px;
-  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
   text-align: center;
-  font-style: italic;
-  box-shadow: 5px 4px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
 }
 
-#buttonEnvoyer:hover {
-  background-color: brown;
+header .logo h1 {
+  margin: 0;
+  font-size: 2.5em;
+  color: #b70000;
+}
+
+header .logo p {
+  margin: 0;
+  font-size: 1.2em;
+  color: #666;
+}
+
+h2 {
+  color: #b70000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}
+
+form label {
+  font-size: 1.1em;
+  margin-right: 10px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="time"],
+form select {
+  padding: 5px;
+  font-size: 1.1em;
+}
+
+button {
+  background-color: #b70000;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  align-self: flex-end;
 }
 
-body {
-  background-image: url("../../assets/bgHome.png");
-  background-size: cover; /* Pour couvrir tout l'arrière-plan */
-  background-position: center; /* Pour centrer l'image */
-  background-repeat: no-repeat; /* Pour éviter la répétition de l'image */
-}
-
-main article {
-  background-color: rgb(255, 255, 255);
+button:hover {
+  background-color: #930000;
 }
 </style>

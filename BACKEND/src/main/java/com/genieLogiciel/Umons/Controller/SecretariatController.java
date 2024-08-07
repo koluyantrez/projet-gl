@@ -1,7 +1,10 @@
 package com.genieLogiciel.Umons.Controller;
 
 import com.genieLogiciel.Umons.model.Secretariat;
+import com.genieLogiciel.Umons.model.SignUpRequest;
+import com.genieLogiciel.Umons.repository.SignUpRequestRepository;
 import com.genieLogiciel.Umons.service.SecretariatService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

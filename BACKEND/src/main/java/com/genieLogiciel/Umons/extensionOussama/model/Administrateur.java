@@ -17,7 +17,7 @@ public class Administrateur extends User {
 
 
 
-    @Enumerated(EnumType.STRING)
+
     private Category category = Category.ADMIN;
 
 }

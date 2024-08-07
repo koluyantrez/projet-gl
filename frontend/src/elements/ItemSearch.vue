@@ -15,18 +15,18 @@
 
 <script>
 
-  export default {
-    data() {
-      return {
-        query: '',
-      };
+export default {
+  data() {
+    return {
+      query: '',
+    };
+  },
+  methods: {
+    onInput() {
+      this.$emit('search', this.query);
     },
-    methods: {
-      onInput() {
-        this.$emit('search', this.query);
-      },
-    },
-  };
+  },
+};
 
 </script>
 

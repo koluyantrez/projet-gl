@@ -59,10 +59,9 @@ export default {
         const formData = new FormData();
         formData.append('file', file.value);
 
-        const matricule = Cookies.get('matriculeProfesseur') ||
-            Cookies.get('matriculeInscription') ||
+        const matricule = Cookies.get('loginUser') ||
             ''; // Ajoutez ici les autres matricules si nécessaire
-
+        console.log("dans drop image, mat : " + matricule);
         if (matricule) {
           axios.post(`http://localhost:1937/users/${matricule}/uploadImage`, formData)
               .then(response => {

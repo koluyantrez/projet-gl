@@ -4,12 +4,14 @@ import com.genieLogiciel.Umons.auth.service.AbstractLoginService;
 import com.genieLogiciel.Umons.auth.service.AuthService;
 import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
 import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionOussama.model.Filiere;
 import com.genieLogiciel.Umons.extensionOussama.repository.CoursRepository;
 import com.genieLogiciel.Umons.extensionOussama.service.CoursService;
 import com.genieLogiciel.Umons.auth.service.EmailDomain;
 import com.genieLogiciel.Umons.model.Departement;
 import com.genieLogiciel.Umons.model.Student;
 import com.genieLogiciel.Umons.repository.StudentRepository;
+import com.genieLogiciel.Umons.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +27,23 @@ import java.util.Optional;
 @CrossOrigin("http://localhost:8080")
 public class StudentService extends AbstractLoginService {
 
-    @Autowired
-    private StudentRepository studentRepository;
 
-    @Autowired
-    private CoursRepository coursRepository;
-
-    @Autowired
-    private CoursService coursService;
-
-    @Autowired
-    private AuthService authService;
-
+    private final StudentRepository studentRepository;
+    private final  CoursRepository coursRepository;
+    private final CoursService coursService;
+    private final AuthService authService;
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public StudentService(AuthService authService, UserService userService) {
+    @Autowired
+    public StudentService(AuthService authService, StudentRepository studentRepository, CoursRepository coursRepository, CoursService coursService, AuthService authService1, UserService userService, UserRepository userRepository) {
         super(authService);
+        this.studentRepository = studentRepository;
+        this.coursRepository = coursRepository;
+        this.coursService = coursService;
+        this.authService = authService1;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     // Méthodes utilitaires privées
@@ -57,7 +59,7 @@ public class StudentService extends AbstractLoginService {
     public ResponseEntity<String> addStudent(Student newStudent) {
         ResponseEntity<String> response = userService.addUser(newStudent, EmailDomain.STUDENT);
         if (response.getStatusCode() == HttpStatus.OK) {
-            studentRepository.save(newStudent);
+            studentRepository.save(newStudent); // Sauvegarde spécifique à l'étudiant dans sa propre table
         } else if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
             return new ResponseEntity<>("Student already exists.", HttpStatus.BAD_REQUEST);
         }
@@ -87,6 +89,7 @@ public class StudentService extends AbstractLoginService {
         return findStudentByMatricule(matricule)
                 .map(student -> {
                     studentRepository.delete(student);
+                    userRepository.deleteById(matricule);
                     return new ResponseEntity<>("Delete success", HttpStatus.OK);
                 }).orElseGet(this::handleStudentNotFound);
     }
@@ -120,7 +123,7 @@ public class StudentService extends AbstractLoginService {
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<String> updateStudentFiliere(Long matricule, String newFiliere) {
+    public ResponseEntity<String> updateStudentFiliere(Long matricule, Filiere newFiliere) {
         return findStudentByMatricule(matricule)
                 .map(student -> {
                     student.setFiliere(newFiliere);
@@ -253,11 +256,14 @@ public class StudentService extends AbstractLoginService {
 
     @Override
     protected ResponseEntity<String> authenticate(Long matricule, String password) {
+        System.out.println("dans auth stud mat + pass : "+ matricule+password);
         return studentRepository.findById(matricule)
                 .map(student -> {
                     if (student.getPassword().equals(password)) {
+                        System.out.println("pass student : " + password);
                         return ResponseEntity.ok("Login successful"); // Connexion réussie
                     } else {
+                        System.out.println("non aut");
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized"); // Non autorisé
                     }
                 }).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found")); // Non trouvé

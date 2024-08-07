@@ -50,8 +50,14 @@ export default {
       console.log("email : " + login.email);
       this.matricule = this.extractNumberBeforeAt(login.email)
       console.log("matricule : " + this.matricule);
-      Cookies.set('matriculeStudent', this.matricule);
-      axios.post('http://localhost:1937/students/getActuelCours', login)
+      Cookies.set('demandeur', this.matricule);
+
+      axios.get('http://localhost:1937/api/students/courses', {
+        params: {
+          email: login.email,
+          password: login.password
+        }
+      })
           .then(response => {
             const cours = response.data.map(cours => cours.name);
             this.itemc = cours;
@@ -64,6 +70,7 @@ export default {
           .catch(error => {
             console.error(error);
           });
+
     },
 
     goToProfil() {
@@ -71,7 +78,7 @@ export default {
     },
 
     handleShowDetails(word) {
-        this.$router.push({ name: 'courseSection', params: { courseName: word } });
+      this.$router.push({ name: 'courseSection', params: { courseName: word } });
     },
 
   },
@@ -85,8 +92,8 @@ export default {
 
 <style scoped>
 .place {
-    position: absolute;
-    top: 20%;
-    left: 8%;
+  position: absolute;
+  top: 20%;
+  left: 8%;
 }
 </style>

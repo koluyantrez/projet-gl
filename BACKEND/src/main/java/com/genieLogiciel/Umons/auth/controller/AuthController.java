@@ -36,17 +36,25 @@ public class AuthController {
 
         ResponseEntity<String> response = handleLogin(role, email, password);
 
-        return response != null ? response : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (response != null && response.getStatusCode() == HttpStatus.OK) {
+            String roleMessage = response.getBody();
+            return new ResponseEntity<>("{\"message\":\"Login successful\", \"role\":\"" + role + "\"}", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("{\"message\":\"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
     }
 
+
     private ResponseEntity<String> handleLogin(String role, String email, String password) {
+        System.out.println("le role : " + role);
         return switch (role) {
             case "assistant" -> assistantService.login(email, password);
             case "professeur" -> professeurService.login(email, password);
             case "student" -> studentService.login(email, password);
             case "inscription" -> serviceInscriptionService.login(email, password);
             case "administrateur" -> administrateurService.login(email, password);
-            default -> new ResponseEntity<>("Unknown role", HttpStatus.UNAUTHORIZED);
+            default -> new ResponseEntity<>("{\"message\":\"Unknown role\"}", HttpStatus.UNAUTHORIZED);
         };
     }
+
 }

@@ -1,26 +1,26 @@
 <template>
-    <div class="popup">
-        <div class="inner">
-            <div class="course-list">
-                <ul class="course-scroll">
-                    <li v-for="(cours, index) in availableCourses" :key="index" class="course-item">
-                        <div class="course-item-content">
-                            <CirclePlus @click="addCourse(cours)"/>
-                            <span>{{ cours }}</span>
-                        </div>
-                    </li>
-                </ul>
+  <div class="popup">
+    <div class="inner">
+      <div class="course-list">
+        <ul class="course-scroll">
+          <li v-for="(cours, index) in availableCourses" :key="index" class="course-item">
+            <div class="course-item-content">
+              <CirclePlus @click="addCourse(cours)"/>
+              <span>{{ cours }}</span>
             </div>
-            <ItemAdd class="back" :word="cLang.pw.back" @click="ToShow()" />
-        </div>
+          </li>
+        </ul>
+      </div>
+      <ItemAdd class="back" :word="cLang.pw.back" @click="ToShow()" />
     </div>
+  </div>
 </template>
 
 <script>
 import ItemAdd from '../elements/ItemAdd.vue';
 import CirclePlus from '../elements/CirclePlus.vue';
 import { useStore } from 'vuex';
-import { computed, watch, ref, onMounted } from 'vue';
+import { computed, watch, ref } from 'vue';
 import fr from '../views/fr.js';
 import en from '../views/en.js';
 import axios from 'axios';
@@ -47,34 +47,37 @@ export default {
   methods: {
     showCourseSelection() {
       axios.get('http://localhost:1937/api/cours/All')
-        .then(response => {
-          const courses = response.data;
-          this.availableCourses = courses.map(cours => cours.name);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+          .then(response => {
+            const courses = response.data;
+            this.availableCourses = courses.map(cours => cours.name);
+          })
+          .catch(error => {
+            console.error(error);
+          });
     },
     addCourse(cours) {
       const id = Cookies.get('matriculeProfesseur');
       const coursName = cours;
 
-      axios.post(`http://localhost:1937/assign-course${id}`, null, {
-        params: {
-          coursName: coursName
+      axios.post(`http://localhost:1937/api/professeurs/${id}/attributeCourse`, coursName, {
+        headers: {
+          'Content-Type': 'text/plain'
         }
       })
-      .then(response => {
-        const result = response.data;
-        if (result === 'attribute success') {
-          this.getCourses();
-          this.hideCourseSelection();
-          alert("attribute success");
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+          .then(response => {
+            if (response.status === 200) {
+              alert(response.data);
+              window.location.reload();
+              this.getCourses();
+              location.reload(); // Refresh the page
+            } else {
+              alert(`Erreur: ${response.data}`);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+
+          });
     },
   },
   created() {
@@ -84,11 +87,10 @@ export default {
 </script>
 
 <style scoped>
-
-.back{
-    position: relative;
-    bottom: -1rem;
-    left: 8rem;
+.back {
+  position: relative;
+  bottom: -1rem;
+  left: 8rem;
 }
 
 .popup {

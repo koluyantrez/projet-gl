@@ -1,8 +1,6 @@
 package com.genieLogiciel.Umons.extensionOussama.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,9 +26,13 @@ public class RoomReservation {
     private String start;
     private String end;
     private Time time;
-    private String reason; // Motif de la réservation
     private RoomStatus roomStatus;
+
     private ReservationStatus reservationStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationReason reason;
+
 
     public enum ReservationStatus {
         PENDING, // En attente

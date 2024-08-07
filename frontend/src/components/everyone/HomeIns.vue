@@ -76,7 +76,7 @@ export default {
       this.$router.push('/ins/signup');
     },
     getAllPersonnel() {
-      axios.get('http://localhost:1937/personnel/all')
+      axios.get('http://localhost:1937/api/personnel/all')
           .then(response => {
             this.personnel = response.data; // Mettre à jour la liste du personnel avec ceux récupérés depuis le backend
           })

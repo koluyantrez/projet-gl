@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Service class for managing rooms in the system.
+ */
 @Service
 public class RoomService {
 
@@ -30,6 +33,15 @@ public class RoomService {
         this.officeRepository = officeRepository;
     }
 
+    /**
+     * Adds a new room to the system.
+     * Checks if the associated building exists and if it is available.
+     * Updates the building and office information if applicable.
+     *
+     * @param newRoom The room to add.
+     * @return An Optional containing the added room if successful.
+     *         Returns an empty Optional if the building is not found.
+     */
     public Optional<Room> addRoom(Room newRoom) {
         String buildingName = newRoom.getAssociatedBuilding();
         Optional<Batiment> batimentOptional = batimentRepository.findByName(buildingName);
@@ -38,20 +50,18 @@ public class RoomService {
             Batiment batiment = batimentOptional.get();
             if (batiment.getAvailable()) {
                 roomRepository.save(newRoom);
-                newRoom.setName(newRoom.getAssociatedBuilding()+"-"+newRoom.getId());
+                newRoom.setName(newRoom.getAssociatedBuilding() + "-" + newRoom.getId());
                 roomRepository.save(newRoom);
-                System.out.println("le type de la salle est : " + newRoom.getType());
-                if (newRoom.getType().equals("OFFICE")){
+                if (newRoom.getType().equals("OFFICE")) {
                     Office newOffice = new Office();
                     newOffice.setName(newRoom.getName());
                     newOffice.setAvailable(newRoom.getAvailable());
                     newOffice.setBatiment(newRoom.getAssociatedBuilding());
                     batiment.getAllOffices().add(newOffice.getName());
-                    batiment.setNumbersOfOffices(batiment.getNumbersOfOffices()+1);
+                    batiment.setNumbersOfOffices(batiment.getNumbersOfOffices() + 1);
                     newOffice.setLocation(newRoom.getAssociatedBuilding() + " , " + batiment.getAdresse());
                     officeRepository.save(newOffice);
                     batimentRepository.save(batiment);
-                    System.out.println("type is Office");
                 }
                 batimentService.addRoomToBuild(newRoom.getName());
                 return Optional.of(newRoom);
@@ -59,17 +69,15 @@ public class RoomService {
                 newRoom.setStatus(RoomStatus.UNAVAILABLE);
                 newRoom.setAvailable(false);
                 roomRepository.save(newRoom);
-                newRoom.setName(newRoom.getAssociatedBuilding()+"-"+newRoom.getId());
+                newRoom.setName(newRoom.getAssociatedBuilding() + "-" + newRoom.getId());
                 roomRepository.save(newRoom);
-                System.out.println("le type de la salle est : " + newRoom.getType());
-                if (newRoom.getType().equals("OFFICE")){
-                    System.out.println("type is Office");
+                if (newRoom.getType().equals("OFFICE")) {
                     Office newOffice = new Office();
                     newOffice.setName(newRoom.getName());
                     newOffice.setAvailable(newRoom.getAvailable());
                     newOffice.setBatiment(newRoom.getAssociatedBuilding());
                     batiment.getAllOffices().add(newOffice.getName());
-                    batiment.setNumbersOfOffices(batiment.getNumbersOfOffices()+1);
+                    batiment.setNumbersOfOffices(batiment.getNumbersOfOffices() + 1);
                     newOffice.setLocation(newRoom.getAssociatedBuilding() + " , " + batiment.getAdresse());
                     officeRepository.save(newOffice);
                     batimentRepository.save(batiment);
@@ -82,10 +90,25 @@ public class RoomService {
         }
     }
 
+    /**
+     * Retrieves details of a room by its ID.
+     *
+     * @param id The ID of the room.
+     * @return An Optional containing the room if found.
+     *         Returns an empty Optional if the room is not found.
+     */
     public Optional<Room> getRoomDetails(Long id) {
         return roomRepository.findById(id);
     }
 
+    /**
+     * Adds new equipment to a room.
+     *
+     * @param id        The ID of the room.
+     * @param equipments The list of equipment to add.
+     * @return An Optional containing the updated room if successful.
+     *         Returns an empty Optional if the room is not found.
+     */
     public Optional<Room> addEquipments(Long id, List<String> equipments) {
         Optional<Room> roomOptional = roomRepository.findById(id);
         if (roomOptional.isPresent()) {
@@ -96,7 +119,14 @@ public class RoomService {
         return Optional.empty();
     }
 
-    public List<Room> getRoomByBuilding(String buildingName){
+    /**
+     * Retrieves rooms associated with a specific building.
+     *
+     * @param buildingName The name of the building.
+     * @return A list of rooms associated with the specified building.
+     *         If the building name is null or empty, returns all rooms.
+     */
+    public List<Room> getRoomByBuilding(String buildingName) {
         if (buildingName == null || buildingName.isEmpty()) {
             return roomRepository.findAll();
         } else {
@@ -104,6 +134,13 @@ public class RoomService {
         }
     }
 
+    /**
+     * Retrieves rooms of a specific type.
+     *
+     * @param type The type of rooms to retrieve.
+     * @return A list of rooms of the specified type.
+     *         If the type is null or empty, returns all rooms.
+     */
     public List<Room> getRoomsByType(String type) {
         if (type == null || type.isEmpty()) {
             return roomRepository.findAll();
@@ -112,6 +149,14 @@ public class RoomService {
         }
     }
 
+    /**
+     * Retrieves rooms based on building name and type.
+     *
+     * @param buildingName The name of the building.
+     * @param type         The type of rooms.
+     * @return A list of rooms that match the specified building name and type.
+     *         If both parameters are null or empty, returns all rooms.
+     */
     public List<Room> getRooms(String buildingName, String type) {
         if ((buildingName == null || buildingName.isEmpty()) && (type == null || type.isEmpty())) {
             return roomRepository.findAll();
@@ -124,22 +169,28 @@ public class RoomService {
         }
     }
 
-
+    /**
+     * Updates the status of a room by its name.
+     *
+     * @param roomName The name of the room.
+     * @param status   The new status to set.
+     * @return The updated room if successful.
+     *         Returns null if the room is not found or if the status cannot be set.
+     */
     public Room updateRoomStatus(String roomName, RoomStatus status) {
         Optional<Room> roomOptional = roomRepository.getRoomByName(roomName);
         if (roomOptional.isPresent()) {
             Room room = roomOptional.get();
             room.setStatus(status);
-            if (status == RoomStatus.UNAVAILABLE){
+            if (status == RoomStatus.UNAVAILABLE) {
                 room.setAvailable(false);
-            }else if (status == RoomStatus.AVAILABLE){
+            } else if (status == RoomStatus.AVAILABLE) {
                 Optional<Batiment> batOp = batimentRepository.findByName(room.getAssociatedBuilding());
-                if (batOp.isPresent()){
+                if (batOp.isPresent()) {
                     Batiment bat = batOp.get();
-                    if (bat.getAvailable()){
+                    if (bat.getAvailable()) {
                         room.setAvailable(true);
-                    }
-                    else {
+                    } else {
                         return null;
                     }
                 }
@@ -149,6 +200,14 @@ public class RoomService {
         return null;
     }
 
+    /**
+     * Updates the equipment list of a room by its name.
+     *
+     * @param roomName   The name of the room.
+     * @param equipments The new list of equipment to set.
+     * @return The updated room if successful.
+     *         Returns null if the room is not found.
+     */
     public Room updateRoomEquipments(String roomName, List<String> equipments) {
         Optional<Room> roomOptional = roomRepository.getRoomByName(roomName);
         if (roomOptional.isPresent()) {
@@ -159,6 +218,14 @@ public class RoomService {
         return null;
     }
 
+    /**
+     * Updates the availability of a room by its name.
+     *
+     * @param roomName    The name of the room.
+     * @param availability The new availability status to set.
+     * @return The updated room if successful.
+     *         Returns null if the room is not found.
+     */
     public Room updateRoomAvailability(String roomName, Boolean availability) {
         Optional<Room> roomOptional = roomRepository.getRoomByName(roomName);
         if (roomOptional.isPresent()) {
@@ -169,6 +236,12 @@ public class RoomService {
         return null;
     }
 
+    /**
+     * Deletes a room by its name.
+     *
+     * @param name The name of the room to delete.
+     * @return true if the room was successfully deleted, false otherwise.
+     */
     public boolean deleteRoomByName(String name) {
         Optional<Room> roomOptional = roomRepository.getRoomByName(name);
         if (roomOptional.isPresent()) {
@@ -178,7 +251,12 @@ public class RoomService {
         return false;
     }
 
-    public List<Room> getAllRooms(){
+    /**
+     * Retrieves all rooms.
+     *
+     * @return A list of all rooms.
+     */
+    public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }
 }

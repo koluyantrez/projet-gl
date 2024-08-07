@@ -2,11 +2,13 @@ package com.genieLogiciel.Umons.model;
 
 import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
 import com.genieLogiciel.Umons.extensionOussama.model.Cours;
+import com.genieLogiciel.Umons.extensionOussama.model.Filiere;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +22,8 @@ public class Student extends User {
     /**
      * Filière de l'étudiant.
      */
-    private String filiere;
+    @Enumerated(EnumType.STRING)
+    private Filiere filiere;
 
     /**
      * Département de l'étudiant.
@@ -32,6 +35,10 @@ public class Student extends User {
      * Année d'études de l'étudiant.
      */
     private String annee;
+
+    private Date naissance;
+
+    private Niveau niveau;
 
     /**
      * Indicateur d'inscription de l'étudiant.
@@ -68,4 +75,13 @@ public class Student extends User {
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
+
+    enum Niveau {
+        BAC1,
+        BAC2,
+        BAC3,
+        MASTER1,
+        MASTER2,
+        DOCTORANT
+    }
 }

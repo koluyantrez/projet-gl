@@ -1,31 +1,42 @@
 <template>
   <div class="popup">
     <div class="inner">
-      <center> 
+      <center>
         <div class="allInput">
-        <ItemInput :name="cLang.EditPro.num" v-model="num"/>
-        <ItemInput :name="cLang.EditPro.ad" v-model="address"/>
-        <ItemInput :name="cLang.EditPro.city" v-model="city"/>
-      </div>
-        <ItemAdd :word="cLang.AddCours.ok" @click="updateUserDetails"/>
-        <ItemAdd :word="cLang.AddCours.back" @click="ToModPopup()"/>
+          <div class="input-group">
+            <label>{{ cLang.EditPro.num }}</label>
+            <input type="tel" v-model="num" class="custom-input" />
+          </div>
+
+          <div class="input-group">
+            <label>{{ cLang.EditPro.ad }}</label>
+            <input type="text" v-model="address" class="custom-input" />
+          </div>
+
+          <div class="input-group">
+            <label>{{ cLang.EditPro.city }}</label>
+            <input type="text" v-model="city" class="custom-input" />
+          </div>
+        </div>
+
+        <ItemAdd :word="cLang.AddCours.ok" @click="confirmAndReload" />
+        <ItemAdd :word="cLang.AddCours.back" @click="ToModPopup()" />
       </center>
     </div>
   </div>
 </template>
 
 <script>
-import ItemInput from '../elements/ItemInput.vue';
 import ItemAdd from '../elements/ItemAdd.vue';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import fr from '../views/fr.js';
 import en from '../views/en.js';
 
 export default {
-  components: { ItemInput, ItemAdd },
+  components: { ItemAdd },
   props: ['ToModPopup'],
 
   setup(props) {
@@ -33,7 +44,6 @@ export default {
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
 
-    // Réactifs pour les champs d'entrée
     const address = ref('');
     const city = ref('');
     const num = ref('');
@@ -42,51 +52,38 @@ export default {
       cLang.value = newLang === 'fr' ? fr : en;
     });
 
-    function getUserId() {
-      return Cookies.get('matriculeProfesseur') || Cookies.get('matriculeStudent') || Cookies.get('matriculeInscription');
+    async function updateAddress(matricule, newAddress) {
+      try {
+        const response = await axios.put(`http://localhost:1937/users/${matricule}/address`, null, {
+          params: {
+            newAddress
+          }
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    async function updateUserDetails() {
-      const userId = getUserId();
-      console.log("test de printer l'adresse : " + address.value)
-      if (!userId) {
-        console.error('User ID not found in cookies');
-        return;
-      }
-
-      // Assurez-vous que les valeurs ne sont pas vides avant d'envoyer
-      const addressValue = address.value.trim();
-      const cityValue = city.value.trim();
-      const completeAddress = `${addressValue}, ${cityValue}`;
-
-      if (!addressValue || !cityValue || !num.value) {
-        console.error('Address, city, or phone number is empty');
-        return;
-      }
-
+    async function updatePhoneNumber(matricule, newPhoneNumber) {
       try {
-        // Mettre à jour l'adresse
-        await axios.put(`http://localhost:1937/users/${userId}/address`, completeAddress, {
-          headers: {
-            'Content-Type': 'text/plain'
+        const response = await axios.put(`http://localhost:1937/users/${matricule}/phone`, null, {
+          params: {
+            newPhoneNumber
           }
         });
-        console.log('Address updated successfully.');
-
-        // Mettre à jour le numéro de téléphone
-        await axios.put(`http://localhost:1937/users/${userId}/phone`, { phoneNumber: num.value }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        console.log('Phone number updated successfully.');
+        console.log(response.data);
       } catch (error) {
-        if (error.response) {
-          console.error('Error response:', error.response.data);
-        } else {
-          console.error('Error:', error.message);
-        }
+        console.error(error);
       }
+    }
+
+    async function confirmAndReload() {
+      const matricule = Cookies.get('loginUser'); // replace with actual matricule value
+      console.log(matricule);
+      await updateAddress(matricule, address.value+" "+city.value);
+      await updatePhoneNumber(matricule, num.value);
+      window.location.reload();
     }
 
     return {
@@ -94,20 +91,46 @@ export default {
       address,
       city,
       num,
-      getUserId,
-      updateUserDetails,
-      ToModPopup: props.ToModPopup
+      ToModPopup: props.ToModPopup,
+      confirmAndReload,
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
-
-.allInput{
+.allInput {
   position: relative;
   bottom: 2.5rem;
 }
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #7a7a7a;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #7a7a7a;
+  transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
 .popup {
   position: fixed;
   top: 0;
@@ -124,8 +147,14 @@ export default {
 .inner {
   position: relative;
   background: rgb(255, 255, 255);
-  padding: 39px;
+  padding: 2rem;
   border-radius: 10%;
+}
+
+.details {
+  margin-top: 20px;
+  font-size: 18px;
+  color: rgb(134, 10, 10);
 }
 
 .po {

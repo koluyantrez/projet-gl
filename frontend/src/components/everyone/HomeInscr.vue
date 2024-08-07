@@ -134,7 +134,7 @@ export default {
   left: 10%;
 }
 
-.pic{
+.pic {
   position: absolute;
   top: -0px;
   right: 0px;
@@ -143,7 +143,7 @@ export default {
   z-index: 10;
 }
 
-.cours{
+.cours {
   position: absolute;
   top: -30px;
   right: 250px;

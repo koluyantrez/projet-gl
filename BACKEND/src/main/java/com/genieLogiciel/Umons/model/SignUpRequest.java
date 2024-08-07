@@ -1,4 +1,4 @@
-package com.genieLogiciel.Umons.backend.model;
+package com.genieLogiciel.Umons.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

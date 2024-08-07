@@ -28,7 +28,7 @@ export default {
 
   methods: {
     getCours() {
-      axios.get('http://localhost:1937/cours/AllCours')
+      axios.get('http://localhost:1937/api/cours/All')
           .then((response) => {
             this.itemc = response.data;
             this.filteredCourses = this.itemc;
@@ -38,7 +38,7 @@ export default {
           });
     },
     goToCourse(courseName) {
-      this.$router.push({ name: 'courseSection', params: { cours: courseName } });
+      this.$router.push({name: 'courseSection', params: {cours: courseName}});
     },
     filterCourses(query) {
       this.filteredCourses = this.itemc.filter(course =>

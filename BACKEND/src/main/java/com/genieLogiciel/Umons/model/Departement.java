@@ -6,5 +6,4 @@ public enum Departement {
     MATHEMATIQUE,
     CHIMIE,
     BIOLOGIE
-
 }

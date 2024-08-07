@@ -13,8 +13,12 @@
       <router-link to="/dospii">
         <div class="dospii">DOSPII</div>
       </router-link>
+      <router-link to="/roomReservationRequest">
+        <div class="roomReservation">Demande Reservation</div>
+      </router-link>
     </div>
-  
+
+
 </template>
 <script>
 import MoodleTop from './MoodleTop.vue';
@@ -33,16 +37,14 @@ export default {
     const pic = ref(null);
 
     const getPic = () => {
-      axios.get('http://localhost:1937/students/findById', {
-        params: { matricule: matricule.value }
-      })
-      .then(response => {
-        const info = response.data;
-        pic.value = `data:image/jpeg;base64,${info.image}`;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      axios.get(`http://localhost:1937/api/students/${matricule.value}`)
+          .then(response => {
+            const info = response.data;
+            pic.value = `data:image/jpeg;base64,${info.image}`;
+          })
+          .catch(error => {
+            console.error(error);
+          });
     };
 
     onMounted(() => {
@@ -71,13 +73,13 @@ export default {
   position: absolute;
   top: 1rem;
   left: 13rem;
-  width: 4rem; 
+  width: 4rem;
   height: auto;
   z-index: 91;
 }
 
 .pic{
-  position: absolute; 
+  position: absolute;
   top: 0.5rem;
   right: 1rem;
   width: 5rem;
@@ -87,7 +89,8 @@ export default {
 
 .te{
   position: relative;
-  top: 0rem;
+  top: 0.5rem;
+  left: -10rem;
   font-family: Roboto, sans-serif;
   font-size: 60px;
   color: azure;
@@ -105,33 +108,41 @@ export default {
   position: absolute;
   color:azure;
 }
+.roomReservation{
+  position: absolute;
+  color: azure;
+  right: 75rem;
+  width: 5rem;
+  height: auto;
+  font-size: 30px;
+  font-family: Roboto, sans-serif;
+
+}
 
 .cours{
   top: 0;
   right: 20rem;
-  width: 5rem; 
+  width: 5rem;
   height: auto;
 }
 
+
 .loc{
   right: 32rem;
-  width: 6rem; 
+  width: 6rem;
   height: auto;
 }
 
 .bu{
   right: 48rem;
-  width: 5rem; 
+  width: 5rem;
   height: auto;
 }
 
 .dospii{
   right: 62rem;
-  width: 5rem; 
+  width: 5rem;
   height: auto;
 }
 
-
-
-
-</style> 
+</style>

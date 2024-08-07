@@ -1,21 +1,30 @@
 <template>
-    <MoodleTop/>
+  <MoodleTop/>
 
-    <div class="te">
+  <div class="te">
     <div class="pic">
       <router-link to="/prof/profil">
         <img class="pic" :src="pic"/>
       </router-link>
     </div>
 
-      <router-link to="/prof">
-    <div class="cours">{{cLang.Top.course}}</div>
-     </router-link>
-    <div class="loc">{{cLang.Top.loc}}</div>
-    <router-link to="/dospii">
-        <div class="dospii">DOSPII</div>
+    <router-link to="/prof">
+      <div class="cours">{{cLang.Top.course}}</div>
     </router-link>
-    </div>
+    <div class="loc">{{cLang.Top.loc}}</div>
+
+
+    <router-link to="/dospii">
+      <div class="dospii">DOSPII</div>
+    </router-link>
+
+    <router-link to="/roomReservationRequest">
+      <div class="roomReservation">Demande Reservation</div>
+    </router-link>
+
+
+
+  </div>
 </template>
 <script>
 import MoodleTop from './MoodleTop.vue';
@@ -68,7 +77,7 @@ export default {
 
 
 .pic{
-  position: absolute; 
+  position: absolute;
   top: 0.3rem;
   right: 0.4rem;
   width: 5rem;
@@ -79,7 +88,7 @@ export default {
 .te .cours{
   position: absolute;
   right: 20rem;
-  width: 5rem; 
+  width: 5rem;
   height: auto;
   z-index: 91;
   color:azure;
@@ -88,7 +97,7 @@ export default {
 .te .loc{
   position: absolute;
   right: 32rem;
-  width: 6rem; 
+  width: 6rem;
   height: auto;
   z-index: 91;
 }
@@ -98,10 +107,21 @@ export default {
   position: absolute;
   color: azure;
   right: 47rem;
-  width: 5rem; 
+  width: 5rem;
   height: auto;
   z-index: 91;
 }
+
+.te .roomReservation{
+  position: absolute;
+  color: azure;
+  right: 60rem;
+  font-size: 30px;
+  width: 5rem;
+  height: auto;
+  z-index: 91;
+}
+
 
 .te{
   position: relative;
@@ -114,4 +134,5 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-</style> 
+
+</style>

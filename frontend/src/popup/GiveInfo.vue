@@ -58,7 +58,7 @@ export default {
       this.toShow('buShow');
     },
     getPersonnelInfo(name) {
-      axios.get(`http://localhost:1937/personnel/name/${name}`)
+      axios.get(`http://localhost:1937/api/personnel/name/${name}`)
           .then(response => {
             const data = response.data;
             this.email = data.email;

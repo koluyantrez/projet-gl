@@ -1,4 +1,5 @@
 export default {
+
     FirstPage: {
         region: "University of the Kalos Region",
         id: "Serial Number",
@@ -106,4 +107,5 @@ export default {
         exam: "Old exams",
         link: "Usefuls links"
     },
+
 }

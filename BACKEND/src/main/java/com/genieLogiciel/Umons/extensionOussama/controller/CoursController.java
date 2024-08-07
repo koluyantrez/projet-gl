@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Contrôleur pour la gestion des cours.
+ * Controller for course management.
+ * This controller provides REST endpoints to perform CRUD operations on courses,
+ * as well as to retrieve specific information related to courses, such as the list of students
+ * and teachers associated with a given course.
  */
 @RestController
 @CrossOrigin("http://localhost:8080")
@@ -24,10 +27,10 @@ public class CoursController {
     private ProfesseurRepository professeurRepository;
 
     /**
-     * Ajoute un nouveau cours.
+     * Adds a new course.
      *
-     * @param cours Le nouveau cours à ajouter.
-     * @return ResponseEntity contenant le message de succès ou d'erreur.
+     * @param cours The new course to be added.
+     * @return ResponseEntity containing the success or error message.
      */
     @PostMapping("/addNew")
     public ResponseEntity<String> addNewCours(@RequestBody Cours cours) {
@@ -35,10 +38,10 @@ public class CoursController {
     }
 
     /**
-     * Supprime un cours par son identifiant.
+     * Deletes a course by its identifier.
      *
-     * @param id L'identifiant du cours à supprimer.
-     * @return ResponseEntity contenant le message de succès ou d'erreur.
+     * @param id The identifier of the course to be deleted.
+     * @return ResponseEntity containing the success or error message.
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCoursById(@PathVariable Long id) {
@@ -46,10 +49,10 @@ public class CoursController {
     }
 
     /**
-     * Récupère un cours par son nom.
+     * Retrieves a course by its name.
      *
-     * @param coursName Le nom du cours à récupérer.
-     * @return ResponseEntity contenant le cours ou un message d'erreur.
+     * @param coursName The name of the course to be retrieved.
+     * @return ResponseEntity containing the course or an error message.
      */
     @GetMapping("/getByName")
     public ResponseEntity<Cours> getCoursByName(@RequestParam String coursName) {
@@ -62,10 +65,10 @@ public class CoursController {
     }
 
     /**
-     * Supprime un cours par son nom.
+     * Deletes a course by its name.
      *
-     * @param coursName Le nom du cours à supprimer.
-     * @return ResponseEntity contenant le message de succès ou d'erreur.
+     * @param coursName The name of the course to be deleted.
+     * @return ResponseEntity containing the success or error message.
      */
     @DeleteMapping("/deleteByName")
     public ResponseEntity<String> deleteCoursByName(@RequestParam String coursName) {
@@ -73,9 +76,9 @@ public class CoursController {
     }
 
     /**
-     * Supprime tous les cours.
+     * Deletes all courses.
      *
-     * @return ResponseEntity contenant le message de succès ou d'erreur.
+     * @return ResponseEntity containing the success or error message.
      */
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAllCours() {
@@ -83,10 +86,10 @@ public class CoursController {
     }
 
     /**
-     * Récupère la liste des étudiants pour un cours donné.
+     * Retrieves the list of students for a given course.
      *
-     * @param coursName Le nom du cours.
-     * @return ResponseEntity contenant la liste des étudiants ou un message d'erreur.
+     * @param coursName The name of the course.
+     * @return ResponseEntity containing the list of students or an error message.
      */
     @GetMapping("/studentList")
     public ResponseEntity<List<String>> studentListOfThisCours(@RequestParam String coursName) {
@@ -94,10 +97,10 @@ public class CoursController {
     }
 
     /**
-     * Récupère la liste de tous les professeurs pour un cours donné.
+     * Retrieves the list of all teachers for a given course.
      *
-     * @param coursName Le nom du cours.
-     * @return ResponseEntity contenant la liste des professeurs ou un message d'erreur.
+     * @param coursName The name of the course.
+     * @return ResponseEntity containing the list of teachers or an error message.
      */
     @GetMapping("/teachersList")
     public ResponseEntity<List<String>> listOfAllTeacherForThisCours(@RequestParam String coursName) {
@@ -105,9 +108,9 @@ public class CoursController {
     }
 
     /**
-     * Récupère la liste de tous les cours.
+     * Retrieves the list of all courses.
      *
-     * @return ResponseEntity contenant la liste des cours ou un message d'erreur.
+     * @return ResponseEntity containing the list of courses or an error message.
      */
     @GetMapping("/All")
     public ResponseEntity<List<Cours>> getAllCours() {
