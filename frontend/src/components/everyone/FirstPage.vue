@@ -27,6 +27,7 @@ import Cookies from 'js-cookie';
 
 function determineUserRole(email) {
   console.log(email);
+
   if (email.endsWith("@Illumis.admin.ac.be")) {
     return "admin";
   } else if (email.endsWith("@Illumis.assistant.ac.be")) {
@@ -37,6 +38,8 @@ function determineUserRole(email) {
     return "student";
   } else if (email.endsWith("@Illumis.inscription.ac.be")) {
     return "inscription";
+  } else if (email.endsWith("@Illumis.secretariat.ac.be")){
+    return "secretariat";
   } else {
     return "inconnu";
   }
@@ -108,7 +111,8 @@ export default {
                     password: this.password
                   }
                 });
-              } else if (this.role === 'professeur') {
+              }
+              else if (this.role === 'professeur') {
                 Cookies.set('emailProfesseur', this.email);
                 Cookies.set('passwordProfesseur', this.password);
                 const mat = this.extractNumberBeforeAt(this.email);
@@ -121,7 +125,21 @@ export default {
                     password: this.password
                   }
                 });
-              } else if (this.role === 'inscription') {
+              }
+              else if(this.role === 'secretariat'){
+                Cookies.set('emailSecretariat',this.email);
+                Cookies.set('passwordSecretariat',this.password)
+                const mat = this.extractNumberBeforeAt(this.email);
+                Cookies.set('matriculeSecretariat',mat)
+                this.$router.push({
+                  name: 'sec',
+                  query: {
+                    email: this.email,
+                    password: this.password
+                  }
+                });
+
+              }else if (this.role === 'inscription') {
                 Cookies.set('emailInscription', this.email);
                 Cookies.set('passwordInscription', this.password);
                 const mat = this.extractNumberBeforeAt(this.email);
