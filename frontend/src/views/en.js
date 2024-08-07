@@ -106,4 +106,7 @@ export default {
         exam: "Old exams",
         link: "Usefuls links"
     },
+    Search:{
+        search: "Search"
+    },
 }

@@ -8,7 +8,7 @@
     <ItemInput v-model="city" :name="cLang.SignUp.city"/>
     <ItemInput v-model="phone" :name="cLang.SignUp.phone"/>
     <ItemInput v-model="filial" name="filial"/>
-    <label for="filial">Filial</label>
+<!--    <label for="filial">Filial</label>-->
 <!--    <select v-model="request.filial" id="departement">-->
 <!--      <option v-for="departement in departements" :key="departement" :value="departement">-->
 <!--        {{ departement }}-->

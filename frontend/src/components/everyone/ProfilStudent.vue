@@ -8,7 +8,9 @@
         <ItemButton :name="cLang.Profile.logout" />
       </router-link>
       <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
-      <ItemButton name="PAE" />
+      <router-link to="/student/PAE">
+        <ItemButton name="PAE" />
+      </router-link>
     </div>
     <YesOrNo v-if="popupUnsub.buTriUnsub" :ToUnsubPopup="() => ToUnsubPopup('buTriUnsub')" />
     <ModifPro v-if="popupMod.buTriMod" :ToModPopup="() => ToModPopup('buTriMod')" />

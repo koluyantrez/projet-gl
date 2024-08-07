@@ -1,16 +1,24 @@
 <template>
   <MoodleTop/>
-  <img class="la" alt="Change the language" src="../../assets/lang.png" @click="switchLang"/>
-  <div class="pic">
-    <router-link to="/student/profil">
-      <ProfilPhoto   :src="pp"/>
-    </router-link>
-  </div>
-
   <div class="te">
-    <div class="gp">cLang.PAE.gp</div>
-    <div class="his">cLang.PAE.his</div>
-    <div class="act">cLang.PAE.act</div>
+
+    <div class="pic">
+      <router-link to="/student/profil">
+        <img class="pic" :src="pic"/>
+      </router-link>
+    </div>
+
+    <router-link to="/student/PAE">
+      <div class="gp">PAE</div>
+    </router-link>
+
+    <router-link to="/student/PAE">
+      <div class="his">{{cLang.PAE.his}}</div>
+    </router-link>
+
+    <router-link to="/student/PAE/actual">
+      <div class="act">{{cLang.PAE.act}}</div>
+    </router-link >
   </div>
 
 </template>
@@ -72,7 +80,7 @@ export default {
 
 .gp{
   position: fixed;
-  top: -3.5rem;
+  top: 0.5rem;
   right: 2rem;
   left : 20rem;
   width: 5rem;
@@ -81,29 +89,36 @@ export default {
   color:black;
 }
 
-.his{
+.te .act {
   position: fixed;
-  top: -2rem;
-  right: 22rem;
+  top: 0.5rem;
+  right: 19rem;
   width: 5rem;
   height: auto;
   z-index: 91;
-  color:azure;
+  color: azure;
 }
 
-.act{
+.te .his {
   position: absolute;
-  top: -2rem;
-  right: 32rem;
+  top: 0;
+  right: 39rem;
   width: 6rem;
   height: auto;
-  z-index: 91;
+  z-index: 99;
+  color: azure;
 }
 
-
-.te{
+.te {
+  position: relative;
+  top: 0;
   font-family: Roboto, sans-serif;
-  color:azure;
+  font-size: 60px;
+  color: azure;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 

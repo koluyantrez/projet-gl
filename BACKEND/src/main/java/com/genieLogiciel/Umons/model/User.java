@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class User {
+public class User {
     /**
      * Identifiant unique de l'utilisateur.
      */

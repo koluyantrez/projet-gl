@@ -103,6 +103,10 @@ export default{
         tp: "Travaux pratiques",
         exam: "Anciens examens",
         link: "Liens utiles"
+    },
+
+    Search: {
+        search: "Rechercher"
     }
 
 }

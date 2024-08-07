@@ -54,9 +54,9 @@ export default {
 </script>
 <style scoped>
 .container {
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 89%;
+  height: calc(100vh - 100px);
   top: 100px;
   overflow: auto;
   /*border: 3px solid rgb(6, 148, 37); /* Bordure de la zone conteneur */
@@ -65,7 +65,12 @@ export default {
 .place {
   position: absolute;
   top: 5%;
-  left: 10%;
+  left: 0;
+}
+
+.item-cours {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 

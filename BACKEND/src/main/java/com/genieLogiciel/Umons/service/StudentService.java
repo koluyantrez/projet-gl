@@ -10,6 +10,7 @@ import com.genieLogiciel.Umons.auth.service.EmailDomain;
 import com.genieLogiciel.Umons.model.Departement;
 import com.genieLogiciel.Umons.model.Student;
 import com.genieLogiciel.Umons.repository.StudentRepository;
+import com.genieLogiciel.Umons.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class StudentService extends AbstractLoginService {
 
     @Autowired
     private AuthService authService;
+
 
     private final UserService userService;
 

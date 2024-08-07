@@ -1,6 +1,6 @@
 <template>
-  <center>
-    <div>
+  <div class="center">
+    <div class="item-cours">
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
         <button class="button" @click="redirectToSection">{{ word }}</button>
       </router-link>
@@ -9,7 +9,7 @@
       <!-- Ajouter une condition pour afficher le bouton "Supprimer" uniquement si le rôle est "professeur" -->
       <button class="details-button" @click="showDetails">Détails</button>
     </div>
-  </center>
+  </div>
 </template>
 
 <script>
@@ -85,6 +85,13 @@ export default {
 </script>
 
 <style scoped>
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .button {
  --color: rgb(158, 11, 23);
  width: 100rem;
