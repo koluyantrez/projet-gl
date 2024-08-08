@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopStudentPAE/>
-    <div>
+    <div class="content">
       <h2>Current PAE</h2>
       <ul>
         <li v-for="course in currentPAE.courses" :key="course.id">
@@ -96,6 +96,13 @@ export default {
 </script>
 
 <style scoped>
+
+.content{
+  margin-top: 100px;
+  position: relative;
+  z-index: 1;
+}
+
 .popup {
   position: fixed;
   top: 50%;
