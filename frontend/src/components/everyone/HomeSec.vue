@@ -1,18 +1,18 @@
 <template>
-  <TopSec/>
+  <TopSecretariat/>
   <div class="container">
+  <ItemSearch class="s" @search="filterCourses" />
     <div class="place">
       <ItemAdd :word="cLang.Top.addco" @click="() => ToCreatePopup('buCreate')"/>
-      <ItemSearch @search="filterCourses" />
-      <ItemCours v-for="(item,index) in filteredCourses" :word="item.name" :key="index"/>
-      <!--ItemCours v-for="co in cours" :word="co.code+ +co.name" v-bind:key="co.id"/-->
+      <ItemCours v-for="(item,index) in filteredCourses" :word="item.name" :key="index" @show-details="showDetailsHandler"/>
     </div>
   </div>
   <AddCours v-if = "popupCreate.buCreate" :ToCreatePopup="() => ToCreatePopup('buCreate')" />
 </template>
 <script>
 import axios from 'axios';
-import TopSec from '../../elements/TopSec.vue';
+import Cookies from 'js-cookie';
+import TopSecretariat from '../../elements/TopSecretariat.vue';
 import ItemCours from '../../elements/ItemCours.vue';
 import ItemSearch from '../../elements/ItemSearch.vue';
 import ItemAdd from '../../elements/ItemAdd.vue';
@@ -20,11 +20,10 @@ import AddCours from '../../popup/AddCours.vue';
 import { useStore } from 'vuex';
 import {computed, watch, ref, onMounted} from 'vue';
 import fr from '../../views/fr.js';
-import en from '../../views/en.js';
-//import Cours from '../../model/Cours.java';
+import en from '../../views/en.js';;
 
 export default {
-  components: {ItemCours,TopSec,ItemSearch,ItemAdd,AddCours},
+  components: {ItemCours,TopSecretariat,ItemSearch,ItemAdd,AddCours},
   setup(){
 
     const store = useStore();
@@ -68,45 +67,40 @@ export default {
 
 
     return{
-
-
       popupCreate,
       ToCreatePopup,
       cLang,
       itemc,
       filteredCourses,
       filterCourses,
-
-
       name: '+cours',
     }
-  }
-  /*
+  },
  methods:{
+     showDetailsHandler(courseName) {
+       Cookies.set('selectedCourse', courseName);
+       this.$router.push({name: 'DetailsCours'});
+     },
      getCours(){
          Cours.getAllCours().then((response)=>{this.cours=response.data})
      }
- },
- created(){
-     this.getAllCours()
- },
-
- data: () => {
-     return{
-         cours: []
-     }
  }
-  */
+
 }
 
 </script>
 <style scoped>
+.s{
+    position: absolute;
+    top: 5%;
+    right: 15%;
+}
+
 .container {
   position: absolute;
   width: 100%;
   height: 89%;
   top: 100px;
-  overflow: auto;
   /*border: 3px solid rgb(6, 148, 37); /* Bordure de la zone conteneur */
 }
 

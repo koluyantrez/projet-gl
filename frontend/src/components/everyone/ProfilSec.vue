@@ -1,5 +1,5 @@
 <template>
-  <TopSec />
+  <TopSecretariat />
   <div class="info">
     <br>
     <p><h1>{{ insInfo.name }}</h1></p>
@@ -21,7 +21,7 @@
   <PassWord v-if="pwMod.buPass" :ToPassPopup="() => ToPassPopup('buPass')" />
 </template>
 <script>
-import TopSec from '../../elements/TopSec.vue';
+import TopSecretariat from '../../elements/TopSecretariat.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import ModifPro from '../../popup/ModifPro.vue';
 import PassWord from '../../popup/PassWord.vue';
@@ -34,7 +34,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { TopSec, ItemButton, ModifPro, PassWord, DropImg },
+  components: { TopSecretariat, ItemButton, ModifPro, PassWord, DropImg },
   methods: {
     clearCookies() {
       Object.keys(Cookies.get()).forEach(cookieName => {

@@ -13,6 +13,7 @@ export default{
         addco: "+ cours",
         addel:"+ étudiant",
         stu:"Étudiants",
+        prof:"Professeurs",
         askin:"Inscription",
         askout:"Désinscription"
     },
@@ -23,6 +24,7 @@ export default{
         ad: "Adresse",
         city: "Ville, adresse n°x",
         section: "Filière",
+        dep: "Département",
         phone: "Numéro de téléphone (+xxx...)",
         done: "Terminer",
         p: "Poste"

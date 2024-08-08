@@ -14,6 +14,7 @@ export default {
         addco: "+ courses",
         addel:"+ student",
         stu:"Students",
+        prof:"Professors",
         askin:"Registration",
         askout:"Unsubscribe"
     },
@@ -25,6 +26,7 @@ export default {
         city: "City, adress n°x",
         phone: "Phone Number (+xxx...)",
         section: "Section",
+        dep: "Departement",
         done: "Done",
         drop: "Drop Photo Here",
         imp: "Import from PC",

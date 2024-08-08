@@ -25,6 +25,7 @@
 import TopStudent from '../../elements/TopStudent.vue';
 import TopProf from '../../elements/TopProf.vue';
 import TopGuest from '../../elements/TopGuest.vue';
+import TopSecretariat from '../../elements/TopSecretariat.vue';
 import Cours from '../../elements/Cours.vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -35,7 +36,7 @@ import en from '../../views/en.js';
 
 
 export default {
-  components: {TopStudent, TopProf, TopGuest, Cours},
+  components: {TopStudent, TopProf, TopGuest, TopSecretariat, Cours},
 
   data() {
     const store = useStore();
@@ -52,6 +53,8 @@ export default {
         result = 'TopStudent';
       } else if (type.value === 'professeur') {
         result = 'TopProf';
+      } else if (type.value === 'secretariat') {
+              result = 'TopSecretariat';
       } else {
         result = 'TopGuest';
       }
