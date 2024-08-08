@@ -48,7 +48,7 @@ export default {
 
     const fetchCourses = async () =>{
       try{
-        const response = await axios.get('http://localhost:1937/cours/AllCours');
+        const response = await axios.get('http://localhost:1937/api/cours/All');
         itemc.value = response.data;
         filteredCourses.value = itemc.value;
       }
