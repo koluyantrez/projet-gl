@@ -8,10 +8,13 @@
       </router-link>
     </div>
     <router-link to="/ins">
-      <div class="la">{{ cLang.Top.signin }}</div>
+      <div class="la">{{ cLang.Top.stu }}</div>
     </router-link>
-    <router-link to="/sec">
-      <div class="loc">{{ cLang.Top.course }}</div>
+    <router-link to="/inscription">
+      <div class="loc">{{ cLang.Top.askin }}</div>
+    </router-link>
+    <router-link to="/inscription">
+      <div class="bye">{{ cLang.Top.askout }}</div>
     </router-link>
     <div class="cours">{{ cLang.Top.loc }}</div>
   </div>
@@ -77,9 +80,8 @@
 }
 
 .te .la {
-  position: fixed;
-  top: 0.5rem;
-  right: 55rem;
+  position: absolute;
+  right: 56rem;
   width: 5rem;
   height: auto;
   z-index: 91;
@@ -87,8 +89,7 @@
 }
 
 .te .cours {
-  position: fixed;
-  top: 0.5rem;
+  position: absolute;
   right: 19rem;
   width: 5rem;
   height: auto;
@@ -98,8 +99,16 @@
 
 .te .loc {
   position: absolute;
-  top: 0;
-  right: 32rem;
+  right: 39rem;
+  width: 6rem;
+  height: auto;
+  z-index: 99;
+  color: azure;
+}
+
+.te .bye {
+  position: absolute;
+  right: 80rem;
   width: 6rem;
   height: auto;
   z-index: 99;

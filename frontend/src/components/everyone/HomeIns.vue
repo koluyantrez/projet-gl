@@ -1,9 +1,9 @@
 <template>
   <TopSec/>
   <div class="container">
+  <ItemSearch class="look"/>
     <div class="place">
-      <ItemAdd class="s" :word="cLang.ServeIns.sign" @click="inputData"/>
-      <ItemSearch class="look"/>
+
       <div v-for="(person, index) in personnel" :key="index">
         <ItemAdd :word="cLang.ServeIns.info" @click="() => ToShow('buShow', person)"/>
         <ItemAdd :word="cLang.ServeIns.rm" @click="() => ToUnsubPopup('buTriUnsub', person)"/>
@@ -76,7 +76,7 @@ export default {
       this.$router.push('/ins/signup');
     },
     getAllPersonnel() {
-      axios.get('http://localhost:1937/api/personnel/all')
+      axios.get('http://localhost:1937/api/student/all')
           .then(response => {
             this.personnel = response.data; // Mettre à jour la liste du personnel avec ceux récupérés depuis le backend
           })
@@ -110,20 +110,19 @@ export default {
   height: 54rem;
   bottom: 0.1rem;
   left: -0.42rem;
-  overflow: auto;
 }
 
 .place {
   position: absolute;
   top: 5rem;
   left: 10rem;
-  color: rgb(158, 11, 23);
+  overflow: auto;
   font-family: Roboto, sans-serif;
 }
 
 .look {
   position: absolute;
-  top: -2rem;
-  left: 45rem;
+  top: 4%;
+  right: 15%;
 }
 </style>

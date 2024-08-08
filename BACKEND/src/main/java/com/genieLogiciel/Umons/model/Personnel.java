@@ -42,4 +42,8 @@ public class Personnel{
     @ElementCollection
     private List<String> filieres;
 
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] image;
 }

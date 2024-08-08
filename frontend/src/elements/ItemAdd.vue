@@ -23,7 +23,7 @@ button {
   font-family: Roboto, sans-serif;
   color: 37373a;
   background-color: #d4d4d4;
-  padding: 1.6em 2.6em;
+  padding: 1em 2em;
   border: none;
   border-radius: .6rem;
   position: relative;
@@ -41,7 +41,7 @@ button span:not(:nth-child(6)) {
   width: 43px;
   background-color: rgb(236, 181, 181);
   border-radius: 50%;
-  transition: .6s ease;
+  transition: 1s ease;
 }
 
 button span:nth-child(6) {

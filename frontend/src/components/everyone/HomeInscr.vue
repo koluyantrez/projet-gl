@@ -1,9 +1,8 @@
 <template>
   <TopSec/>
   <div class="container">
+  <ItemSearch class="se" @search="filterRequest"/>
     <div class="place">
-      <ItemAdd :word="cLang.Top.addel" @click="() => ToCreatePopup('buCreate')"/>
-      <ItemSearch @search="filterRequest"/>
       <ItemCours v-for="(request, index) in filteredRequest" :word="request.name + ' ' + request.firstName" :key="index" @click="showRequestPopup(request)"/>
     </div>
   </div>
@@ -119,18 +118,24 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.se{
+  position: absolute;
+  top: 4%;
+  right: 15%;
+}
+
 .container {
   position: absolute;
-  width: 99%;
+  width: 100%;
   height: 89%;
   top: 100px;
-  overflow: auto;
 }
 
 .place {
   position: absolute;
-  top: 5%;
+  top: 15%;
   left: 10%;
 }
 

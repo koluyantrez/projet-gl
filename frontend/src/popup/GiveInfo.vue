@@ -3,16 +3,16 @@
     <div class="inner">
       <slot></slot>
       <center>
-        <img :src="src" alt="Profil" style="width: 7rem; height: 7rem;"/> <!--:src=data.photo-->
+        <img :src="pic" style="width: 7rem; height: 7rem;"/>
         <div class="info">
-          <p>{{ "Email : " + email }}</p>
-          <p>{{ "Prénom et Nom : " + name }}</p>
-          <p>{{ "Matricule : " + matricule }}</p>
-          <p>{{"Adresse : " + adresse }}</p>
-          <p>{{ "Numero : " + numero }}</p>
+          <p>{{email }}</p>
+          <p>{{name }}</p>
+          <p>{{matricule }}</p>
+          <p>{{adresse }}</p>
+          <p>{{numero }}</p>
         </div>
         <router-link to="/ins">
-          <ItemAdd class="close" :word="cLang.pw.back" @click="closePopup"/>
+          <ItemAdd :word="cLang.pw.back" @click="closePopup"/>
         </router-link>
       </center>
     </div>
@@ -51,6 +51,7 @@ export default {
       matricule: '',
       adresse: '',
       numero: '',
+      pic: null,
     }
   },
   methods: {
@@ -66,6 +67,8 @@ export default {
             this.adresse = data.adresse;
             this.numero = data.numero;
             this.name = data.name;
+            this.pic = `data:image/jpeg;base64,${data.image}`;
+            console.log(data);
           })
           .catch(error => {
             console.error('Error fetching personnel info:', error);

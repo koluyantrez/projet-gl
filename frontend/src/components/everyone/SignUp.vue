@@ -4,7 +4,6 @@
     <ItemInput :name="cLang.SignUp.ln"/>
     <ItemInput :name="cLang.SignUp.fn"/>
     <ItemInput :name="cLang.SignUp.born"/>
-    <ItemInput :name="cLang.SignUp.ad"/>
     <ItemInput :name="cLang.SignUp.city"/>
     <ItemInput :name="cLang.SignUp.phone"/>
   </div>

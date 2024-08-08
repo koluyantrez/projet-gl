@@ -12,15 +12,19 @@ export default {
         course: "Courses",
         loc: "Locals",
         addco: "+ courses",
-        addel:"+ student"
+        addel:"+ student",
+        stu:"Students",
+        askin:"Registration",
+        askout:"Unsubscribe"
     },
     SignUp: {
         ln: "Last Name",
         fn: "First Name",
         born: "Date of Birth (dd-mm-yyyy)",
         ad: "Address",
-        city: "City + Postal Code",
-        phone: "Phone Number",
+        city: "City, adress n°x",
+        phone: "Phone Number (+xxx...)",
+        section: "Section",
         done: "Done",
         drop: "Drop Photo Here",
         imp: "Import from PC",
@@ -47,6 +51,7 @@ export default {
         assi: "Assistants number",
         back: "cancel",
         ok: "confirm",
+        not:"reject"
     },
     AddStudent:{
         fn: "Student's first name",

@@ -13,12 +13,13 @@ import TopGuest from '../../elements/TopGuest.vue';
 import ItemCoursGuest from '../../elements/ItemCoursGuest.vue';
 import ItemCours from '../../elements/ItemCours.vue';
 import axios from 'axios';
+import { ref } from 'vue';
 import Cookies from 'js-cookie';
 import ItemSearch from "@/elements/ItemSearch.vue";
 
 export default {
   components: {ItemSearch, ItemCoursGuest, TopGuest,  ItemCours},
-  data: () => {
+  data () {
     return {
       itemc: [],
       filteredCourses: []

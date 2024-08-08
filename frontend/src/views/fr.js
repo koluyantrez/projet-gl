@@ -11,15 +11,19 @@ export default{
         course: "Cours",
         loc: "Locaux",
         addco: "+ cours",
-        addel:"+ étudiant"
+        addel:"+ étudiant",
+        stu:"Étudiants",
+        askin:"Inscription",
+        askout:"Désinscription"
     },
     SignUp:{
         ln: "Nom",
         fn: "Prénom",
         born: "Date de naissance (dd-mm-yyyy)",
         ad: "Adresse",
-        city: "Ville + Code postale",
-        phone: "Numéro de téléphone",
+        city: "Ville, adresse n°x",
+        section: "Filière",
+        phone: "Numéro de téléphone (+xxx...)",
         done: "Terminer",
         p: "Poste"
     },
@@ -43,6 +47,7 @@ export default{
         assi: "Matricule des assistants",
         back: "annuler",
         ok: "confirmer",
+        not: "refuser"
 
     },
     AddStudent:{
