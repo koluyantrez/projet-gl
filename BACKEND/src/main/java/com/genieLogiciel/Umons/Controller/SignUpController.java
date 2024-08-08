@@ -4,10 +4,7 @@ import com.genieLogiciel.Umons.model.SignUpRequest;
 import com.genieLogiciel.Umons.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/guest")
@@ -21,4 +18,11 @@ public class SignUpController {
         signUpService.sendSignupRequest(signUpRequest);
         return ResponseEntity.ok("Signup request sent");
     }
+
+    @DeleteMapping("/signup/{id}")
+    public ResponseEntity<String> deleteSignupRequest(@PathVariable Long id) {
+        signUpService.deleteSignupRequest(id);
+        return ResponseEntity.ok("Signup request deleted");
+    }
+
 }

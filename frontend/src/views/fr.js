@@ -27,7 +27,8 @@ export default{
         dep: "Département",
         phone: "Numéro de téléphone (+xxx...)",
         done: "Terminer",
-        p: "Poste"
+        p: "Poste",
+        dp: "Département"
     },
     Profile:{
         unsi: "Désinscription",
@@ -110,6 +111,10 @@ export default{
         tp: "Travaux pratiques",
         exam: "Anciens examens",
         link: "Liens utiles"
+    },
+
+    Search: {
+        search: "Rechercher"
     }
 
 }

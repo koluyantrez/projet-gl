@@ -23,9 +23,11 @@ import en from '../../views/en.js';
 import axios from "axios";
 import AddStudent from "@/popup/AddStudent.vue";
 import Request from "@/popup/Request.vue";
+import ItemStudent from "@/elements/ItemStudent.vue";
 
 export default {
   components: {
+    ItemStudent,
     Request,
     AddStudent,
     ItemCours,

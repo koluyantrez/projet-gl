@@ -31,7 +31,8 @@ export default {
         drop: "Drop Photo Here",
         imp: "Import from PC",
         ok: "Close",
-        p: "Post"
+        p: "Post",
+        dp: "Department"
     },
     Profile: {
         unsi: "Unsubscribe",
@@ -113,6 +114,9 @@ export default {
         tp: "Practical work",
         exam: "Old exams",
         link: "Usefuls links"
+    },
+    Search:{
+        search: "Search"
     },
 
 }

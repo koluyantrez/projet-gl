@@ -1,14 +1,15 @@
 <template>
-  <center>
-    <div>
+  <div class="center">
+    <div class="item-cours">
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
         <button class="button" @click="redirectToSection">{{ word }}</button>
       </router-link>
       <!-- Ajouter une condition pour afficher le bouton de suppression uniquement si le rôle est "professeur" -->
       <button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
-      <button class="details-button" @click="showDetails">Info</button>
+      <!-- Ajouter une condition pour afficher le bouton "Supprimer" uniquement si le rôle est "professeur" -->
+      <button class="details-button" @click="showDetails">Détails</button>
     </div>
-  </center>
+  </div>
 </template>
 
 <script>
@@ -74,7 +75,9 @@ export default {
       this.$emit('show-details', this.word);
     },
     redirectToDetails() {
+      // Enregistrer le nom du cours dans les cookies
       Cookies.set('selectedCourse', this.word);
+      // Rediriger vers la page "DetailsCourse"
       this.$router.push({ name: 'DetailsCourse', params: { courseName: this.word }});
     }
   }
@@ -82,66 +85,73 @@ export default {
 </script>
 
 <style scoped>
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .button {
- --color: rgb(158, 11, 23);
- width: 100rem;
- height: 6rem;
- background-color: rgba(0, 0, 0, 0.2);
- border-radius: .3em;
- position: relative;
- overflow: hidden;
- cursor: pointer;
- transition: .5s;
- font-weight: 400;
- font-size: 20px;
- border: 2px solid;
- font-family: Roboto,sans-serif;
- text-transform: uppercase;
- color: var(--color);
- z-index: 1;
- margin-top: 3rem;
+  --color: rgb(158, 11, 23);
+  width: 100rem;
+  height: 6rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: .3em;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: .5s;
+  font-weight: 400;
+  font-size: 20px;
+  border: 2px solid;
+  font-family: Roboto,sans-serif;
+  text-transform: uppercase;
+  color: var(--color);
+  z-index: 1;
+  margin-top: 3rem;
 }
 
 .button::before, .button::after {
- content: '';
- display: block;
- width: 3rem;
- height: 1rem;
- transform: translate(-50%, -50%);
- position: absolute;
- border-radius: 50%;
- z-index: -1;
- background-color: var(--color);
- transition: 0.8s ease;
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 1rem;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  background-color: var(--color);
+  transition: 0.8s ease;
 }
 
 .button::before {
- top: -1em;
- left: -1em;
+  top: -1em;
+  left: -1em;
 }
 
 .button::after {
- left: calc(100% + 1em);
- top: calc(100% + 1em);
+  left: calc(100% + 1em);
+  top: calc(100% + 1em);
 }
 
 .button:hover::before, .button:hover::after {
- height: 1700px;
- width: 1700px;
+  height: 1700px;
+  width: 1700px;
 }
 
 .button:hover {
- color: rgb(236, 181, 181);
+  color: rgb(236, 181, 181);
 }
 
 .button:active {
- filter: brightness(.8);
+  filter: brightness(.8);
 }
 
 .delete-button {
   margin-left: 10px;
   background-color: red;
-  color: azure;
+  color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -154,8 +164,8 @@ export default {
 
 .details-button {
   margin-left: 10px;
-  background-color: whitesmook;
-  color: black;
+  background-color: blue;
+  color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -163,6 +173,6 @@ export default {
 }
 
 .details-button:hover {
-  background-color: grey;
+  background-color: darkblue;
 }
 </style>

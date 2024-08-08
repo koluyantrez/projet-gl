@@ -8,14 +8,34 @@
           ></path>
         </g>
       </svg>
-      <input class="input" v-model="query" @input="onInput" />
+      <input class= "input" v-model="query" @input="onInput" :placeholder="cLang.Search.search + '...'" />
     </div>
   </div>
 </template>
 
 <script>
 
+import {useStore} from "vuex";
+import {computed, ref, watch} from "vue";
+import fr from "@/views/fr";
+import en from "@/views/en";
+
 export default {
+
+  setup() {
+    const store = useStore();
+    const idLa = computed(() => store.state.lang.curLang);
+    const cLang = ref(idLa.value === 'fr' ? fr : en);
+
+    watch(idLa, (newLang) => {
+      cLang.value = newLang === 'fr' ? fr : en;
+    });
+
+    return {
+      cLang,
+    };
+  },
+
   data() {
     return {
       query: '',
@@ -26,11 +46,18 @@ export default {
       this.$emit('search', this.query);
     },
   },
+
+
 };
 
 </script>
 
 <style scoped>
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .group {
   display: flex;
   line-height: 28px;
@@ -40,35 +67,36 @@ export default {
 }
 
 .input {
-  width: 40rem;
-  height: 4rem;
+  width: 1000px;
+  height: 50px;
   line-height: 28px;
   padding: 0 1rem;
   padding-left: 2.5rem;
   border: 2px solid transparent;
   border-radius: 8px;
   outline: none;
-  background-color: #f3f3f4;
+  background-color: #d4d4d4;
   color: #0d0c22;
   transition: 0.3s ease;
 }
 
 .input::placeholder {
-  color: #9e9ea7;
+  color: #37373a;
+  font-family: Roboto,sans-serif;
 }
 
 .input:focus,
 input:hover {
   outline: none;
-  border-color: rgba(158, 11, 23, 0.8);
+  border-color: rgba(0, 48, 73, 0.4);
   background-color: #fff;
-  box-shadow: 0 0 0 4px rgb(254 166 178 / 40%);
+  box-shadow: 0 0 0 4px rgb(0 48 73 / 10%);
 }
 
 .icon {
   position: absolute;
   left: 1rem;
-  fill: #9e9ea7;
+  fill: #37373a;
   width: 1rem;
   height: 1rem;
 }

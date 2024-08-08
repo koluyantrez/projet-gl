@@ -2,37 +2,23 @@
   <div class="popup">
     <div class="inner">
       <h3>Request Details</h3>
-      <p><strong>{{ cLang.SignUp.ln }} :</strong> {{ request.name }}</p>
-      <p><strong>{{ cLang.SignUp.fn }} :</strong> {{ request.firstName }}</p>
-      <p><strong>{{ cLang.SignUp.born }} :</strong> {{ request.birthDate }}</p>
-      <p><strong>{{ cLang.SignUp.ad }} :</strong> {{ request.address }}</p>
-      <p><strong>{{ cLang.SignUp.city }} :</strong> {{ request.city }}</p>
-      <p><strong>{{ cLang.SignUp.phone }} :</strong> {{ request.phone }}</p>
-      <p><strong>{{ cLang.SignUp.section }} :</strong> {{ request.filial }}</p>
-      <ItemAdd :word="cLang.AddCours.ok" @click="acceptRequest"/>
-      <ItemAdd :word="cLang.AddCours.not" @click="rejectRequest"/>
-      <ItemAdd :word="cLang.AddCours.bye" @click="closePopup"/>
+      <p><strong>Name:</strong> {{ request.name }}</p>
+      <p><strong>First Name:</strong> {{ request.firstName }}</p>
+      <p><strong>Birth Date:</strong> {{ request.birthDate }}</p>
+      <p><strong>Address:</strong> {{ request.address }}</p>
+      <p><strong>City:</strong> {{ request.city }}</p>
+      <p><strong>Phone:</strong> {{ request.phone }}</p>
+      <p><strong>Filial:</strong> {{ request.filial }}</p>
+      <ItemAdd word="Accept" @click="acceptRequest"/>
+      <ItemAdd word="Reject" @click="rejectRequest"/>
+      <ItemAdd word="Close" @click="closePopup"/>
     </div>
   </div>
 </template>
 
-
-      <p><strong>Name:</strong> {{ cLang.SignUp.ln }}</p>
-      <p><strong>First Name:</strong> {{ cLang.SignUp.fn }}</p>
-      <p><strong>Birth Date:</strong> {{ cLang.SignUp.born }}</p>
-      <p><strong>Address:</strong> {{ cLang.SignUp.ad }}</p>
-      <p><strong>City:</strong> {{ cLang.SignUp.city }}</p>
-      <p><strong>Phone:</strong> {{ cLang.SignUp.phone }}</p>
-      <p><strong>Filial:</strong> {{ request.filial }}</p>
-
-
 <script>
 import ItemAdd from "@/elements/ItemAdd.vue";
 import axios from "axios";
-import { useStore } from 'vuex';
-import { computed, watch, ref } from 'vue';
-import fr from '../views/fr.js'
-import en from '../views/en.js';
 
 export default {
   components: {ItemAdd},
@@ -40,24 +26,13 @@ export default {
     request: Object,
     show: Boolean
   },
-  setup() {
-      const store = useStore();
-      const idLa = computed(() => store.state.lang.curLang);
-      const cLang = ref(idLa.value === 'fr' ? fr : en);
-
-      watch(idLa, (newLang) => {
-        cLang.value = newLang === 'fr' ? fr : en;
-      });
-
-      return {
-        cLang
-      };
-    },
   methods: {
     acceptRequest() {
       axios.post(`http://localhost:1937/secretariat/approve/${this.request.id}`)
           .then(() => {
+            this.createStudent();
             this.$emit('accept', this.request);
+            this.deleteRequest()
           })
           .catch((error) => {
             console.error(error);
@@ -67,10 +42,45 @@ export default {
       axios.post(`http://localhost:1937/secretariat/reject/${this.request.id}`)
           .then(() => {
             this.$emit('reject', this.request);
+            this.deleteRequest()
           })
           .catch((error) => {
             console.error(error);
           });    },
+
+    deleteRequest() {
+      axios.delete(`http://localhost:1937/api/guest/signup/${this.request.id}`)
+          .then(() => {
+            this.$emit('delete', this.request);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+
+    createStudent() {
+      const student = {
+        lastName: this.request.name,
+        firstName: this.request.firstName,
+        name : this.request.name + " " + this.request.firstName,
+        //birthDate: this.request.birthDate,
+        adresse: this.request.address,
+        //city: this.request.city,
+        numero: this.request.phone,
+        departement: this.request.filial,
+        annee:1,
+        inscrit: true
+
+      };
+      axios.post('http://localhost:1937/api/students', student)
+          .then(() => {
+            console.log("Student created");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+
     closePopup() {
       this.$emit('close');
     }
