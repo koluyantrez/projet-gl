@@ -16,7 +16,7 @@ export default{
         prof:"Professeurs",
         askin:"Inscription",
         askout:"Désinscription",
-        askloc:"local reservations"
+        askloc:"Réservation salle"
     },
     SignUp:{
         ln: "Nom",
@@ -94,8 +94,8 @@ export default{
     RenameCo:{
         back: "annuler",
         ok: "confirmer",
-        t: "Rennomer",
-
+        t: "Nouveau nom",
+        rho: "Renommer"
     },
     ServeIns:{
         rm: "supprimer",

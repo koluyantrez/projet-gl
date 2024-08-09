@@ -23,7 +23,7 @@
       font-family: Roboto, sans-serif;
       color: 37373a;
       background-color: #d4d4d4;
-      padding: 1.6em 2.6em;
+      padding: 1.3em 2.6em;
       border: none;
       border-radius: 2rem;
       position: relative;

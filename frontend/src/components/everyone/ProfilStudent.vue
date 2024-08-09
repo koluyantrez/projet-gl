@@ -1,7 +1,7 @@
 <template>
-  <TopStudent/>
+  <component :is="top"/>
   <div class="b">
-    <ItemButton :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
+    <ItemButton v-if="isStudentRole" :name="cLang.Profile.unsi" @click="() => ToUnsubPopup('buTriUnsub')" />
     <ItemButton name="Photo" @click="() => ToPicPopup('buPic')" />
     <ItemButton :name="cLang.Profile.edit" @click="() => ToModPopup('buTriMod')" />
     <router-link to="/">
@@ -9,7 +9,7 @@
     </router-link>
     <ItemButton :name="cLang.Profile.pw" @click="() => ToPassPopup('buPass')" />
     <router-link to="/student/PAE">
-      <ItemButton name="PAE" />
+      <ItemButton v-if="isStudentRole" name="PAE" />
     </router-link>
   </div>
   <YesOrNo v-if="popupUnsub.buTriUnsub" :ToUnsubPopup="() => ToUnsubPopup('buTriUnsub')" />
@@ -24,26 +24,29 @@
     <p>{{ studentInfo.adresse }}</p>
     <p>+{{ studentInfo.numero }}</p>
   </div>
-  <img class="photo" :src="studentInfo.pic" v-if="studentInfo.image"/>
+  <img class="photo" :src="studentInfo.pic"/>
 </template>
 
 <script>
 import TopStudent from '../../elements/TopStudent.vue';
+import TopSec from '../../elements/TopSec.vue';
+import TopProf from '../../elements/TopProf.vue';
+import TopSecretariat from '../../elements/TopSecretariat.vue';
 import DropImg from '../../popup/DropImg.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import YesOrNo from '../../popup/YesOrNo.vue';
 import ModifPro from '../../popup/ModifPro.vue';
 import PassWord from '../../popup/PassWord.vue';
-import { useRouter } from 'vue-router';
-import { computed, watch, ref, onMounted } from 'vue';
+import {useRouter} from 'vue-router';
+import {computed, watch, ref, onMounted} from 'vue';
 import axios from 'axios';
 import fr from '../../views/fr';
 import en from '../../views/en';
-import { useStore } from 'vuex';
+import {useStore} from 'vuex';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { TopStudent, ItemButton, YesOrNo, ModifPro, PassWord, DropImg },
+  components: {TopStudent, TopSec, TopProf, TopSecretariat, ItemButton, YesOrNo, ModifPro, PassWord, DropImg},
   methods: {
     clearCookies() {
       Object.keys(Cookies.get()).forEach(cookieName => {
@@ -53,7 +56,6 @@ export default {
   },
   setup() {
     const matricule = ref(Cookies.get('matriculeStudent'));
-    console.log("la valeur de matricule " + matricule.value);
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
@@ -100,12 +102,30 @@ export default {
       pic: null
     });
 
-    const router = useRouter();
-    //const matricule = ref(router.currentRoute.value.query.matricule);
+    const type = ref(Cookies.get('role'));
+    const top = computed(() => {
+      let result;
+      if (type.value === 'student') {
+        result = 'TopStudent';
+      } else if (type.value === 'professeur') {
+        result = 'TopProf';
+      } else if (type.value === 'secretariat') {
+        result = 'TopSecretariat';
+      } else {
+        result = 'TopSec';
+      }
+      return result;
+    });
 
+    const role = ref(Cookies.get('role'));
+    const isStudentRole = computed(() => role.value === 'student');
+
+    const router = useRouter();
+    const userID = Cookies.get('loginUser');
+    console.log('loginUser=' + userID);
     const fetchStudentInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:1937/api/students/${matricule.value}`);
+        const response = await axios.get(`http://localhost:1937/users/${userID}`);
         const studentData = response.data;
         console.log(response.data);
         studentInfo.value.name = studentData.name;
@@ -114,8 +134,7 @@ export default {
         studentInfo.value.email = studentData.email;
         studentInfo.value.departement = studentData.departement;
         studentInfo.value.fili = studentData.filiere;
-        studentInfo.value.image = `data:image/jpeg;base64,${studentData.image}`;
-        console.log('image : ' + studentData.image);
+        studentInfo.value.pic = `data:image/jpeg;base64,${studentData.image}`;
       } catch (error) {
         console.error('Error fetching student info:', error);
       }
@@ -126,7 +145,9 @@ export default {
     });
 
     return {
+      isStudentRole,
       cLang,
+      top,
       AddPic,
       ToPicPopup,
       popupUnsub,

@@ -1,7 +1,7 @@
 <template>
   <component :is="top"/>
+  <ItemAdd v-if="isProfessorRole" class="bu" :word="cLang.RenameCo.rho" @click="() => ToRenamePopup('buTriMod')" />
   <div class="nc">{{code}} {{courseName}}</div>
-  <ItemAdd v-if="isProfessorRole" class="rho" :word="cLang.RenameCo.t" @click="() => ToRenamePopup('buTriMod')"/>
   <div class="rec">
     <Cours :word="cLang.Course.th"/>
     <Cours :word="cLang.Course.tp"/>
@@ -14,16 +14,16 @@
     <p>{{prof}}</p>
     {{emailProf}}
   </div>
-  <RenameCo v-if="popupMod.buTriMod" :ToRenamePopup="() => ToRenamePopup('buTriMod')" />
+    <RenameCo v-if="popupMod.buTriMod" :ToRenamePopup="() => ToRenamePopup('buTriMod')" />
 </template>
 
 
 <script>
 import RenameCo from '../../popup/RenameCo.vue';
 import TopStudent from '../../elements/TopStudent.vue';
+import ItemAdd from '../../elements/ItemAdd.vue';
 import TopProf from '../../elements/TopProf.vue';
 import TopGuest from '../../elements/TopGuest.vue';
-import ItemAdd from '../../elements/ItemAdd.vue';
 import TopSecretariat from '../../elements/TopSecretariat.vue';
 import Cours from '../../elements/Cours.vue';
 import axios from 'axios';
@@ -35,18 +35,10 @@ import en from '../../views/en.js';
 
 
 export default {
-  components: {RenameCo, TopStudent, TopProf, ItemAdd, TopGuest, TopSecretariat, Cours},
+  components: {RenameCo, ItemAdd, TopStudent, TopProf, TopGuest, TopSecretariat, Cours},
+
   data() {
     const isProfessorRole = ref(Cookies.get('role') === 'professeur');
-    console.log(isProfessorRole);
-    const popupMod = ref({
-          buTriMod: false,
-        });
-  const ToRenamePopup = (tri2) => {
-        popupMod.value[tri2] = !popupMod.value[tri2];
-      };
-
-
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
@@ -54,8 +46,14 @@ export default {
       cLang.value = newLang === 'fr' ? fr : en;
     });
 
-    const type = ref(Cookies.get('role'));
+        const popupMod = ref({
+          buTriMod: false
+        });
+        const ToRenamePopup = (tri2) => {
+          popupMod.value[tri2] = !popupMod.value[tri2]
+        }
 
+    const type = ref(Cookies.get('role'));
     const top = computed(() => {
       let result;
       if (type.value === 'student') {
@@ -72,8 +70,8 @@ export default {
 
     return {
     popupMod,
-    isProfessorRole,
     ToRenamePopup,
+    isProfessorRole,
       cLang,
       top,
       courseName: '',
@@ -101,8 +99,10 @@ export default {
           .then(response => {
             const info = response.data;
             this.code = info.code;
+            console.log(this.code);
             this.courseName = info.name;
             this.prof = info.teacherName;
+            console.log(info.teacherName);
             axios.get(`http://localhost:1937/api/professeurs/findByName?teacherName=${this.prof}`)
                 .then(response => {
                   const sensei = response.data;
@@ -129,6 +129,7 @@ export default {
             .then(response => {
               const teacher = response.data;
               this.studentName = teacher.name; // Mettre à jour le nom du professeur
+              console.log(teacher.name);
             })
             .catch(error => {
               console.error(error);
@@ -171,6 +172,12 @@ export default {
 
 }
 
+.bu{
+  position: absolute;
+  top: 20%;
+  left: 2%;
+}
+
 .rec {
   position: absolute;
   top: 28%;
@@ -188,11 +195,5 @@ export default {
   color: black;
   font-size: 30px;
   font-family: Roboto, sans-serif;
-}
-
-.rho{
-  position: absolute;
-  top: 20%;
-  left: 2%;
 }
 </style>

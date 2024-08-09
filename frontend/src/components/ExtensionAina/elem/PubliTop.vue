@@ -4,7 +4,6 @@
     <router-link to="/dospii">
       <LogoHome :src="src2"/>
     </router-link>
-    <NotifIcon/>
     <ProfilPhoto :src="src1"/> 
   </div>
   <div class="lowtop"></div>
@@ -12,11 +11,11 @@
 <script>
 import ProfilPhoto from '../../../elements/ProfilPhoto.vue';
 import LogoHome from '../../../elements/LogoHome.vue';
-import NotifIcon from '../../../elements/NotifIcon.vue';
+
 
 
 export default{
-    components: { LogoHome, NotifIcon, ProfilPhoto },
+    components: { LogoHome, ProfilPhoto },
     setup(){
         return {
             src1: require('../../../assets/profil.png'),

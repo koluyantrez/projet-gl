@@ -4,7 +4,7 @@
       <slots/>
       <center>
         <ItemInput :name="cLang.RenameCo.t" v-model:val="name" />
-        <ItemAdd :word="cLang.RenameCo.ok" @click="display(name)"/>
+        <ItemAdd :word="cLang.RenameCo.ok"/>
         <ItemAdd :word="cLang.RenameCo.back" @click="ToRenamePopup()"/>
       </center>
 
@@ -23,11 +23,7 @@ import en from '../views/en.js'
 export default{
   components: { ItemAdd, ItemInput },
   props: ['ToRenamePopup'],
-  methods:{
-    display(w){
-        console.log(w);
-    }
-  },
+
   data: () => {
 
     const store = useStore();

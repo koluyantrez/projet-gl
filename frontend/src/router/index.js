@@ -44,17 +44,17 @@ const routes = [
   {
     path: '/prof/profil',
     name: 'pprofil',
-    component: () => import(/* webpackChunkName: "pprofil" */ '../components/everyone/ProfilProf.vue')
+    component: () => import(/* webpackChunkName: "pprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/sec/profil',
     name: 'seprofil',
-    component: () => import(/* webpackChunkName: "seprofil" */ '../components/everyone/ProfilSec.vue')
+    component: () => import(/* webpackChunkName: "seprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/ins/profil',
     name: 'iprofil',
-    component: () => import(/* webpackChunkName: "iprofil" */ '../components/everyone/ProfilSec.vue')
+    component: () => import(/* webpackChunkName: "iprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/student/profil',
@@ -65,31 +65,6 @@ const routes = [
     path: '/membre/profil',
     name: 'mprofil',
     component: () => import(/* webpackChunkName: "mprofil" */ '../components/everyone/ProfilMembre.vue')
-  },
-  {
-    path: '/prof/cours',
-    name: 'pcours',
-    component: () => import(/* webpackChunkName: "pcours" */ '../components/everyone/CoursProf.vue')
-  },
-  {
-    path: '/sec/cours',
-    name: 'secours',
-    component: () => import(/* webpackChunkName: "secours" */ '../components/everyone/CoursSec.vue')
-  },
-  {
-    path: '/student/cours',
-    name: 'scours',
-    component: () => import(/* webpackChunkName: "scours" */ '../components/everyone/CoursStudent.vue')
-  },
-  {
-    path: '/guest/cours',
-    name: 'gcours',
-    component: () => import(/* webpackChunkName: "gcours" */ '../components/everyone/CoursGuest.vue')
-  },
-  {
-    path: '/membre/cours',
-    name: 'mcours',
-    component: () => import(/* webpackChunkName: "mcours" */ '../components/everyone/CoursGuest.vue')
   },
   {
     path: '/guest/signup',
