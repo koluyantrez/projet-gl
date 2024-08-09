@@ -97,7 +97,8 @@ export default {
     RenameCo:{
         back: "cancel",
         ok: "confirm",
-        t: "New name"
+        t: "New name",
+        rho: "Rename"
     },
     ServeIns:{
         rm: "remove",

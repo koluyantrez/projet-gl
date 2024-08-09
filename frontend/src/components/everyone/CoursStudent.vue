@@ -1,5 +1,6 @@
 <template>
   <component :is="top"/>
+  <ItemAdd class="bu" :word="cLang.RenameCo.rho" @click="() => ToRenamePopup('buTriMod')" />
   <div class="nc">{{code}} {{courseName}}</div>
   <div class="rec">
     <Cours :word="cLang.Course.th"/>
@@ -13,11 +14,14 @@
     <p>{{prof}}</p>
     {{emailProf}}
   </div>
+    <RenameCo v-if="popupMod.buTriMod" :ToRenamePopup="() => ToRenamePopup('buTriMod')" />
 </template>
 
 
 <script>
+import RenameCo from '../../popup/RenameCo.vue';
 import TopStudent from '../../elements/TopStudent.vue';
+import ItemAdd from '../../elements/ItemAdd.vue';
 import TopProf from '../../elements/TopProf.vue';
 import TopGuest from '../../elements/TopGuest.vue';
 import TopSecretariat from '../../elements/TopSecretariat.vue';
@@ -31,7 +35,7 @@ import en from '../../views/en.js';
 
 
 export default {
-  components: {TopStudent, TopProf, TopGuest, TopSecretariat, Cours},
+  components: {RenameCo, ItemAdd, TopStudent, TopProf, TopGuest, TopSecretariat, Cours},
 
   data() {
     const store = useStore();
@@ -40,6 +44,13 @@ export default {
     watch(idLa, (newLang) => {
       cLang.value = newLang === 'fr' ? fr : en;
     });
+
+        const popupMod = ref({
+          buTriMod: false
+        });
+        const ToRenamePopup = (tri2) => {
+          popupMod.value[tri2] = !popupMod.value[tri2]
+        }
 
     const type = ref(Cookies.get('role'));
     const top = computed(() => {
@@ -57,6 +68,8 @@ export default {
     });
 
     return {
+    popupMod,
+    ToRenamePopup,
       cLang,
       top,
       courseName: '',
@@ -155,6 +168,12 @@ export default {
   font-family: Roboto, sans-serif;
   color: #9F0924;
 
+}
+
+.bu{
+  position: absolute;
+  top: 20%;
+  left: 2%;
 }
 
 .rec {

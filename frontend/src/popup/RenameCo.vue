@@ -5,7 +5,7 @@
       <center>
         <ItemInput :name="cLang.RenameCo.t" v-model:val="name" />
         <ItemAdd :word="cLang.RenameCo.ok"/>
-        <ItemAdd class="close" :word="cLang.RenameCo.back" @click="ToRenamePopup()"/>
+        <ItemAdd :word="cLang.RenameCo.back" @click="ToRenamePopup()"/>
       </center>
 
     </div>

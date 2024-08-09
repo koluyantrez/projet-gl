@@ -75,7 +75,6 @@ export default {
     const ToModPopup = (tri2) => {
       popupMod.value[tri2] = !popupMod.value[tri2]
     }
-
     const pwMod = ref({
       buPass: false
     });

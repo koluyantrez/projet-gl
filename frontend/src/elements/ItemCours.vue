@@ -4,8 +4,8 @@
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
         <button class="button" @click="redirectToSection">{{ word }}</button>
       </router-link>
-      <center><button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button></center>
-      <center><button class="details-button" @click="showDetails">Info</button></center>
+      <center><button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">{{cLang.ServeIns.rm}}</button>
+      <button class="details-button" @click="showDetails">Info</button></center>
     </div>
   </div>
 </template>
@@ -14,9 +14,24 @@
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'; // Importation de SweetAlert2
 import axios from 'axios';
+import fr from '../views/fr.js';
+import en from '../views/en.js';
+import { ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   props: ['word'],
+  setup(){
+      const store = useStore();
+      const idLa = computed(() => store.state.lang.curLang);
+      const cLang = ref(idLa.value === 'fr' ? fr : en);
+       watch(idLa, (newLang) => {
+             cLang.value = newLang === 'fr' ? fr : en;
+           });
+      return{
+      cLang
+      }
+  },
   methods: {
 
     redirectToSection() {
