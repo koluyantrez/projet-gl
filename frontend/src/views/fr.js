@@ -15,7 +15,8 @@ export default{
         stu:"Étudiants",
         prof:"Professeurs",
         askin:"Inscription",
-        askout:"Désinscription"
+        askout:"Désinscription",
+        askloc:"local reservations"
     },
     SignUp:{
         ln: "Nom",

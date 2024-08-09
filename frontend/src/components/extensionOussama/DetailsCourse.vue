@@ -7,7 +7,7 @@
 
         <p><strong>{{ cLang.SignUp.section }} :</strong> {{ courseDetails.filiere }}</p>
         <p><strong>{{ cLang.SignUp.dep }} :</strong> {{ courseDetails.departement }}</p>
-        <p><strong>{{ cLang.Course.prof }} :</strong> {{ courseDetails.teacherName }}</p>
+        <p><strong>{{ cLang.Courses.prof }} :</strong> {{ courseDetails.teacherName }}</p>
         <p><strong>Code :</strong> {{ courseDetails.code }}</p>
         <p><strong>{{ cLang.Top.prof }} :</strong></p>
         <ul>

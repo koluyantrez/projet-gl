@@ -1,5 +1,5 @@
 <template>
-  <TopSecretariat />
+  <component :is="top"/>
   <div class="info">
     <br>
     <p><h1>{{ insInfo.name }}</h1></p>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import TopSecretariat from '../../elements/TopSecretariat.vue';
+import TopSec from '../../elements/TopSec.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import ModifPro from '../../popup/ModifPro.vue';
 import PassWord from '../../popup/PassWord.vue';
@@ -34,7 +35,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { TopSecretariat, ItemButton, ModifPro, PassWord, DropImg },
+  components: { TopSecretariat, TopSec, ItemButton, ModifPro, PassWord, DropImg },
   methods: {
     clearCookies() {
       Object.keys(Cookies.get()).forEach(cookieName => {
@@ -43,6 +44,17 @@ export default {
     }
   },
   setup() {
+    const type = ref(Cookies.get('role'));
+    const top = computed(() => {
+        let result;
+        if (type.value === 'secretariat') {
+          result = 'TopSecretariat';
+        } else {
+          result = 'TopSec';
+        }
+        return result;
+      });
+
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
@@ -109,6 +121,7 @@ export default {
     });
 
     return {
+      top,
       cLang,
       popupMod,
       ToModPopup,

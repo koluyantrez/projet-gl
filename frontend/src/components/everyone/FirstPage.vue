@@ -3,7 +3,7 @@
     <center>
       <img class="logo" src="../../assets/illumis.png" alt="MyLogo">
       <h1>{{cLang.FirstPage.region}}</h1>
-      <ItemInput type="text" :name="cLang.FirstPage.id" v-model:val="email" @keyup.enter="submitform"/>
+      <ItemInput type="text" name="Email" v-model:val="email" @keyup.enter="submitform"/>
       <ItemInput type="password" :name="cLang.FirstPage.pw" v-model:val="password" @keyup.enter="submitform"/>
     </center>
     <div class="forb">

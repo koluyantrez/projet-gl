@@ -9,7 +9,9 @@
     <router-link to="/sec">
       <div class="la">{{ cLang.Top.course }}</div>
     </router-link>
-    <div class="loc">{{ cLang.Top.prof }}</div>
+    <router-link to="/reservationList">
+        <div class="roomReservation">{{ cLang.Top.askloc }}</div>
+    </router-link>
   </div>
 </template>
 
@@ -88,6 +90,16 @@
   height: auto;
   z-index: 99;
   color: azure;
+}
+
+.te .roomReservation{
+  position: absolute;
+  color: azure;
+  right: 32rem;
+  font-size: 30px;
+  width: 5rem;
+  height: auto;
+  z-index: 91;
 }
 
 .te {
