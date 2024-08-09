@@ -4,7 +4,7 @@
   <ItemSearch class="s" @search="filterCourses" />
     <div class="place">
       <ItemAdd :word="cLang.Top.addco" @click="() => ToCreatePopup('buCreate')"/>
-      <ItemButton word="PAE" @click="goToPAERequests"/>
+      <ItemAdd word="PAE" @click="goToPAERequests"/>
       <ItemCours v-for="(item,index) in filteredCourses" :word="item.name" :key="index" @show-details="showDetailsHandler"/>
     </div>
   </div>

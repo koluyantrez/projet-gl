@@ -5,5 +5,7 @@ public enum Departement {
     PHYSIQUE,
     MATHEMATIQUE,
     CHIMIE,
-    BIOLOGIE
+    BIOLOGIE,
+    POLYTECHNIQUE,
+    SCIENCES
 }
