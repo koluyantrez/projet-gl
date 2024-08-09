@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * The type Pae.
+ */
 @Entity
 @Getter
 @Setter

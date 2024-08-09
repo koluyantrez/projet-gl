@@ -7,16 +7,29 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+/**
+ * The type Period service.
+ */
 @Service
 public class PeriodService {
 
     @Autowired
     private PeriodRepository periodRepository;
 
+    /**
+     * Save period.
+     *
+     * @param period the period
+     */
     public void savePeriod(Period period) {
         periodRepository.save(period);
     }
 
+    /**
+     * Gets current period.
+     *
+     * @return the current period
+     */
     public Period getCurrentPeriod() {
         return periodRepository.findTopByOrderByIdDesc();
     }

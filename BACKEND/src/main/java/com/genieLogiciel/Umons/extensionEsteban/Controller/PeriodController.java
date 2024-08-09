@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
+/**
+ * The type Period controller.
+ */
 @RestController
 @RequestMapping("/api/period")
 public class PeriodController {
@@ -15,12 +18,23 @@ public class PeriodController {
     @Autowired
     private PeriodService periodService;
 
+    /**
+     * Define period response entity.
+     *
+     * @param period the period
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<String> definePeriod(@RequestBody Period period) {
         periodService.savePeriod(period);
         return ResponseEntity.ok("Période définie avec succès");
     }
 
+    /**
+     * Gets current period.
+     *
+     * @return the current period
+     */
     @GetMapping
     public ResponseEntity<Period> getCurrentPeriod() {
         Period period = periodService.getCurrentPeriod();

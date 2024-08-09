@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * The type Jury member controller.
+ */
 @RestController
 @RequestMapping("/api/jury-members")
 public class JuryMemberController {
@@ -18,12 +21,22 @@ public class JuryMemberController {
     @Autowired
     private JuryMemberService juryMemberService;
 
+    /**
+     * Gets jury professeurs.
+     *
+     * @return the jury professeurs
+     */
     @GetMapping("/professeurs")
     public ResponseEntity<List<Professeur>> getJuryProfesseurs() {
         List<Professeur> juryProfesseurs = juryMemberService.getJuryProfesseurs();
         return ResponseEntity.ok(juryProfesseurs);
     }
 
+    /**
+     * Gets jury secretaires.
+     *
+     * @return the jury secretaires
+     */
     @GetMapping("/secretaires")
     public ResponseEntity<List<Secretariat>> getJurySecretaires() {
         List<Secretariat> jurySecretaires = juryMemberService.getJurySecretaires();

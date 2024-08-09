@@ -14,6 +14,9 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.noContent;
 
+/**
+ * The type Pae controller.
+ */
 @RestController
 @RequestMapping("/api/pae")
 public class PAEController {
@@ -27,30 +30,60 @@ public class PAEController {
     @Autowired
     private StudentRepository studentRepository;
 
+    /**
+     * Create pae response entity.
+     *
+     * @param pae the pae
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<Pae> createPAE(@RequestBody Pae pae) {
         Pae createdPAE = paeService.createPAE(pae);
         return ResponseEntity.ok(createdPAE);
     }
 
+    /**
+     * Gets all pa es.
+     *
+     * @return the all pa es
+     */
     @GetMapping
     public ResponseEntity<List<Pae>> getAllPAEs() {
         List<Pae> paes = paeService.getAllPAEs();
         return ResponseEntity.ok(paes);
     }
 
+    /**
+     * Gets pae by id.
+     *
+     * @param id the id
+     * @return the pae by id
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Pae> getPAEById(@PathVariable Long id) {
         Pae pae = paeService.getPAEById(id);
         return ResponseEntity.ok(pae);
     }
 
+    /**
+     * Delete pae response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePAE(@PathVariable Long id) {
         paeService.deletePAE(id);
         return noContent().build();
     }
 
+    /**
+     * Add course to pae response entity.
+     *
+     * @param paeId    the pae id
+     * @param courseId the course id
+     * @return the response entity
+     */
     @PostMapping("/add/{paeId}/{courseId}")
     public ResponseEntity<Void> addCourseToPAE(@PathVariable Long paeId, @PathVariable Long courseId) {
         Pae pae = paeService.getPAEById(paeId);
@@ -62,6 +95,13 @@ public class PAEController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Add pae to student response entity.
+     *
+     * @param matricule the matricule
+     * @param pae       the pae
+     * @return the response entity
+     */
     @PostMapping("/add-to-student/{matricule}")
     public ResponseEntity<Pae> addPAEToStudent(@PathVariable Long matricule, @RequestBody Pae pae) {
         Student student = studentRepository.findById(matricule).orElse(null);
@@ -73,6 +113,13 @@ public class PAEController {
     }
 
 
+    /**
+     * Add existing pae to student response entity.
+     *
+     * @param matricule the matricule
+     * @param paeId     the pae id
+     * @return the response entity
+     */
     @PostMapping("/add-existing-to-student/{matricule}/{paeId}")
     public ResponseEntity<Pae> addExistingPAEToStudent(@PathVariable Long matricule, @PathVariable Long paeId) {
         Student student = studentRepository.findById(matricule).orElse(null);

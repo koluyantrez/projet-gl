@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * The type Period.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

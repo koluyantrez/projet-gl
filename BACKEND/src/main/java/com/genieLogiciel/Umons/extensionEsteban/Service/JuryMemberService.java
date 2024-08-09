@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * The type Jury member service.
+ */
 @Service
 public class JuryMemberService {
 
@@ -18,10 +21,20 @@ public class JuryMemberService {
     @Autowired
     private SecretariatRepository secretaireRepository;
 
+    /**
+     * Gets jury professeurs.
+     *
+     * @return the jury professeurs
+     */
     public List<Professeur> getJuryProfesseurs() {
         return professeurRepository.findByIsJuryMemberTrue();
     }
 
+    /**
+     * Gets jury secretaires.
+     *
+     * @return the jury secretaires
+     */
     public List<Secretariat> getJurySecretaires() {
         return secretaireRepository.findByIsJuryMemberTrue();
     }
