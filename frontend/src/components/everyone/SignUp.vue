@@ -8,16 +8,10 @@
     <ItemInput v-model="city" :name="cLang.SignUp.city"/>
     <ItemInput v-model="phone" :name="cLang.SignUp.phone"/>
     <ItemInput v-model="filial" :name="cLang.SignUp.dp"/>
-    <!--    <label for="filial">Filial</label>-->
-    <!--    <select v-model="request.filial" id="departement">-->
-    <!--      <option v-for="departement in departements" :key="departement" :value="departement">-->
-    <!--        {{ departement }}-->
-    <!--      </option>-->
-    <!--    </select>-->
+
   </div>
   <ItemAdd class="pic" word="Photo" @click="() => ToPicPopup('buPic')"/>
   <ItemButton class="finish" :name="cLang.SignUp.done" @click="submitSignup"/>
-  <ItemGrade class="tmp"/>
   <input id="file" type="file" style="display: none;" @change="handleFileUpload" />
 
   <div class="uploaded-image" v-if="uploadedFile">
@@ -118,8 +112,8 @@ export default{
 
 .pic{
   position: absolute;
-  top: 15rem;
-  right: 15rem;
+  top: 9rem;
+  left: 40rem;
 
 }
 
