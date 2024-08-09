@@ -106,7 +106,7 @@
     left: 225%;
 }
 .itThree{
-    left: 230%;
+    left: 110%;
 }
 
 .itFive{

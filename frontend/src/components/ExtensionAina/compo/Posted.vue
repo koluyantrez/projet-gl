@@ -42,7 +42,7 @@ export default{
 .import{
     position: absolute;
     left: 32%;
-    bottom: 8%;
+    bottom: 5%;
 }
 .ok{
     position: absolute;
