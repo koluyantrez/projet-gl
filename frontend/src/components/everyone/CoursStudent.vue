@@ -106,6 +106,7 @@ export default {
             axios.get(`http://localhost:1937/api/professeurs/findByName?teacherName=${this.prof}`)
                 .then(response => {
                   const sensei = response.data;
+                  console.log(sensei);
                   this.emailProf = sensei.email;
                 })
                 .catch(error => {

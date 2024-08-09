@@ -25,11 +25,11 @@
 <hr class="l2">
 <div class="descri">
   About me
-  <p>I play pokémon GO every day</p>
+  <p></p>
 </div>
 <div class="stat">
   Statistics
-  <p>If you read that, you will have a nice day</p>
+  <p></p>
 </div>
 
 </template>
@@ -97,13 +97,13 @@ export default {
 }
 
 .itOne{
-    left: 320%;
+    left: 300%;
 }
 .itTwo{
-    left: 330%;
+    left: 310%;
 }
 .itThree{
-    left: 340%;
+    left: 190%;
 }
 
 .pic{
