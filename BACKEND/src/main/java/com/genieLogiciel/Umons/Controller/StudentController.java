@@ -5,6 +5,7 @@ import com.genieLogiciel.Umons.extensionOussama.model.Cours;
 import com.genieLogiciel.Umons.extensionOussama.model.Filiere;
 import com.genieLogiciel.Umons.model.Departement;
 import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.repository.StudentRepository;
 import com.genieLogiciel.Umons.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @PostMapping
     public ResponseEntity<String> addStudent(@RequestBody Student newStudent) {
@@ -114,6 +118,15 @@ public class StudentController {
     @DeleteMapping("/{matricule}/pae/courses")
     public ResponseEntity<String> removeCoursFromActuelPae(@RequestParam Cours cours, @PathVariable Long matricule) {
         return studentService.removeCoursFromActuelPae(cours, matricule);
+    }
+
+    @GetMapping("/{matricule}/actuel-pae")
+    public ResponseEntity<Pae> getActuelPAE(@PathVariable Long matricule) {
+        Student student = studentRepository.findById(matricule).orElse(null);
+        if (student != null && student.getActuelPAE() != null) {
+            return ResponseEntity.ok(student.getActuelPAE());
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

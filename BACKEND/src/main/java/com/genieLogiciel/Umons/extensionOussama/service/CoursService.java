@@ -212,4 +212,54 @@ public class CoursService {
             }
         }
     }
+
+    public Cours addPreRequis(Long coursId, Long preRequisId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        Cours preRequis = coursRepository.findById(preRequisId).orElse(null);
+        if (cours != null && preRequis != null) {
+            cours.getPreRequis().add(preRequis);
+            return coursRepository.save(cours);
+        }
+        return null;
+    }
+
+    public Cours removePreRequis(Long coursId, Long preRequisId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        Cours preRequis = coursRepository.findById(preRequisId).orElse(null);
+        if (cours != null && preRequis != null) {
+            cours.getPreRequis().remove(preRequis);
+            return coursRepository.save(cours);
+        }
+        return null;
+    }
+
+    public List<Cours> getPreRequis(Long coursId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        return cours != null ? cours.getPreRequis() : null;
+    }
+
+    public Cours addCoRequis(Long coursId, Long coRequisId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        Cours coRequis = coursRepository.findById(coRequisId).orElse(null);
+        if (cours != null && coRequis != null) {
+            cours.getCoRequis().add(coRequis);
+            return coursRepository.save(cours);
+        }
+        return null;
+    }
+
+    public Cours removeCoRequis(Long coursId, Long coRequisId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        Cours coRequis = coursRepository.findById(coRequisId).orElse(null);
+        if (cours != null && coRequis != null) {
+            cours.getCoRequis().remove(coRequis);
+            return coursRepository.save(cours);
+        }
+        return null;
+    }
+
+    public List<Cours> getCoRequis(Long coursId) {
+        Cours cours = coursRepository.findById(coursId).orElse(null);
+        return cours != null ? cours.getCoRequis() : null;
+    }
 }

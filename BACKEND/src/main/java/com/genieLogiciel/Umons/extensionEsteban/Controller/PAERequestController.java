@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pae-requests")
 public class PAERequestController {
@@ -19,9 +21,9 @@ public class PAERequestController {
 
     @PostMapping
     public ResponseEntity<String> submitPAERequest(@RequestBody PAERequest request) {
-        if (!periodService.isWithinPeriod()) {
-            return ResponseEntity.status(403).body("La période de demande est fermée");
-        }
+//        if (!periodService.isWithinPeriod()) {
+//            return ResponseEntity.status(403).body("La période de demande est fermée");
+//        }
         paeRequestService.saveRequest(request);
         return ResponseEntity.ok("Demande soumise avec succès");
     }
@@ -36,5 +38,11 @@ public class PAERequestController {
     public ResponseEntity<String> rejectPAERequest(@PathVariable Long id) {
         paeRequestService.rejectRequest(id);
         return ResponseEntity.ok("Demande rejetée");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PAERequest>> getAllPAERequests() {
+        List<PAERequest> requests = paeRequestService.getAllRequests();
+        return ResponseEntity.ok(requests);
     }
 }

@@ -29,4 +29,20 @@ public class  Cours {
     @ElementCollection
     private List<String> studentList;
 
+    @ManyToMany
+    @JoinTable(
+            name = "cours_prerequis",
+            joinColumns = @JoinColumn(name = "cours_id"),
+            inverseJoinColumns = @JoinColumn(name = "prerequis_id")
+    )
+    private List<Cours> preRequis;
+
+    @ManyToMany
+    @JoinTable(
+            name = "cours_corequis",
+            joinColumns = @JoinColumn(name = "cours_id"),
+            inverseJoinColumns = @JoinColumn(name = "corequis_id")
+    )
+    private List<Cours> coRequis;
+
 }

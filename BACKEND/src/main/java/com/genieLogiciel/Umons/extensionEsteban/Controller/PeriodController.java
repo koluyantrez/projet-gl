@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/period")
 public class PeriodController {
@@ -24,4 +26,12 @@ public class PeriodController {
         Period period = periodService.getCurrentPeriod();
         return ResponseEntity.ok(period);
     }
+
+//    @PostMapping("/set")
+//    public ResponseEntity<Period> setCurrentPeriod(@RequestParam String startDate, @RequestParam String endDate) {
+//        LocalDate start = LocalDate.parse(startDate);
+//        LocalDate end = LocalDate.parse(endDate);
+//        Period period = periodService.setCurrentPeriod(start, end);
+//        return ResponseEntity.ok(period);
+//    }
 }

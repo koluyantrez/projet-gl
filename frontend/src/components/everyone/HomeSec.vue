@@ -4,6 +4,7 @@
   <ItemSearch class="s" @search="filterCourses" />
     <div class="place">
       <ItemAdd :word="cLang.Top.addco" @click="() => ToCreatePopup('buCreate')"/>
+      <ItemButton word="PAE" @click="goToPAERequests"/>
       <ItemCours v-for="(item,index) in filteredCourses" :word="item.name" :key="index" @show-details="showDetailsHandler"/>
     </div>
   </div>
@@ -20,10 +21,13 @@ import AddCours from '../../popup/AddCours.vue';
 import { useStore } from 'vuex';
 import {computed, watch, ref, onMounted} from 'vue';
 import fr from '../../views/fr.js';
-import en from '../../views/en.js';;
+import en from '../../views/en.js';
+import ItemButton from "@/elements/ItemButton.vue";
+
+;
 
 export default {
-  components: {ItemCours,TopSecretariat,ItemSearch,ItemAdd,AddCours},
+  components: {ItemButton, ItemCours,TopSecretariat,ItemSearch,ItemAdd,AddCours},
   setup(){
 
     const store = useStore();
@@ -83,7 +87,10 @@ export default {
      },
      getCours(){
          Cours.getAllCours().then((response)=>{this.cours=response.data})
-     }
+     },
+   goToPAERequests() {
+     this.$router.push('/pae-requests');
+   }
  }
 
 }

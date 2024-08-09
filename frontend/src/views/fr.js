@@ -105,7 +105,8 @@ export default{
         gp: "Gestion PAE",
         sub: "Soumettre",
         cur: "PAE courant",
-        tot: "Crédits totaux"
+        tot: "Crédits totaux",
+        rq: "Demandes de PAE"
     },
     Course: {
         mp: "Titulaire",

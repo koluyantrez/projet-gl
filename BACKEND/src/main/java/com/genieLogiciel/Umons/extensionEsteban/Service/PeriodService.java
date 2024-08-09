@@ -21,9 +21,23 @@ public class PeriodService {
         return periodRepository.findTopByOrderByIdDesc();
     }
 
-    public boolean isWithinPeriod() {
-        Period period = getCurrentPeriod();
-        LocalDate now = LocalDate.now();
-        return now.isAfter(period.getStartDate()) && now.isBefore(period.getEndDate());
-    }
+//    public boolean isWithinPeriod() {
+//        Period period = periodRepository.findCurrentPeriod();
+//        if (period == null) {
+//            return false;
+//        }
+//        LocalDate now = LocalDate.now();
+//        return now.isAfter(period.getStartDate()) && now.isBefore(period.getEndDate());
+//    }
+
+//    public Period setCurrentPeriod(LocalDate startDate, LocalDate endDate) {
+//        Period period = periodRepository.findCurrentPeriod();
+//        if (period == null) {
+//            period = new Period();
+//        }
+//        period.setStartDate(startDate);
+//        period.setEndDate(endDate);
+//        period.setCurrent(true);
+//        return periodRepository.save(period);
+//    }
 }

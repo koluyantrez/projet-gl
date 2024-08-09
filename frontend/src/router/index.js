@@ -137,6 +137,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "sPAEactual" */ '../components/Estebane/StudentPAEActualPage.vue')
   },
   {
+    path: '/pae-requests',
+    name: 'paeRequests',
+    component: () => import(/* webpackChunkName: "paeRequests" */ '../components/Estebane/PAERequest.vue')
+  },
+  {
     path: '/dospii',
     name: 'dhome',
     component: () => import(/* webpackChunkName: "dhome" */ '../components/ExtensionAina/compo/FirstAina.vue')

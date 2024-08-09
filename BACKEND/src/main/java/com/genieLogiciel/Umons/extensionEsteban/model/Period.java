@@ -18,4 +18,6 @@ public class Period {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    private boolean current;
 }

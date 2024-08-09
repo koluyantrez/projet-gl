@@ -108,7 +108,8 @@ export default {
         gp: "PAE Management",
         sub:"Submit",
         cur:"Current PAE",
-        tot:"Total credits"
+        tot:"Total credits",
+        rq:"PAE Requests"
     },
     Course:{
         mp: " Main Professor",

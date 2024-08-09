@@ -2,10 +2,7 @@ package com.genieLogiciel.Umons.extensionEsteban.model;
 
 import com.genieLogiciel.Umons.extensionOussama.model.Cours;
 import com.genieLogiciel.Umons.model.Student;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Pae {
     @Id
+    @GeneratedValue
     private Long matricule;
     private String annee;
     private Integer totalCredits;

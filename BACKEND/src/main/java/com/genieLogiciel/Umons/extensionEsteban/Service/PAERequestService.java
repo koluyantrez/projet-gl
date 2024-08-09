@@ -5,6 +5,8 @@ import com.genieLogiciel.Umons.extensionEsteban.model.PAERequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PAERequestService {
 
@@ -25,5 +27,9 @@ public class PAERequestService {
         PAERequest request = paeRequestRepository.findById(id).orElseThrow();
         request.setStatus("Rejected");
         paeRequestRepository.save(request);
+    }
+
+    public List<PAERequest> getAllRequests() {
+        return paeRequestRepository.findAll();
     }
 }

@@ -4,6 +4,8 @@ import com.genieLogiciel.Umons.extensionEsteban.model.Pae;
 import com.genieLogiciel.Umons.extensionEsteban.Service.PAEService;
 import com.genieLogiciel.Umons.extensionOussama.model.Cours;
 import com.genieLogiciel.Umons.extensionOussama.repository.CoursRepository;
+import com.genieLogiciel.Umons.model.Student;
+import com.genieLogiciel.Umons.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ public class PAEController {
 
     @Autowired
     private CoursRepository coursRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @PostMapping
     public ResponseEntity<Pae> createPAE(@RequestBody Pae pae) {
@@ -55,5 +60,27 @@ public class PAEController {
             paeService.createPAE(pae);
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/add-to-student/{matricule}")
+    public ResponseEntity<Pae> addPAEToStudent(@PathVariable Long matricule, @RequestBody Pae pae) {
+        Student student = studentRepository.findById(matricule).orElse(null);
+        if (student != null) {
+            Pae createdPAE = paeService.addPAEToStudent(student, pae);
+            return ResponseEntity.ok(createdPAE);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @PostMapping("/add-existing-to-student/{matricule}/{paeId}")
+    public ResponseEntity<Pae> addExistingPAEToStudent(@PathVariable Long matricule, @PathVariable Long paeId) {
+        Student student = studentRepository.findById(matricule).orElse(null);
+        Pae pae = paeService.getPAEById(paeId);
+        if (student != null && pae != null) {
+            Pae updatedPAE = paeService.addExistingPAEToStudent(student, pae);
+            return ResponseEntity.ok(updatedPAE);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

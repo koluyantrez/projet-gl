@@ -116,4 +116,42 @@ public class CoursController {
     public ResponseEntity<List<Cours>> getAllCours() {
         return coursService.getAllCours();
     }
+
+
+
+    @PostMapping("/{coursId}/prerequis/{preRequisId}")
+    public ResponseEntity<Cours> addPreRequis(@PathVariable Long coursId, @PathVariable Long preRequisId) {
+        Cours updatedCours = coursService.addPreRequis(coursId, preRequisId);
+        return updatedCours != null ? ResponseEntity.ok(updatedCours) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{coursId}/prerequis/{preRequisId}")
+    public ResponseEntity<Cours> removePreRequis(@PathVariable Long coursId, @PathVariable Long preRequisId) {
+        Cours updatedCours = coursService.removePreRequis(coursId, preRequisId);
+        return updatedCours != null ? ResponseEntity.ok(updatedCours) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{coursId}/prerequis")
+    public ResponseEntity<List<Cours>> getPreRequis(@PathVariable Long coursId) {
+        List<Cours> preRequis = coursService.getPreRequis(coursId);
+        return preRequis != null ? ResponseEntity.ok(preRequis) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{coursId}/corequis/{coRequisId}")
+    public ResponseEntity<Cours> addCoRequis(@PathVariable Long coursId, @PathVariable Long coRequisId) {
+        Cours updatedCours = coursService.addCoRequis(coursId, coRequisId);
+        return updatedCours != null ? ResponseEntity.ok(updatedCours) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{coursId}/corequis/{coRequisId}")
+    public ResponseEntity<Cours> removeCoRequis(@PathVariable Long coursId, @PathVariable Long coRequisId) {
+        Cours updatedCours = coursService.removeCoRequis(coursId, coRequisId);
+        return updatedCours != null ? ResponseEntity.ok(updatedCours) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{coursId}/corequis")
+    public ResponseEntity<List<Cours>> getCoRequis(@PathVariable Long coursId) {
+        List<Cours> coRequis = coursService.getCoRequis(coursId);
+        return coRequis != null ? ResponseEntity.ok(coRequis) : ResponseEntity.notFound().build();
+    }
 }
