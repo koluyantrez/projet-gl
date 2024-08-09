@@ -4,7 +4,7 @@
   <ItemSearch class="s" @search="filterCourses" />
     <div class="place">
       <ItemAdd :word="cLang.Top.addco" @click="() => ToCreatePopup('buCreate')"/>
-      <ItemButton word="PAE" @click="goToPAERequests"/>
+      <ItemAdd word="PAE" @click="goToPAERequests"/>
       <ItemCours v-for="(item,index) in filteredCourses" :word="item.name" :key="index" @show-details="showDetailsHandler"/>
     </div>
   </div>
@@ -23,6 +23,7 @@ import {computed, watch, ref, onMounted} from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import ItemButton from "@/elements/ItemButton.vue";
+import Cours from "@/elements/Cours.vue";
 
 ;
 
@@ -101,6 +102,7 @@ export default {
     position: absolute;
     top: 5%;
     right: 15%;
+  z-index: 100000;
 }
 
 .container {

@@ -35,7 +35,6 @@ export default {
   },
   setup() {
     const paeRequests = ref([]);
-    const students = ref([]);
     const filteredRequest = ref(paeRequests.value);
     const selectedRequest = ref(null);
     const showPopup = ref(false);
@@ -49,34 +48,16 @@ export default {
           .catch(error => {
             console.error(error);
           });
-
-    };
-
-    const getStudents = () => {
-      axios.get('http://localhost:1937/api/students')
-          .then(response => {
-            students.value = response.data;
-          })
-          .catch(error => {
-            console.error(error);
-          });
     };
 
     const filterRequest = (query) => {
       filteredRequest.value = paeRequests.value.filter((request) => {
-        const studentName = getStudentName(request.studentId);
-        return studentName.toLowerCase().includes(query.toLowerCase());
+        return request.studentId.toString().includes(query);
       });
-    };
-
-    const getStudentName = (studentId) => {
-      const student = students.value.find(student => student.id === studentId);
-      return student.firstName;
     };
 
     onMounted(() => {
       getPAERequests();
-      getStudents();
     });
 
     const store = useStore();
@@ -100,12 +81,10 @@ export default {
     return {
       cLang,
       paeRequests,
-      students,
       filteredRequest,
       selectedRequest,
       showPopup,
       filterRequest,
-      getStudentName,
       showRequestPopup,
       closeRequestPopup
     };
