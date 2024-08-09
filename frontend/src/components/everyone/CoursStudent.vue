@@ -1,6 +1,6 @@
 <template>
   <component :is="top"/>
-  <ItemAdd class="bu" :word="cLang.RenameCo.rho" @click="() => ToRenamePopup('buTriMod')" />
+  <ItemAdd v-if="isProfessorRole" class="bu" :word="cLang.RenameCo.rho" @click="() => ToRenamePopup('buTriMod')" />
   <div class="nc">{{code}} {{courseName}}</div>
   <div class="rec">
     <Cours :word="cLang.Course.th"/>
@@ -38,6 +38,7 @@ export default {
   components: {RenameCo, ItemAdd, TopStudent, TopProf, TopGuest, TopSecretariat, Cours},
 
   data() {
+    const isProfessorRole = ref(Cookies.get('role') === 'professeur');
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
@@ -70,6 +71,7 @@ export default {
     return {
     popupMod,
     ToRenamePopup,
+    isProfessorRole,
       cLang,
       top,
       courseName: '',

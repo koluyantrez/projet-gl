@@ -1,6 +1,5 @@
 <template>
   <MoodleTop/>
-  <img class="la" alt="Change the language" src="../assets/lang.png" @click="switchLang"/>
   <div class="pic">
     <router-link to="/">
       <ProfilPhoto class="pic" :src="pp"/>
