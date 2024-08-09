@@ -1,6 +1,5 @@
 <template>
   <div id="rectangle" class="redtop">
-    <NotifIcon/>
     <LogoHome :src="src2"/>
     <img class="la" alt="Change the language" src="../assets/lang.png" @click="switchLang"/>
   </div>
@@ -9,7 +8,6 @@
 
 <script>
 import LogoHome from './LogoHome.vue';
-import NotifIcon from './NotifIcon.vue';
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
 import fr from '../views/fr.js';
@@ -18,7 +16,7 @@ import en from '../views/en.js';
 
 
 export default {
-  components: {LogoHome, NotifIcon},
+  components: {LogoHome},
   setup() {
 
     const store = useStore();
