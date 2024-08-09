@@ -41,13 +41,12 @@
         });
 
 
-        const matricule = ref(Cookies.get('matriculeInscription'));
+        const matricule = ref(Cookies.get('loginUser'));
         const pic = ref(null);
 
         const getPic = () => {
-          axios.get('http://localhost:1937/api/inscription/membreServiceInscription', {
-              params: { matricule: matricule.value }
-          })
+          const userId = matricule.value;
+          axios.get(`http://localhost:1937/users/${userId}`)
               .then(response => {
                 const info = response.data;
                 pic.value = `data:image/jpeg;base64,${info.image}`;
@@ -55,7 +54,7 @@
               .catch(error => {
                 console.error(error);
               });
-            };
+        };
 
         onMounted(() => {
               getPic();
