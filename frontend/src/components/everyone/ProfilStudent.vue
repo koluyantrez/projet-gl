@@ -37,16 +37,16 @@ import ItemButton from '../../elements/ItemButton.vue';
 import YesOrNo from '../../popup/YesOrNo.vue';
 import ModifPro from '../../popup/ModifPro.vue';
 import PassWord from '../../popup/PassWord.vue';
-import { useRouter } from 'vue-router';
-import { computed, watch, ref, onMounted } from 'vue';
+import {useRouter} from 'vue-router';
+import {computed, watch, ref, onMounted} from 'vue';
 import axios from 'axios';
 import fr from '../../views/fr';
 import en from '../../views/en';
-import { useStore } from 'vuex';
+import {useStore} from 'vuex';
 import Cookies from 'js-cookie';
 
 export default {
-  components: { TopStudent, TopSec, TopProf, TopSecretariat, ItemButton, YesOrNo, ModifPro, PassWord, DropImg },
+  components: {TopStudent, TopSec, TopProf, TopSecretariat, ItemButton, YesOrNo, ModifPro, PassWord, DropImg},
   methods: {
     clearCookies() {
       Object.keys(Cookies.get()).forEach(cookieName => {
@@ -110,7 +110,7 @@ export default {
       } else if (type.value === 'professeur') {
         result = 'TopProf';
       } else if (type.value === 'secretariat') {
-              result = 'TopSecretariat';
+        result = 'TopSecretariat';
       } else {
         result = 'TopSec';
       }
@@ -122,7 +122,7 @@ export default {
 
     const router = useRouter();
     const userID = Cookies.get('loginUser');
-    console.log('loginUser='+userID);
+    console.log('loginUser=' + userID);
     const fetchStudentInfo = async () => {
       try {
         const response = await axios.get(`http://localhost:1937/users/${matricule.value}`);
@@ -146,7 +146,7 @@ export default {
     });
 
     return {
-    isStudentRole,
+      isStudentRole,
       cLang,
       top,
       AddPic,
