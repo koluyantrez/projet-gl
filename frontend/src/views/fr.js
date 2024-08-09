@@ -35,7 +35,8 @@ export default{
         unsi: "Désinscription",
         edit: "Modifier",
         logout: "Déconnexion",
-        pw: "Mot de passe"
+        pw: "Mot de passe",
+        infopw: "Votre mot de passe doit contenir au moins 15 caractères"
     },
     Courses:{
         prof: "Titulaire",
@@ -73,7 +74,7 @@ export default{
         ln: "Nom",
         fn: "Prénom",
         num: "Numéro de téléphone",
-        ad: "Adresse",
+        ad: "Adresse n°x",
         city: "Ville + Code Postal",
         back: "annuler",
         ok: "confirmer",
