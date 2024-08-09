@@ -2,22 +2,9 @@
   <div class="popup">
     <div class="inner">
       <center>
-        <div class="allInput">
-          <div class="input-group">
-            <label>{{ cLang.EditPro.num }}</label>
-            <input type="tel" v-model="num" class="custom-input" />
-          </div>
-
-          <div class="input-group">
-            <label>{{ cLang.EditPro.ad }}</label>
-            <input type="text" v-model="address" class="custom-input" />
-          </div>
-
-          <div class="input-group">
-            <label>{{ cLang.EditPro.city }}</label>
-            <input type="text" v-model="city" class="custom-input" />
-          </div>
-        </div>
+       <ItemInput type="tel" v-model:val="num" :name="cLang.SignUp.phone" />
+       <ItemInput type="text" v-model:val="address" :name="cLang.EditPro.ad" />
+       <ItemInput type="text" v-model:val="city" :name="cLang.EditPro.city" />
 
         <ItemAdd :word="cLang.AddCours.ok" @click="confirmAndReload" />
         <ItemAdd :word="cLang.AddCours.back" @click="ToModPopup()" />
@@ -28,6 +15,7 @@
 
 <script>
 import ItemAdd from '../elements/ItemAdd.vue';
+import ItemInput from '../elements/ItemInput.vue';
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import axios from 'axios';
@@ -36,7 +24,7 @@ import fr from '../views/fr.js';
 import en from '../views/en.js';
 
 export default {
-  components: { ItemAdd },
+  components: { ItemAdd, ItemInput },
   props: ['ToModPopup'],
 
   setup(props) {
@@ -140,6 +128,7 @@ export default {
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
+  z-index: 99;
   align-items: center;
   justify-content: center;
 }

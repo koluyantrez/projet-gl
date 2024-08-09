@@ -2,19 +2,22 @@
   <div class="popup">
     <div class="inner">
       <center>
+        {{cLang.Profile.infopw}}
         <div class="allInput">
-          <input type="password" :placeholder="cLang.pw.old" v-model="currentPassword" />
-          <input type="password" :placeholder="cLang.pw.new" v-model="newPassword" />
-          <input type="password" :placeholder="cLang.pw.check" v-model="confirmPassword" />
+          <ItemInput type="password" :name="cLang.pw.old" v-model:val="currentPassword" />
+          <ItemInput type="password" :name="cLang.pw.new" v-model:val="newPassword" />
+          <ItemInput type="password" :name="cLang.pw.check" v-model:val="confirmPassword" />
         </div>
-        <button @click="changePassword">{{ cLang.pw.ok }}</button>
-        <button @click="ToPassPopup">{{ cLang.pw.back }}</button>
+        <ItemAdd :word="cLang.pw.ok" @click="changePassword"/>
+        <ItemAdd :word="cLang.pw.back" @click="ToPassPopup"/>
       </center>
     </div>
   </div>
 </template>
 
 <script>
+import ItemInput from '../elements/ItemInput.vue';
+import ItemAdd from '../elements/ItemAdd.vue';
 import { useStore } from 'vuex';
 import { computed, watch, ref } from 'vue';
 import fr from '../views/fr.js'
@@ -23,6 +26,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
+  components: {ItemAdd, ItemInput},
   props: ['ToPassPopup'],
 
   data() {
@@ -130,12 +134,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 }
 
 .inner {
   background: #fff;
-  padding: 39px;
-  border-radius: 10px;
+    padding: 2rem;
+    border-radius: 10%;
 }
 
 .allInput {
@@ -151,13 +156,5 @@ input {
   border-radius: 5px;
 }
 
-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0.5rem;
-}
+
 </style>

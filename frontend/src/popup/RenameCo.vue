@@ -57,7 +57,7 @@ export default{
   .inner{
     position: relative;
     background: rgb(255, 255, 255);
-    padding: 39px;
+    padding: 2rem;
     border-radius: 10%;
   }
 }

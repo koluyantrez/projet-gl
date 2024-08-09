@@ -39,7 +39,8 @@ export default {
         unsi: "Unsubscribe",
         edit: "Change",
         logout: "Logout",
-        pw: "Password"
+        pw: "Password",
+        infopw: "Your password must be at least 15 characters long"
     },
     Courses: {
         prof: "Main teacher",
@@ -76,7 +77,7 @@ export default {
         ln: "Last name",
         fn: "First name",
         num: "Telephone number",
-        ad: "Address",
+        ad: "Address n°x",
         city: "City + Postal Code",
         back: "cancel",
         ok: "confirm"
