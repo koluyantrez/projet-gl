@@ -3,8 +3,9 @@
   <div class="container">
   <ItemSearch class="look" @search="filterStudents"/>
     <div class="place">
-      <ItemStudent v-for="(student, index) in filteredStudents" :word="student.name + ' ' + student.firstName" :key="index" />
+      <ItemStudent v-for="(student, index) in filteredStudents" :word="student.lastName + ' ' + student.firstName" :key="index" @click="showStudentInfo(student)"/>
     </div>
+    <StudentInfoPopup v-if="showPopup" :student="selectedStudent" @close="closePopup"/>
   </div>
 
 
@@ -24,13 +25,14 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import ItemCours from "@/elements/ItemStudent.vue";
 import ItemStudent from "@/elements/ItemStudent.vue";
+import StudentInfoPopup from "@/popup/StudentInfoPopup.vue";
 
 export default {
-  components: {ItemStudent, ItemCours, TopSec, ItemSearch, ItemAdd, YesOrNo, GiveInfo },
+  components: {StudentInfoPopup, ItemStudent, ItemCours, TopSec, ItemSearch, ItemAdd, YesOrNo, GiveInfo },
   setup() {
     const students = ref([]);
     const filteredStudents = ref(students.value);
-    const selectedStudents = ref(null);
+    const selectedStudent = ref(null);
     const showPopup = ref(false);
 
     const getSignupRequests = () => {
@@ -48,6 +50,16 @@ export default {
       filteredStudents.value = students.value.filter((student) => {
         return student.lastName.toLowerCase().includes(query.toLowerCase()) || student.firstName.toLowerCase().includes(query.toLowerCase());
       });
+    };
+
+    const showStudentInfo = (student) => {
+      selectedStudent.value = student;
+      showPopup.value = true;
+    };
+
+    const closePopup = () => {
+      showPopup.value = false;
+      selectedStudent.value = null;
     };
 
     onMounted(getSignupRequests);
@@ -74,9 +86,10 @@ export default {
 
     return {
       students,
-      selectedStudents,
+      selectedStudent,
       showPopup,
-      popupCreate,
+      showStudentInfo,
+      closePopup,
       ToCreatePopup,
       cLang,
       filterStudents,

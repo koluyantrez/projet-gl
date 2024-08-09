@@ -2,14 +2,15 @@
   <div>
     <TopStudentPAE/>
     <div class="content">
-      <h2>Current PAE</h2>
+      <h2>{{cLang.PAE.cur}}</h2>
       <ul>
         <li v-for="course in currentPAE.courses" :key="course.id">
           {{ course.name }} - {{ course.credits }} credits
         </li>
       </ul>
-      <p>Total Credits: {{ totalCredits }}</p>
-      <ItemButton name="Add Course" @click="showPopup = true"/>
+      <p>{{cLang.PAE.tot}}: {{ totalCredits }}</p>
+      <ItemButton :name="cLang.AddCours.ad" @click="showPopup = true"/>
+      <ItemButton :name="cLang.PAE.sub"/>
     </div>
     <div v-if="showPopup" class="popup">
       <h3>All Courses</h3>
@@ -28,9 +29,30 @@
 import axios from 'axios';
 import TopStudentPAE from "@/elements/PAE/TopStudentPAE.vue";
 import ItemButton from "@/elements/ItemButton.vue";
+import AddCours from "@/popup/AddCours.vue";
+import Cookies from "js-cookie";
+import {computed, ref, watch} from "vue";
+import { useStore } from 'vuex';
+import fr from '../../views/fr';
+import en from '../../views/en';
 
 export default {
   components: {ItemButton, TopStudentPAE },
+  setup() {
+    const matricule = ref(Cookies.get('matriculeStudent'));
+    console.log("la valeur de matricule " + matricule.value);
+    const store = useStore();
+    const idLa = computed(() => store.state.lang.curLang);
+    const cLang = ref(idLa.value === 'fr' ? fr : en);
+
+    watch(idLa, (newLang) => {
+      cLang.value = newLang === 'fr' ? fr : en;
+    });
+
+    return {
+      cLang
+    };
+  },
   data() {
     return {
       currentPAE: {
@@ -41,11 +63,20 @@ export default {
     };
   },
   computed: {
+    AddCours() {
+      return AddCours
+    },
     totalCredits() {
       return this.currentPAE.courses.reduce((sum, course) => sum + course.credits, 0);
     }
   },
   methods: {
+
+    clearCookies() {
+      Object.keys(Cookies.get()).forEach(cookieName => {
+        Cookies.remove(cookieName);
+      });
+    },
 
     getCours() {
       axios.get('http://localhost:1937/api/cours/All')
@@ -76,7 +107,7 @@ export default {
           });
     },
     addCourseToPAE(courseId) {
-      axios.post(`/api/cours/add/${this.currentPAE.id}/${courseId}`)
+      axios.post(`/api/pae/add/${this.currentPAE.id}/${courseId}`)
           .then(() => {
             this.fetchCurrentPAE();
           })

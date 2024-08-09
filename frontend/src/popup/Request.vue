@@ -63,12 +63,12 @@ export default {
         lastName: this.request.name,
         firstName: this.request.firstName,
         name : this.request.name + " " + this.request.firstName,
-        //birthDate: this.request.birthDate,
-        adresse: this.request.address,
+        naissance: this.request.birthDate,
+        adresse: this.request.city,
         //city: this.request.city,
         numero: this.request.phone,
         departement: this.request.filial,
-        annee:1,
+        annee:2023-2024,
         inscrit: true
 
       };

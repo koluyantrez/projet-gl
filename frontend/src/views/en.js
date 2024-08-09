@@ -54,7 +54,8 @@ export default {
         assi: "Assistants number",
         back: "cancel",
         ok: "confirm",
-        not:"reject"
+        not:"reject",
+        ad:"Add Course"
     },
     AddStudent:{
         fn: "Student's first name",
@@ -104,7 +105,10 @@ export default {
     PAE:{
         act: "Actual",
         his: "Historical",
-        gp: "PAE Management"
+        gp: "PAE Management",
+        sub:"Submit",
+        cur:"Current PAE",
+        tot:"Total credits"
     },
     Course:{
         mp: " Main Professor",

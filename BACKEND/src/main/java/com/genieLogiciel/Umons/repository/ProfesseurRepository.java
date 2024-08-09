@@ -33,5 +33,7 @@ public interface ProfesseurRepository extends JpaRepository<Professeur, Long> {
 
     Optional<Professeur> findByName(String name);
 
+    List<Professeur> findByIsJuryMemberTrue();
+
 }
 

@@ -1,16 +1,22 @@
 <template>
   <MoodleTop/>
-  <img class="la" alt="Change the language" src="../../assets/lang.png" @click="switchLang"/>
-  <div class="pic">
-    <router-link to="/student/profil">
-      <ProfilPhoto   :src="pp"/>
-    </router-link>
-  </div>
-
   <div class="te">
-    <div class="gp">cLang.PAE.gp</div>
-    <div class="his">cLang.PAE.his</div>
-    <div class="act">cLang.PAE.act</div>
+
+    <div class="pic">
+      <router-link to="/student/profil">
+        <img class="pic" :src="pp"/>
+      </router-link>
+    </div>
+
+    <router-link to="/student/PAE">
+      <div class="gp">PAE</div>
+    </router-link>
+
+    <div class="his">{{cLang.PAE.his}}</div>
+
+    <router-link to="/student/PAE/actual">
+      <div class="act">{{cLang.PAE.act}}</div>
+    </router-link >
   </div>
 
 </template>
@@ -18,12 +24,32 @@
 import MoodleTop from '../MoodleTop.vue';
 import ProfilPhoto from '../ProfilPhoto.vue';
 import { useStore } from 'vuex';
-import { computed, watch, ref } from 'vue';
+import {computed, watch, ref, onMounted} from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
+import Cookies from "js-cookie";
+import axios from "axios";
 export default {
   components: { MoodleTop, ProfilPhoto },
   setup() {
+
+    const matricule = ref(Cookies.get('matriculeStudent'));
+    const pic = ref(null);
+
+    const getPic = () => {
+      axios.get('http://localhost:1937/api/students/', {
+        params: { matricule: matricule.value }
+      })
+          .then(response => {
+            console.log(response.data);
+            const info = response.data;
+            pic.value = `data:image/jpeg;base64,${info.image}`;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    };
+
     const store = useStore();
     const idLa = computed(() => store.state.lang.curLang);
     const cLang = ref(idLa.value === 'fr' ? fr : en);
@@ -36,6 +62,10 @@ export default {
       }
     };
 
+    onMounted(() => {
+      getPic();
+    });
+
     watch(idLa, (newLang) => {
       cLang.value = newLang === 'fr' ? fr : en;
     });
@@ -43,6 +73,7 @@ export default {
     return {
       switchLang,
       cLang,
+      pic,
       pp: require('../../assets/profil.png'),
     };
   }
@@ -62,17 +93,17 @@ export default {
 
 .pic{
   position: absolute;
-  top: 0rem;
-  right: 0rem;
-  width: 100rem;
-  height: auto;
-  z-index: 91;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 75px;
+  height: 75px;
+  z-index: 98;
 }
 
 
 .gp{
   position: fixed;
-  top: -3.5rem;
+  top: 0rem;
   right: 2rem;
   left : 20rem;
   width: 5rem;
@@ -81,29 +112,36 @@ export default {
   color:black;
 }
 
-.his{
+.te .act {
   position: fixed;
-  top: -2rem;
-  right: 22rem;
+  top: 0;
+  right: 19rem;
   width: 5rem;
   height: auto;
   z-index: 91;
-  color:azure;
+  color: azure;
 }
 
-.act{
+.te .his {
   position: absolute;
-  top: -2rem;
-  right: 32rem;
+  top: 0;
+  right: 39rem;
   width: 6rem;
   height: auto;
-  z-index: 91;
+  z-index: 99;
+  color: azure;
 }
 
-
-.te{
+.te {
+  position: relative;
+  top: 0;
   font-family: Roboto, sans-serif;
-  color:azure;
+  font-size: 60px;
+  color: azure;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 

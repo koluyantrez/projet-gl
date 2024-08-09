@@ -29,4 +29,6 @@ public class Secretariat extends User {
      * Zone du secrétariat.
      */
     private String zone;
+
+    private boolean isJuryMember;
 }

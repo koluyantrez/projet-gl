@@ -22,7 +22,7 @@ public class Pae {
     private String annee;
     private Integer totalCredits;
     private String commentaire;
-    private Integer validation;
+
 
     @ManyToOne
     private Student student;

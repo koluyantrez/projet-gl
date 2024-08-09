@@ -48,4 +48,6 @@ public class Professeur extends User{
      * Indique si le professeur est titulaire.
      */
     private Integer titulaire;
+
+    private boolean isJuryMember;
 }

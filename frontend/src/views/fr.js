@@ -50,7 +50,8 @@ export default{
         assi: "Matricule des assistants",
         back: "annuler",
         ok: "confirmer",
-        not: "refuser"
+        not: "refuser",
+        ad:"Ajouter un cours"
 
     },
     AddStudent:{
@@ -101,7 +102,10 @@ export default{
     PAE:{
         act: "Actuel",
         his: "Historique",
-        gp: "Gestion PAE"
+        gp: "Gestion PAE",
+        sub: "Soumettre",
+        cur: "PAE courant",
+        tot: "Crédits totaux"
     },
     Course: {
         mp: "Titulaire",
