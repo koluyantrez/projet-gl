@@ -24,7 +24,7 @@
     <p>{{ studentInfo.adresse }}</p>
     <p>+{{ studentInfo.numero }}</p>
   </div>
-  <img class="photo" :src="studentInfo.pic" v-if="studentInfo.image"/>
+  <img class="photo" :src="studentInfo.pic"/>
 </template>
 
 <script>
@@ -125,7 +125,7 @@ export default {
     console.log('loginUser=' + userID);
     const fetchStudentInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:1937/users/${matricule.value}`);
+        const response = await axios.get(`http://localhost:1937/users/${userID}`);
         const studentData = response.data;
         console.log(response.data);
         studentInfo.value.name = studentData.name;
@@ -134,8 +134,7 @@ export default {
         studentInfo.value.email = studentData.email;
         studentInfo.value.departement = studentData.departement;
         studentInfo.value.fili = studentData.filiere;
-        studentInfo.value.image = `data:image/jpeg;base64,${studentData.image}`;
-        console.log('image : ' + studentData.image);
+        studentInfo.value.pic = `data:image/jpeg;base64,${studentData.image}`;
       } catch (error) {
         console.error('Error fetching student info:', error);
       }

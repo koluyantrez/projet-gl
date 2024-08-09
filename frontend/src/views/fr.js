@@ -16,7 +16,7 @@ export default{
         prof:"Professeurs",
         askin:"Inscription",
         askout:"Désinscription",
-        askloc:"local reservations"
+        askloc:"Réservation salle"
     },
     SignUp:{
         ln: "Nom",

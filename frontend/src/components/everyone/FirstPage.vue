@@ -144,6 +144,7 @@ export default {
                 Cookies.set('passwordInscription', this.password);
                 const mat = this.extractNumberBeforeAt(this.email);
                 Cookies.set('demandeur', mat);
+                Cookies.set('CookiesInsc',mat);
                 console.log("CookiesInsc : " + Cookies.get('matriculeInscription'));
                 this.$router.push({
                   name: 'inscription',
