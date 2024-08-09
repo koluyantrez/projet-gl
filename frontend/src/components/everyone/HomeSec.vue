@@ -23,7 +23,6 @@ import {computed, watch, ref, onMounted} from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import ItemButton from "@/elements/ItemButton.vue";
-import Cours from "@/elements/Cours.vue";
 
 ;
 
@@ -102,7 +101,6 @@ export default {
     position: absolute;
     top: 5%;
     right: 15%;
-  z-index: 100000;
 }
 
 .container {

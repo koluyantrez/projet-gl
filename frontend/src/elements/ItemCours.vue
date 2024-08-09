@@ -4,8 +4,8 @@
       <router-link :to="{ name: 'courseSection', params: { cours: word } }">
         <button class="button" @click="redirectToSection">{{ word }}</button>
       </router-link>
-      <center><button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
-      <button class="details-button" @click="showDetails">Info</button></center>
+      <center><button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button></center>
+      <center><button class="details-button" @click="showDetails">Info</button></center>
     </div>
   </div>
 </template>
