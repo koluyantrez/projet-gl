@@ -8,7 +8,7 @@
         <ItemCours v-for="(request, index) in filteredRequest" :word="request.studentId" :key="index" @click="showRequestPopup(request)"/>
       </div>
     </div>
-    <PAEDetailsPopup v-if="showPopup" :request="selectedRequest" @close="closeRequestPopup"/>
+    <PAEDetailsPopup v-if="showPopup" :request="selectedRequest" @close="closeRequestPopup" @accept="acceptPAERequest"/>
   </div>
 </template>
 
@@ -78,6 +78,17 @@ export default {
       selectedRequest.value = null;
     };
 
+    const acceptPAERequest = (request) => {
+      axios.post(`http://localhost:1937/api/students/pae/accept/${request.studentId}`, request)
+          .then(() => {
+            getPAERequests();
+            closeRequestPopup();
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    };
+
     return {
       cLang,
       paeRequests,
@@ -86,7 +97,8 @@ export default {
       showPopup,
       filterRequest,
       showRequestPopup,
-      closeRequestPopup
+      closeRequestPopup,
+      acceptPAERequest
     };
   }
 }

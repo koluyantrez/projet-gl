@@ -1,7 +1,7 @@
 <template>
   <center>
     <div class="form__group field">
-      <input :type="type" class="form__field" :placeholder="name" required="" @input="onInput" :value="val">
+      <input :value="modelValue" :type="type" class="form__field" :placeholder="name" required="" @input="$emit('update:modelValue', $event.target.value)"  >
       <label class="form__label">{{ name }}</label>
     </div>
   </center>
@@ -9,7 +9,11 @@
 
 <script>
 export default {
-  props: ['name', 'type', 'val'],
+  props: {
+    name:String,
+    modelValue: String
+  },
+
   emits: ['update:val'],
   methods: {
     onInput(event) {

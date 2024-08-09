@@ -1,14 +1,14 @@
 <template>
   <TopSec/>
   <div class="data">
-    <ItemInput :name="cLang.SignUp.ln"/>
-    <ItemInput :name="cLang.SignUp.fn"/>
-    <ItemInput :name="cLang.SignUp.born"/>
-    <ItemInput :name="cLang.SignUp.ad"/>
-    <ItemInput :name="cLang.SignUp.city"/>
-    <ItemInput :name="cLang.SignUp.phone"/>
-    <ItemInput :name="cLang.SignUp.p"/>
-    <ItemInput type="password" :name="cLang.SignUp.pw"/>
+    <ItemInput2 :name="cLang.SignUp.ln"/>
+    <ItemInput2 :name="cLang.SignUp.fn"/>
+    <ItemInput2 :name="cLang.SignUp.born"/>
+    <ItemInput2 :name="cLang.SignUp.ad"/>
+    <ItemInput2 :name="cLang.SignUp.city"/>
+    <ItemInput2 :name="cLang.SignUp.phone"/>
+    <ItemInput2 :name="cLang.SignUp.p"/>
+    <ItemInput2 type="password" :name="cLang.SignUp.pw"/>
   </div>
   <ItemAdd class="pic" word="Photo" @click="() => ToPicPopup('buPic')"/>
   <ItemButton class="finish" :name="cLang.SignUp.done"/>
@@ -22,7 +22,7 @@
 </template>
 <script>
 import TopSec from '../../elements/TopSec.vue';
-import ItemInput from '../../elements/ItemInput.vue';
+import ItemInput2 from '../../elements/ItemInput2.vue';
 import ItemButton from '../../elements/ItemButton.vue';
 import ItemAdd from '../../elements/ItemAdd.vue';
 import DropImg from '../../popup/DropImg.vue';

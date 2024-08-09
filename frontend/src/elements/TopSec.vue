@@ -13,7 +13,7 @@
     <router-link to="/inscription">
       <div class="loc">{{ cLang.Top.askin }}</div>
     </router-link>
-    <router-link to="/inscription">
+    <router-link to="/desinscription">
       <div class="bye">{{ cLang.Top.askout }}</div>
     </router-link>
     <div class="cours">{{ cLang.Top.loc }}</div>

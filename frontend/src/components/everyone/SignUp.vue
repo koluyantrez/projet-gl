@@ -1,13 +1,13 @@
 <template>
   <TopGuest/>
   <div class="data">
-    <ItemInput v-model="name" :name="cLang.SignUp.ln"/>
-    <ItemInput v-model="firstName" :name="cLang.SignUp.fn"/>
-    <ItemInput v-model="birthDate" :name="cLang.SignUp.born"/>
-    <ItemInput v-model="address" :name="cLang.SignUp.ad"/>
-    <ItemInput v-model="city" :name="cLang.SignUp.city"/>
-    <ItemInput v-model="phone" :name="cLang.SignUp.phone"/>
-    <ItemInput v-model="filial" :name="cLang.SignUp.dp"/>
+    <ItemInput2 v-model="name" :name="cLang.SignUp.ln"/>
+    <ItemInput2 v-model="firstName" :name="cLang.SignUp.fn"/>
+    <ItemInput2 v-model="birthDate" :name="cLang.SignUp.born"/>
+    <ItemInput2 v-model="address" :name="cLang.SignUp.ad"/>
+    <ItemInput2 v-model="city" :name="cLang.SignUp.city"/>
+    <ItemInput2 v-model="phone" :name="cLang.SignUp.phone"/>
+    <ItemInput2 v-model="filial" :name="cLang.SignUp.dp"/>
     <!--    <label for="filial">Filial</label>-->
     <!--    <select v-model="request.filial" id="departement">-->
     <!--      <option v-for="departement in departements" :key="departement" :value="departement">-->
@@ -39,8 +39,9 @@ import { computed, watch, ref } from 'vue';
 import fr from '../../views/fr.js';
 import en from '../../views/en.js';
 import axios from "axios";
+import ItemInput2 from "@/elements/ItemInput2.vue";
 export default{
-  components: { TopGuest, ItemInput, ItemButton ,ItemAdd, DropImg,ItemGrade},
+  components: {ItemInput2, TopGuest, ItemInput, ItemButton ,ItemAdd, DropImg,ItemGrade},
   setup(){
 
     const store = useStore();

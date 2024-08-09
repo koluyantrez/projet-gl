@@ -142,6 +142,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "paeRequests" */ '../components/Estebane/PAERequest.vue')
   },
   {
+    path: '/PAERequestPage',
+    name: 'paeRequestPage',
+    component: () => import(/* webpackChunkName: "paeRequestPage" */ '../components/Estebane/PAERequestPage.vue')
+  },
+  {
     path: '/dospii',
     name: 'dhome',
     component: () => import(/* webpackChunkName: "dhome" */ '../components/ExtensionAina/compo/FirstAina.vue')
@@ -200,6 +205,11 @@ const routes = [
     path : '/officeManage',
     name : 'officeManage',
     component: () => import('../components/extensionOussama/OfficeManage.vue')
+  },
+  {
+    path:'/desinscription',
+    name: 'DesinscriptionPage',
+    component: () => import('../components/everyone/DesinscriptionPage.vue')
   },
 ]
 
