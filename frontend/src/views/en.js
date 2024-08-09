@@ -16,7 +16,8 @@ export default {
         stu:"Students",
         prof:"Professors",
         askin:"Registration",
-        askout:"Unsubscribe"
+        askout:"Unsubscribe",
+        askloc:"Local reservations"
     },
     SignUp: {
         ln: "Last Name",
@@ -41,7 +42,7 @@ export default {
         pw: "Password"
     },
     Courses: {
-        prof: "Teacher",
+        prof: "Main teacher",
         assi: "Assistant(s)",
         edit: "change",
         rm: "remove"

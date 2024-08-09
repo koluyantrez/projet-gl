@@ -7,7 +7,7 @@
       <!-- Ajouter une condition pour afficher le bouton de suppression uniquement si le rôle est "professeur" -->
       <button v-if="isProfessorRole()" class="delete-button" @click="showDeleteConfirmation">Supprimer</button>
       <!-- Ajouter une condition pour afficher le bouton "Supprimer" uniquement si le rôle est "professeur" -->
-      <button class="details-button" @click="showDetails">Détails</button>
+      <center><button class="details-button" @click="showDetails">Info</button></center>
     </div>
   </div>
 </template>
@@ -164,7 +164,7 @@ export default {
 
 .details-button {
   margin-left: 10px;
-  background-color: blue;
+  background-color: grey;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -173,6 +173,6 @@ export default {
 }
 
 .details-button:hover {
-  background-color: darkblue;
+  background-color: darkred;
 }
 </style>
