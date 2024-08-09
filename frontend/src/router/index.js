@@ -44,17 +44,17 @@ const routes = [
   {
     path: '/prof/profil',
     name: 'pprofil',
-    component: () => import(/* webpackChunkName: "pprofil" */ '../components/everyone/ProfilProf.vue')
+    component: () => import(/* webpackChunkName: "pprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/sec/profil',
     name: 'seprofil',
-    component: () => import(/* webpackChunkName: "seprofil" */ '../components/everyone/ProfilSec.vue')
+    component: () => import(/* webpackChunkName: "seprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/ins/profil',
     name: 'iprofil',
-    component: () => import(/* webpackChunkName: "iprofil" */ '../components/everyone/ProfilSec.vue')
+    component: () => import(/* webpackChunkName: "iprofil" */ '../components/everyone/ProfilStudent.vue')
   },
   {
     path: '/student/profil',
